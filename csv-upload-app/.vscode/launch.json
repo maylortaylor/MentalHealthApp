@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "type": "node",
+        "name": "FB Upload CSV",
+        "request": "launch",
+        "cwd": "${workspaceRoot}",
+        "runtimeExecutable": "npm",
+        "runtimeArgs": ["run-script", "fb-upload"],
+        "port": 5858
+      }
+    ]
+}

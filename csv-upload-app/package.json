@@ -1,0 +1,19 @@
+{
+  "name": "mentalhealthapp",
+  "version": "1.0.0",
+  "description": "Goole Firebase csv upload app",
+  "main": "index.js",
+  "scripts": {
+    "fb-upload": "node ./firebase-csv-upload/index.js ./csvs/test.csv",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "maylortaylor@gmail.com",
+  "license": "ISC",
+  "dependencies": {
+    "csv-parse": "^5.3.0",
+    "firebase": "^9.9.0",
+    "firebase-admin": "^11.0.0",
+    "firebase-auto-ids": "^1.1.0",
+    "firebase-tools": "^11.3.0"
+  }
+}

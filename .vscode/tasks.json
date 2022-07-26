@@ -1,0 +1,17 @@
+{
+    "version": "2.0.0",
+    "command": "npm",
+    "tasks": [
+        {
+            "label": "RUN: csv-upload-app",
+            "type": "npm",
+            "script": "fb-upload",
+            "options": {
+                "cwd": "${workspaceFolder}/csv-upload-app/",
+                "env": {
+                    "NODE_ENV": "development"
+                }
+            }
+        }
+    ]
+}

@@ -1,0 +1,40 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Web (chrome)",
+            "cwd": "mental_health_app",
+            "request": "launch",
+            "type": "dart",
+            "deviceId": "chrome",
+            "env": {
+                "RELEASE_MODE": false
+            },
+            "console": "debugConsole",
+            "flutterMode": "debug"
+        },
+        {
+            "name": "mental_health_app",
+            "cwd": "mental_health_app",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "mental_health_app (profile mode)",
+            "cwd": "mental_health_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "mental_health_app (release mode)",
+            "cwd": "mental_health_app",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
