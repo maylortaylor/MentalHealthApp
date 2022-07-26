@@ -14,6 +14,8 @@ jobs:
       - uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
+      - name: Setup Flutter App
+          working-directory: ./mental_health_app
       # - run: npm ci && npm run build
       - run: flutter config --enable-web
       - run: flutter pub get
