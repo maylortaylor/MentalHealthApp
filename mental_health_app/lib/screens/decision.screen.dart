@@ -99,7 +99,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return PromptScreen(prompt: promptsList[rng.nextInt(5)]);
+                          return PromptScreen(prompt: promptsList[rng.nextInt(promptsList.length)]);
                         },
                       ),
                     );
@@ -111,7 +111,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   context,
                   () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return PromptScreen(prompt: promptsList[rng.nextInt(5)]);
+                      return PromptScreen(prompt: promptsList[rng.nextInt(promptsList.length)]);
                     }));
                   },
                   "Anxious",
@@ -121,7 +121,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   context,
                   () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return PromptScreen(prompt: promptsList[rng.nextInt(5)]);
+                      return PromptScreen(prompt: promptsList[rng.nextInt(promptsList.length)]);
                     }));
                   },
                   "Depressed",
@@ -131,7 +131,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   context,
                   () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return PromptScreen(prompt: promptsList[rng.nextInt(5)]);
+                      return PromptScreen(prompt: promptsList[rng.nextInt(promptsList.length)]);
                     }));
                   },
                   "Guilty",
