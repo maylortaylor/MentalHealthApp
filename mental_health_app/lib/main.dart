@@ -8,7 +8,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_database/ui/firebase_animated_list.dart';
 import 'package:flutter/foundation.dart' show defaultTargetPlatform, kIsWeb;
 import 'package:flutter/material.dart';
-import './screens/prompt.screen..dart';
+import 'package:mental_health_app/screens/decision.screen.dart';
+import 'screens/prompt.screen.dart';
 
 import 'firebase_options.dart';
 import 'models/prompts.model.dart';
@@ -123,110 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: const Text('Mental Health App'),
       ),
-      body: Column(
-        children: [
-          Flexible(
-            child: Center(
-              child: Swiper(
-                itemBuilder: (BuildContext context,int index){
-                  // return Image.network("https://via.placeholder.com/350x150",fit: BoxFit.fill,);
-                  return _buildPrompt(context, index);
-                },
-                itemCount: promptsList.length,
-                pagination: SwiperPagination(),
-                control: SwiperControl(),
-              ))
-              // child: StreamBuilder(
-              //   stream: _promptsRef.onValue,
-              //   builder: (context, index) {
-              //     return ListView.separated(
-              //     itemBuilder: (context, index) {
-              //       return _buildPrompt(context, index);
-              //     },
-              //    separatorBuilder: (context, index) => const Divider(color: Colors.black),
-              //    itemCount: promptsList.length);
-              //   } 
-              // ),)
-          ),
-        ],
-      )
+      body: DecisionScreen()
     );
-  }
-
-  Widget _buildPrompt(BuildContext context, int index) {
-    // return ListTile(
-    //         contentPadding: EdgeInsets.all(5),
-    //         dense: true,
-    //         onTap: () async {
-    //           Navigator.of(context).push(MaterialPageRoute(builder: (context) => PromptScreen(prompt: promptsList[index])));
-
-    //           // if (await canLaunch(e.url)) {
-    //           //   await launch(e.url);
-    //           // } else {
-    //           //   throw 'Could not launch ${e.url}';
-    //           // }
-    //         },
-    //         // leading: e.image,
-    //         title: Text(
-    //           promptsList[index].title,
-    //           style: TextStyle(fontSize: 20),
-    //         ),
-    // );
-
-    return Container(
-      height: MediaQuery.of(context).size.height,
-      width: MediaQuery.of(context).size.width,
-      child: Padding(
-        padding: const EdgeInsets.only(top:35, left: 35, right: 35),
-        child: Column(
-          children: [
-          Expanded(child: 
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-              Expanded(
-                child: Container(
-                  color: Colors.lightBlue,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => PromptScreen(prompt: promptsList[index])));
-                          },
-                          child: Text(
-                            promptsList[index].title,
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                            ),),
-                        ),
-                  ],),
-                )
-              ),
-              Expanded(
-                child: Container(
-                  color: Colors.grey,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text(promptsList[index].body,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w100,
-                        color: Colors.black,
-                      ),)
-                  ],),
-                )
-              ),
-     
-        ]),
-          )]
-      )));
   }
 }

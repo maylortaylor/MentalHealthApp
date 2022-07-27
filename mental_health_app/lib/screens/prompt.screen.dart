@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../main.dart';
+import '../main_2.dart';
 import '../models/prompts.model.dart';
 import '../widgets/colored_card.dart';
+
 class Constants {
   static const String Subscribe = 'Go Home Page';
   static const String Settings = 'Go Another Page';
@@ -86,7 +87,7 @@ class PromptScreen extends StatelessWidget {
                 borderRadius: 7,
                 padding: 7,
                 backgroundColor: Colors.black,
-                title: Text(
+                title: const Text(
                   "Header Text",
                   style: TextStyle(
                       color: Colors.white,
@@ -95,7 +96,7 @@ class PromptScreen extends StatelessWidget {
                       fontFamily: "Poppins"),
                 ),
                 leading: IconButton(
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.refresh,
                     color: Colors.white,
                   ),
