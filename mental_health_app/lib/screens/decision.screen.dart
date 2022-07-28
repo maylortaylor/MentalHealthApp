@@ -105,6 +105,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                     );
                   },
                   "Angry",
+                  Colors.red
                 ),
                 buildCardWithIcon(
                   Icons.supervisor_account,
@@ -115,6 +116,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                     }));
                   },
                   "Anxious",
+                  Colors.green
                 ),
                 buildCardWithIcon(
                   Icons.widgets,
@@ -125,6 +127,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                     }));
                   },
                   "Depressed",
+                  Colors.blueGrey
                 ),
                 buildCardWithIcon(
                   Icons.security,
@@ -135,22 +138,40 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                     }));
                   },
                   "Guilty",
+                  Colors.yellow
                 )
               ],
                      ),
            ),
+           Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+               RichText(
+                text: const TextSpan(
+                  text: 'Get the ',
+                  style: TextStyle(fontSize: 42),
+                  children:  [
+                    TextSpan(text: 'my4blocks ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42)),
+                    TextSpan(text: 'masterclass', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 42)),
+                  ],
+                ),
+              )
+            ]),
+           )
          ],
       ),
     );    
   }
 
   Padding buildCardWithIcon(
-      IconData icon, context, VoidCallback onTap, String pageName) {
+      IconData icon, context, VoidCallback onTap, String pageName, Color color) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
         onTap: onTap,
         child: Card(
+          color: color,
           elevation: 8,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -162,7 +183,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                 Icon(
                   icon,
                   size: 70,
-                  color: Colors.blue,
+                  color: Colors.white,
                 ),
                 const SizedBox(
                   height: 10,
@@ -171,7 +192,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   pageName,
                   style: const TextStyle(
                     fontSize: 18,
-                    color: Colors.blue,
+                    color: Colors.white,
                   ),
                   softWrap: true,
                   overflow: TextOverflow.clip,

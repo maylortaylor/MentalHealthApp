@@ -121,9 +121,6 @@ class _MyHomePageState extends State<MyHomePage> {
     if (!initialized) return Container();
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Mental Health App'),
-      ),
       body: DecisionScreen()
     );
   }
