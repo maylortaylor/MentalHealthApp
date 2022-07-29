@@ -95,17 +95,18 @@ class PromptScreen extends StatelessWidget {
                       fontSize: 16,
                       fontFamily: "Poppins"),
                 ),
-                leading: IconButton(
-                  icon: const Icon(
-                    Icons.refresh,
-                    color: Colors.white,
-                  ),
-                  onPressed: () {
-                    Scaffold.of(context).showSnackBar(SnackBar(
-                      content: Text('Hello!'),
-                    ));
-                  },
-                ),
+                leading: Text('Step #${prompt.step}'),
+                // leading: IconButton(
+                //   icon: const Icon(
+                //     Icons.refresh,
+                //     color: Colors.white,
+                //   ),
+                //   onPressed: () {
+                //     Scaffold.of(context).showSnackBar(SnackBar(
+                //       content: Text('Hello!'),
+                //     ));
+                //   },
+                // ),
                 action: PopupMenuButton<String>(
                   icon: Icon(Icons.menu),
                   // onSelected: choiceAction,

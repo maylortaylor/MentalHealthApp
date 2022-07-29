@@ -147,16 +147,52 @@ class _DecisionScreenState extends  State<DecisionScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-               RichText(
-                text: const TextSpan(
-                  text: 'Get the ',
-                  style: TextStyle(fontSize: 42),
-                  children:  [
-                    TextSpan(text: 'my4blocks ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42)),
-                    TextSpan(text: 'masterclass', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 42)),
-                  ],
+               Expanded(
+                 child: Container(
+                  color: Colors.lightGreen,
+                   child: RichText(
+                    textAlign: TextAlign.center,
+                    text: const TextSpan(
+                      text: 'Get the ',
+                      style: TextStyle(fontSize: 18),
+                      children:  [
+                        TextSpan(text: 'my4blocks ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                        TextSpan(text: 'masterclass', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 18)),
+                      ],
+                    ),
+                               ),
+                 ),
+               ),
+              Expanded(
+                  child: Container(
+                    color: Colors.white,
+                    child: RichText(
+                    textAlign: TextAlign.center,
+                    text: const TextSpan(
+                      text: 'The Ultimate ',
+                      style: TextStyle(fontSize: 18),
+                      children:  [
+                        TextSpan(text: 'Mental Health Nutitrion Guide ', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 18)),
+                      ],
+                    ),
+                                ),
+                  ),
                 ),
-              )
+                Expanded(
+                  child: Container(
+                    color: Colors.lime,
+                    child: RichText(
+                    textAlign: TextAlign.center,
+                    text: const TextSpan(
+                      text: 'Try ',
+                      style: TextStyle(fontSize: 18),
+                      children:  [
+                        TextSpan(text: 'Personalized Coaching ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                      ],
+                    ),
+                                ),
+                  ),
+                )
             ]),
            )
          ],
