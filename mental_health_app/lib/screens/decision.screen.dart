@@ -11,7 +11,7 @@ import '../screens/prompt.screen.dart';
 class Constants {
   static const String Angry = 'Angry';
   static const String Anxious = 'Anxious';
-  static const String Depressed = 'Depressed';
+  static const String Depressed = 'Depression';
   static const String Guilty = 'Guilty';
 
   static const List<String> choices = <String>[Angry, Anxious, Depressed, Guilty];
@@ -66,6 +66,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
     final double itemWidth = size.width / 4;
 
     return Scaffold(
+      backgroundColor: const Color.fromRGBO(247,247,248,1),
       body:Column(
         children: [
           Container(
@@ -92,7 +93,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               crossAxisCount: 2,
               children: <Widget>[
                 buildCardWithIcon(
-                  Icons.air_sharp,
+                  null,
                   context,
                   () {
                     Navigator.push(
@@ -105,10 +106,10 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                     );
                   },
                   "Angry",
-                  Colors.red
+                const Color.fromRGBO(210,71,42,1)
                 ),
                 buildCardWithIcon(
-                  Icons.supervisor_account,
+                  null,
                   context,
                   () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -116,10 +117,10 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                     }));
                   },
                   "Anxious",
-                  Colors.green
+                const Color.fromRGBO(51,117,90,1)
                 ),
                 buildCardWithIcon(
-                  Icons.widgets,
+                  null,
                   context,
                   () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -127,10 +128,10 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                     }));
                   },
                   "Depressed",
-                  Colors.blueGrey
+                  const Color.fromRGBO(42,86,105,1)
                 ),
                 buildCardWithIcon(
-                  Icons.security,
+                  null,
                   context,
                   () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
@@ -138,7 +139,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                     }));
                   },
                   "Guilty",
-                  Colors.yellow
+                  const Color.fromRGBO(212,171,113,1)
                 )
               ],
                      ),
@@ -149,7 +150,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               children: [
                Expanded(
                  child: Container(
-                  color: Colors.lightGreen,
+                  color: const Color.fromRGBO(162,201,186,1),
                    child: RichText(
                     textAlign: TextAlign.center,
                     text: const TextSpan(
@@ -165,7 +166,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                ),
               Expanded(
                   child: Container(
-                    color: Colors.white,
+                    color: const Color.fromRGBO(95,176,144,1),
                     child: RichText(
                     textAlign: TextAlign.center,
                     text: const TextSpan(
@@ -180,7 +181,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                 ),
                 Expanded(
                   child: Container(
-                    color: Colors.lime,
+                    color: const Color.fromRGBO(51,117,90,1),
                     child: RichText(
                     textAlign: TextAlign.center,
                     text: const TextSpan(
@@ -201,7 +202,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
   }
 
   Padding buildCardWithIcon(
-      IconData icon, context, VoidCallback onTap, String pageName, Color color) {
+      IconData? icon, context, VoidCallback onTap, String pageName, Color color) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: InkWell(
@@ -216,11 +217,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                Icon(
-                  icon,
-                  size: 70,
-                  color: Colors.white,
-                ),
+                icon != null ? showIcon(icon) : Container(),
                 const SizedBox(
                   height: 10,
                 ),
@@ -239,6 +236,14 @@ class _DecisionScreenState extends  State<DecisionScreen> {
           ),
         ),
       ),
+    );
+  }
+
+  showIcon(IconData? icon) {
+    return Icon(
+      icon,
+      size: 70,
+      color: Colors.white,
     );
   }
 }
