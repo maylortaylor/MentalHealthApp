@@ -4,7 +4,7 @@
   "description": "Goole Firebase csv upload app",
   "main": "index.js",
   "scripts": {
-    "fb-upload": "node ./firebase-csv-upload/index.js ./csvs/test.csv",
+    "fb-upload": "node ./firebase-csv-upload/index.js ./csvs/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "maylortaylor@gmail.com",

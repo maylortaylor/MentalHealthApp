@@ -5,6 +5,14 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "node",
+            "name": "FB Upload CSV",
+            "request": "launch",
+            "cwd": "${workspaceRoot}/csv-upload-app/",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["run-script", "fb-upload"],
+        },
+        {
             "name": "Web (chrome)",
             "cwd": "mental_health_app",
             "request": "launch",

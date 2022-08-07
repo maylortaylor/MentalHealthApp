@@ -1,5 +1,6 @@
-const COLLECTION_NAME = `prompts`
+const COLLECTION_NAME = `prompts2`
 const { readFile }  = require(`fs`).promises;
+const fs = require('fs');
 const { parse } = require(`csv-parse/sync`);
 const generateAutoId = require(`firebase-auto-ids`)
 let firebaseAdmin = require(`firebase-admin`);
@@ -9,7 +10,7 @@ let DATABASE_URL = `https://mentalhealthapp-8462e-default-rtdb.firebaseio.com`;
 
 // Check run command has CSV file location 
 if (process.argv.length < 3) {
-    console.error(`Please include a path to a csv file`);
+    console.error(`Please include a path to a csv files`);
     process.exit(1);
 }
 
@@ -26,36 +27,55 @@ function id () {
   return generateAutoId(new Date().getTime())
 }
 
-async function writeToDatabase(records) {
+const writeToDatabase = async (collectionName, records) => {
   // clean/shape data for storage
   records.forEach(record => {
     record.id = id();
     record.dateCreated = new Date().toISOString();
   });
 
-  const promptsRef = database.ref(COLLECTION_NAME);
+  const promptsRef = database.ref(collectionName);
   promptsRef.set(records, function(r) {
-    console.log(`Wrote ${records.length} records`);
     process.exit()
   });
+  console.log(`${collectionName} - Wrote ${records.length} records`);
 }
 
-async function importCsv(csvFileName) {
-  const fileContents = await readFile(csvFileName, `utf8`);
-  const records = parse(fileContents, {
-    columns: true,
-    skip_empty_lines: true,
-    ltrim: true,
-    rtrim: true
-  });
+const importCsv = async (csvsFolders) => {
+  var files = fs.readdirSync(csvsFolders);
+  for (const csvfile of files) {
+    let fileContents = await readFile(csvsFolders + csvfile, `utf8`);
+    const records = parse(fileContents, {
+      columns: true,
+      skip_empty_lines: true,
+      ltrim: true,
+      rtrim: true
+    });
 
-  try {
-    writeToDatabase(records);
-  }
-  catch (e) {
-    console.error(e);
+    // remove empty keys from object
+    records.forEach(element => {
+      clean(element)
+    });
+    
+    try {
+      let filename = csvfile.substring(0, csvfile.lastIndexOf('.'));
+      await writeToDatabase(filename, records);
+    }
+    catch (e) {
+      console.error(e);
+    }
   }
 }
+
+const clean = async (obj) => {
+  for (var propName in obj) {
+    if (obj[propName] === '' || obj[propName] === null || obj[propName] === undefined) {
+      delete obj[propName];
+    }
+  }
+  return obj
+}
+
   
 importCsv(process.argv[2])
   .catch(e => console.error(e));
