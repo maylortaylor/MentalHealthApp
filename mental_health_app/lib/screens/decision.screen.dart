@@ -26,23 +26,23 @@ class DecisionScreen extends StatefulWidget {
 }
 
 class _DecisionScreenState extends  State<DecisionScreen> {
-  List<Prompt> promptsList = [];
+  // List<Prompt> promptsList = [];
   var rng = Random();
 
-  getPrompts() async {
-    List<Prompt> tempList = [];
-    _promptsRef.onValue.listen((DatabaseEvent event) {
-        var map = event.snapshot.value as List<dynamic>;
-        for (var element in map) {
-          final prompt = Prompt.fromJson(element);
-          tempList.add(prompt);
-          print('Prompt added: ${prompt.title}');
-        }
-        setState(() {
-          promptsList = tempList;
-        });
-      });
-  }
+  // getPrompts() async {
+  //   List<Prompt> tempList = [];
+  //   _promptsRef.onValue.listen((DatabaseEvent event) {
+  //       var map = event.snapshot.value as List<dynamic>;
+  //       for (var element in map) {
+  //         final prompt = Prompt.fromJson(element);
+  //         tempList.add(prompt);
+  //         print('Prompt added: ${prompt.title}');
+  //       }
+  //       setState(() {
+  //         promptsList = tempList;
+  //       });
+  //     });
+  // }
 
   @override
   void initState() {
@@ -53,7 +53,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
   Future<void> init() async {
     final database = FirebaseDatabase.instance;
     _promptsRef = database.ref('prompts');
-    getPrompts();
+    // getPrompts();
 
     database.setLoggingEnabled(false);
   }
@@ -100,7 +100,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return PromptScreen(prompt: promptsList[rng.nextInt(promptsList.length)]);
+                          return PromptScreen(category: "Anger");
                         },
                       ),
                     );
@@ -113,7 +113,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   context,
                   () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return PromptScreen(prompt: promptsList[rng.nextInt(promptsList.length)]);
+                      return PromptScreen(category: "Anxious");
                     }));
                   },
                   "Anxious",
@@ -124,7 +124,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   context,
                   () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return PromptScreen(prompt: promptsList[rng.nextInt(promptsList.length)]);
+                      return PromptScreen(category: "Depressed");
                     }));
                   },
                   "Depressed",
@@ -135,7 +135,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   context,
                   () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return PromptScreen(prompt: promptsList[rng.nextInt(promptsList.length)]);
+                      return PromptScreen(category: "Guilty");
                     }));
                   },
                   "Guilty",
@@ -217,7 +217,6 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                icon != null ? showIcon(icon) : Container(),
                 const SizedBox(
                   height: 10,
                 ),
@@ -236,14 +235,6 @@ class _DecisionScreenState extends  State<DecisionScreen> {
           ),
         ),
       ),
-    );
-  }
-
-  showIcon(IconData? icon) {
-    return Icon(
-      icon,
-      size: 70,
-      color: Colors.white,
     );
   }
 }

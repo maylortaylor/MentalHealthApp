@@ -53,13 +53,13 @@ const importCsv = async (csvsFolders) => {
     });
 
     // remove empty keys from object
-    records.forEach(element => {
-      clean(element)
-    });
+    let cleanedRecords = records.map(item => {
+      return clean(item)
+    })
     
     try {
       let filename = csvfile.substring(0, csvfile.lastIndexOf('.'));
-      await writeToDatabase(filename, records);
+      await writeToDatabase(filename, cleanedRecords);
     }
     catch (e) {
       console.error(e);
@@ -67,15 +67,40 @@ const importCsv = async (csvsFolders) => {
   }
 }
 
-const clean = async (obj) => {
+function clean(obj) {
   for (var propName in obj) {
     if (obj[propName] === '' || obj[propName] === null || obj[propName] === undefined) {
       delete obj[propName];
     }
   }
-  return obj
+  let newObj = toCamel(obj);
+  return newObj;
 }
 
+function toCamel(o) {
+  var newO, origKey, newKey, value
+  if (o instanceof Array) {
+    return o.map(function(value) {
+        if (typeof value === "object") {
+          value = toCamel(value)
+        }
+        return value
+    })
+  } else {
+    newO = {}
+    for (origKey in o) {
+      if (o.hasOwnProperty(origKey)) {
+        newKey = (origKey.charAt(0).toLowerCase() + origKey.slice(1) || origKey).toString()
+        value = o[origKey]
+        if (value instanceof Array || (value !== null && value.constructor === Object)) {
+          value = toCamel(value)
+        }
+        newO[newKey] = value
+      }
+    }
+  }
+  return newO
+}
   
 importCsv(process.argv[2])
   .catch(e => console.error(e));

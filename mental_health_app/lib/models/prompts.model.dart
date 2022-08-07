@@ -5,7 +5,7 @@ class Prompt {
   static const String columnTitle = "title";
   static const String columnBody = "body";
   static const String columnStep = "step";
-  static const String columnUrl = "url";
+  static const String columnVideoUrl = "videoUrl";
   static const String columnDateCreated = "dateCreated";
 
   Prompt({
@@ -13,14 +13,14 @@ class Prompt {
     required this.body,
     required this.dateCreated,
     required this.step,
-    this.url,
+    this.videoUrl,
     this.photoUrl,
   });
 
   final String title;
-  final String body;
+  final String? body;
   final String step;
-  final String? url;
+  final String? videoUrl;
   final String? photoUrl;
   final String dateCreated;
 
@@ -29,7 +29,7 @@ class Prompt {
       columnTitle: title,
       columnDateCreated: dateCreated,
       columnBody: body,
-      columnUrl: url,
+      columnVideoUrl: videoUrl,
     };
 
     return map;
@@ -40,7 +40,7 @@ class Prompt {
         title: map[columnTitle] ?? "",
         body: map[columnBody] ?? "",
         dateCreated: map[columnDateCreated],
-        url: map[columnUrl] ?? "",
+        videoUrl: map[columnVideoUrl] ?? "",
         step: map[columnStep] ?? "");
   }
 }

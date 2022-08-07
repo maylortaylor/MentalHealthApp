@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 import '../main_2.dart';
 import '../models/prompts.model.dart';
@@ -40,22 +41,62 @@ class Constants {
 //     }
 //   }
 // }
-class PromptScreen extends StatelessWidget {
-  const PromptScreen({super.key, required this.prompt});
-  final Prompt prompt;
+
+late DatabaseReference _promptsRef;
+
+class PromptScreen extends StatefulWidget {
+  // const PromptScreen({Key? key}) : super(key: key);
+  const PromptScreen({super.key, required this.category});
+  final String category;
+
+  @override
+  _PromptScreenState createState() => _PromptScreenState();
+}
+
+class _PromptScreenState extends State<PromptScreen> {
+  List<Prompt> promptsList = [];
   
+  getPrompts() async {
+    List<Prompt> tempList = [];
+    _promptsRef.onValue.listen((DatabaseEvent event) {
+        var map = event.snapshot.value as List<dynamic>;
+        for (var element in map) {
+          final prompt = Prompt.fromJson(element);
+          tempList.add(prompt);
+          print('Prompt added: ${prompt.title}');
+        }
+        setState(() {
+          promptsList = tempList;
+        });
+      });
+  }
+  
+  Future<void> init() async {
+    final database = FirebaseDatabase.instance;
+    _promptsRef = database.ref(widget.category);
+    getPrompts();
+
+    database.setLoggingEnabled(false);
+  }
+
+  @override
+  void initState() {
+    init();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     final _scaffoldKey = GlobalKey<ScaffoldState>();
     return Scaffold(
       appBar: AppBar(
-        title: Text(prompt.body),
+        title: Text("TITLE"),
       ),
       body: ListView(
         children: [
           ColoredCard(
             key: _scaffoldKey,
-            bodyContent: Text(prompt.body),
+            bodyContent: Text("BODY"),
             headerColor: Color(0xFF6078dc),
             footerColor: Color(0xFF6078dc),
             cardHeight: 250,
@@ -95,7 +136,7 @@ class PromptScreen extends StatelessWidget {
                       fontSize: 16,
                       fontFamily: "Poppins"),
                 ),
-                leading: Text('Step #${prompt.step}'),
+                leading: Text('Step # XX'),
                 // leading: IconButton(
                 //   icon: const Icon(
                 //     Icons.refresh,

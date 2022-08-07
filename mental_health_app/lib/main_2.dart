@@ -194,7 +194,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: [
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(builder: (context) => PromptScreen(prompt: promptsList[index])));
+                            // Navigator.of(context).push(MaterialPageRoute(builder: (context) => PromptScreen(prompt: promptsList[index])));
                           },
                           child: Text(
                             promptsList[index].title,
@@ -215,7 +215,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(promptsList[index].body,
+                      Text(promptsList[index].body!,
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w100,
