@@ -1,4 +1,4 @@
-const COLLECTION_NAME = `prompts2`
+const COLLECTION_NAME = `prompts`
 const { readFile }  = require(`fs`).promises;
 const fs = require('fs');
 const { parse } = require(`csv-parse/sync`);
@@ -32,12 +32,17 @@ const writeToDatabase = async (collectionName, records) => {
   records.forEach(record => {
     record.id = id();
     record.dateCreated = new Date().toISOString();
+    record.category = collectionName;
+    firebaseAdmin.firestore().collection(COLLECTION_NAME).doc(record.id).set(record).then(writeResult => {
+      // Send back a message that we've succesfully written the message
+      console.log(`${record.category} - Wrote ${record.id}`);
+    });
   });
 
-  const promptsRef = database.ref(collectionName);
-  promptsRef.set(records, function(r) {
-    process.exit()
-  });
+  // const promptsRef = database.ref(collectionName);
+  // promptsRef.set(records, function(r) {
+  //   process.exit()
+  // });
   console.log(`${collectionName} - Wrote ${records.length} records`);
 }
 
