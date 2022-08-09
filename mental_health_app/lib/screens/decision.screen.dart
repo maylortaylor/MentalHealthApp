@@ -113,7 +113,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   context,
                   () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return PromptScreen(category: "Anxious");
+                      return PromptScreen(category: "Anxiety");
                     }));
                   },
                   "Anxious",
@@ -124,7 +124,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   context,
                   () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return PromptScreen(category: "Depressed");
+                      return PromptScreen(category: "Depression");
                     }));
                   },
                   "Depressed",

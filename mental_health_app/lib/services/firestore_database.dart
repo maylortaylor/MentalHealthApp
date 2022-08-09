@@ -45,7 +45,13 @@ class FirestoreDatabase {
       );
 
   //Method to retrieve all prompts item from the same user based on uid
-  Stream<List<Prompt>> promptsStream() => _firestoreService.collectionStream(
+  // Stream<List<Prompt>> promptsStream() => _firestoreService.collectionStream(
+  //       path: FirestorePath.prompts(),
+  //       builder: (data, documentId) => Prompt.fromMap(data, documentId),
+  //     );
+
+      Stream<List<Prompt>> promptsCategoryStream({required String category}) => _firestoreService.collectionCategoryStream(
+        category: category,
         path: FirestorePath.prompts(),
         builder: (data, documentId) => Prompt.fromMap(data, documentId),
       );

@@ -21,12 +21,12 @@ class Prompt {
 
   static Prompt fromMap(Map<String, dynamic> data, String documentId) {
     String id = data['id'];
-    String title = data['title'];
-    String body = data['body'];
     String dateCreated = data['dateCreated'];
     String step = data['step'];
-    String videoUrl = data['videoUrl'];
-    String photoUrl = data['photoUrl'];
+    String title = data['title'] ?? '';
+    String body = data['body'] ?? '';
+    String videoUrl = data['videoUrl'] ?? '';
+    String photoUrl = data['photoUrl'] ?? '';
 
     return  Prompt(
       id: documentId, 
