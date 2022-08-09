@@ -4,7 +4,7 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import '../main_2.dart';
-import '../models/prompts.model.dart';
+import '../models/prompts_model.dart';
 import '../widgets/colored_card.dart';
 import '../screens/prompt.screen.dart';
 
@@ -19,7 +19,7 @@ class Constants {
   late DatabaseReference _promptsRef;
 
 class DecisionScreen extends StatefulWidget {
-  const DecisionScreen({Key? key}) : super(key: key);
+  // const DecisionScreen({Key? key}) : super(key: key);
 
   @override
   _DecisionScreenState createState() => _DecisionScreenState();

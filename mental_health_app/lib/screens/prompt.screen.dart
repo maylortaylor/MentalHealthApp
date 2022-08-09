@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 
 import '../main_2.dart';
-import '../models/prompts.model.dart';
+import '../models/prompts_model.dart';
 import '../widgets/colored_card.dart';
 
 class Constants {
@@ -61,9 +61,9 @@ class _PromptScreenState extends State<PromptScreen> {
     _promptsRef.onValue.listen((DatabaseEvent event) {
         var map = event.snapshot.value as List<dynamic>;
         for (var element in map) {
-          final prompt = Prompt.fromJson(element);
-          tempList.add(prompt);
-          print('Prompt added: ${prompt.title}');
+          // final prompt = Prompt.fromMap(element);
+          // tempList.add(prompt);
+          // print('Prompt added: ${prompt.title}');
         }
         setState(() {
           promptsList = tempList;

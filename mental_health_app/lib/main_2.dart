@@ -11,7 +11,7 @@ import 'package:flutter/material.dart';
 import 'screens/prompt.screen.dart';
 
 import 'firebase_options.dart';
-import 'models/prompts.model.dart';
+import 'models/prompts_model.dart';
 
 // Change to false to use live database instance.
 const USE_DATABASE_EMULATOR = false;
@@ -105,9 +105,9 @@ class _MyHomePageState extends State<MyHomePage> {
     _promptsRef.onValue.listen((DatabaseEvent event) {
         var map = event.snapshot.value as List<dynamic>;
         for (var element in map) {
-          final prompt = Prompt.fromJson(element);
-          tempList.add(prompt);
-          print('Prompt added: ${prompt.title}');
+          // final prompt = Prompt.fromJson(element);
+          // tempList.add(prompt);
+          // print('Prompt added: ${prompt.title}');
         }
         setState(() {
           promptsList = tempList;
