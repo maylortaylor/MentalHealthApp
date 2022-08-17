@@ -41,6 +41,7 @@ dependencies:
   cloud_firestore: ^3.4.3
   card_swiper: ^2.0.4
   flutter_platform_widgets: ^2.0.0
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:

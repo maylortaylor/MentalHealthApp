@@ -25,7 +25,8 @@ class _SplashScreenState extends State<SplashScreen> {
       children: <Widget>[
         Center(
             child: Text(
-          AppLocalizations.of(context).translate("splashTitle"),
+              "APP NAME HERE",
+          // AppLocalizations.of(context).translate("splashTitle"),
           style: TextStyle(
             fontSize: Theme.of(context).textTheme.headlineLarge!.fontSize,
           ),

@@ -8,9 +8,9 @@ import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/providers/language_provider.dart';
 import 'package:mental_health_app/providers/theme_provider.dart';
 import 'package:mental_health_app/routes.dart';
+import 'package:mental_health_app/screens/decision.screen.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:mental_health_app/ui/auth/sign_in_screen.dart';
-import 'package:mental_health_app/ui/home/home.dart';
 import 'package:provider/provider.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -78,7 +78,9 @@ class MyApp extends StatelessWidget {
                       if (userSnapshot.connectionState ==
                           ConnectionState.active) {
                         return userSnapshot.hasData
-                            ? HomeScreen()
+                            // "splash screen"
+                            // ? HomeScreen()
+                            ? DecisionScreen()
                             : SignInScreen();
                       }
 

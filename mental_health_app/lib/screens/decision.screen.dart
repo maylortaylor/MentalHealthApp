@@ -3,9 +3,6 @@ import 'dart:math';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
-import '../main_2.dart';
-import '../models/prompts_model.dart';
-import '../widgets/colored_card.dart';
 import '../screens/prompt.screen.dart';
 
 class Constants {
@@ -19,30 +16,12 @@ class Constants {
   late DatabaseReference _promptsRef;
 
 class DecisionScreen extends StatefulWidget {
-  // const DecisionScreen({Key? key}) : super(key: key);
-
   @override
   _DecisionScreenState createState() => _DecisionScreenState();
 }
 
 class _DecisionScreenState extends  State<DecisionScreen> {
-  // List<Prompt> promptsList = [];
   var rng = Random();
-
-  // getPrompts() async {
-  //   List<Prompt> tempList = [];
-  //   _promptsRef.onValue.listen((DatabaseEvent event) {
-  //       var map = event.snapshot.value as List<dynamic>;
-  //       for (var element in map) {
-  //         final prompt = Prompt.fromJson(element);
-  //         tempList.add(prompt);
-  //         print('Prompt added: ${prompt.title}');
-  //       }
-  //       setState(() {
-  //         promptsList = tempList;
-  //       });
-  //     });
-  // }
 
   @override
   void initState() {
@@ -53,8 +32,6 @@ class _DecisionScreenState extends  State<DecisionScreen> {
   Future<void> init() async {
     final database = FirebaseDatabase.instance;
     _promptsRef = database.ref('prompts');
-    // getPrompts();
-
     database.setLoggingEnabled(false);
   }
 

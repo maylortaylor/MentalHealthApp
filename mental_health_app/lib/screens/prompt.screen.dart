@@ -1,12 +1,14 @@
+import 'dart:developer';
+
+import 'package:auto_size_text/auto_size_text.dart';
+import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:provider/provider.dart';
 import 'package:mental_health_app/models/prompts_model.dart';
 
-import '../main_2.dart';
 import '../models/prompts_model.dart';
-import '../widgets/colored_card.dart';
 
 class Constants {
   static const String Subscribe = 'Go Home Page';
@@ -15,38 +17,10 @@ class Constants {
 
   static const List<String> choices = <String>[Subscribe, Settings, SignOut];
 }
-//   void choiceAction(String choice) {
-//     if (choice == Constants.Settings) {
-//       _scaffoldKey.currentState.showSnackBar(SnackBar(
-//         content: Text(
-//           Constants.Settings,
-//           style: TextStyle(color: Colors.black),
-//         ),
-//         backgroundColor: Colors.white,
-//       ));
-//     } else if (choice == Constants.Subscribe) {
-//       _scaffoldKey.currentState.showSnackBar(SnackBar(
-//         content: Text(
-//           Constants.Subscribe,
-//           style: TextStyle(color: Colors.black),
-//         ),
-//         backgroundColor: Colors.white,
-//       ));
-//     } else if (choice == Constants.SignOut) {
-//       _scaffoldKey.currentState.showSnackBar(SnackBar(
-//         duration: Duration(milliseconds: 200),
-//         content: Text(
-//           Constants.SignOut,
-//           style: TextStyle(color: Colors.black),
-//         ),
-//         backgroundColor: Colors.white,
-//       ));
-//     }
-//   }
-// }
 
 late DatabaseReference _promptsRef;
-
+late SwiperController _swiperController;
+List<Prompt> promptsList = [];
 class PromptScreen extends StatefulWidget {
   // const PromptScreen({Key? key}) : super(key: key);
   const PromptScreen({super.key, required this.category});
@@ -57,28 +31,11 @@ class PromptScreen extends StatefulWidget {
 }
 
 class _PromptScreenState extends State<PromptScreen> {
-  List<Prompt> promptsList = [];
-  
-  // getPrompts() async {
-  //   List<Prompt> tempList = [];
-  //   _promptsRef.onValue.listen((DatabaseEvent event) {
-  //       var map = event.snapshot.value as List<dynamic>;
-  //       for (var element in map) {
-  //         // final prompt = Prompt.fromMap(element);
-  //         // tempList.add(prompt);
-  //         // print('Prompt added: ${prompt.title}');
-  //       }
-  //       setState(() {
-  //         promptsList = tempList;
-  //       });
-  //     });
-  // }
-  
+  late int _currentIndex;
   Future<void> init() async {
+    _currentIndex = 0;
+    _swiperController = new SwiperController();
     final database = FirebaseDatabase.instance;
-    // _promptsRef = database.ref(widget.category);
-    // getPrompts();
-
     database.setLoggingEnabled(false);
   }
 
@@ -98,109 +55,73 @@ class _PromptScreenState extends State<PromptScreen> {
       appBar: AppBar(
         title: Text(widget.category),
       ),
-      body: _buildBodySection(context, widget.category)
-      // body: ListView(
-      //   children: [
-      //     ColoredCard(
-      //       key: _scaffoldKey,
-      //       bodyContent: Text("BODY"),
-      //       headerColor: Color(0xFF6078dc),
-      //       footerColor: Color(0xFF6078dc),
-      //       cardHeight: 250,
-      //       elevation: 4,
-      //       bodyColor: Color(0xFF6c8df6),
-      //       showFooter: true,
-      //       showHeader: true,
-      //       bodyGradient: LinearGradient(
-      //         colors: [
-      //           Color(0xFF55affd).withOpacity(1),
-      //           Color(0xFF6b8df8),
-      //           Color(0xFF887ef1),
-      //         ],
-      //         begin: Alignment.bottomLeft,
-      //         end: Alignment.topRight,
-      //         stops: [0, 0.2, 1],
-      //       ),
-      //       headerBar: HeaderBar(
-      //           gradient:  LinearGradient(
-      //         colors: [
-      //           Color(0xFF55affd).withOpacity(1),
-      //           Color(0xFF6b8df8),
-      //           Color(0xFF887ef1),
-      //         ],
-      //         begin: Alignment.bottomLeft,
-      //         end: Alignment.topRight,
-      //         stops: [0, 0.2, 1],
-      //       ),
-      //           borderRadius: 7,
-      //           padding: 7,
-      //           backgroundColor: Colors.black,
-      //           title: const Text(
-      //             "Header Text",
-      //             style: TextStyle(
-      //                 color: Colors.white,
-      //                 fontWeight: FontWeight.bold,
-      //                 fontSize: 16,
-      //                 fontFamily: "Poppins"),
-      //           ),
-      //           leading: Text('Step # XX'),
-      //           // leading: IconButton(
-      //           //   icon: const Icon(
-      //           //     Icons.refresh,
-      //           //     color: Colors.white,
-      //           //   ),
-      //           //   onPressed: () {
-      //           //     Scaffold.of(context).showSnackBar(SnackBar(
-      //           //       content: Text('Hello!'),
-      //           //     ));
-      //           //   },
-      //           // ),
-      //           action: PopupMenuButton<String>(
-      //             icon: Icon(Icons.menu),
-      //             // onSelected: choiceAction,
-      //             itemBuilder: (BuildContext context) {
-      //               return Constants.choices.map((String choice) {
-      //                 return PopupMenuItem<String>(
-      //                   value: choice,
-      //                   child: Text(choice),
-      //                 );
-      //               }).toList();
-      //             },
-      //           )),
-      //           footerBar: FooterBar(
-      //                     title: Text('footer title'),
-      //                     action: Text('action'),
-      //                     centerMiddle: true,
-      //                     backgroundColor: Colors.deepPurple,
-      //                     leading: Text('leading'),
-      //                     borderRadius: 7,
-      //                     padding: 7, 
-      //                     gradient: LinearGradient(
-      //                       colors: [
-      //                         Color(0xFF55affd).withOpacity(1),
-      //                         Color(0xFF6b8df8),
-      //                         Color(0xFF887ef1),
-      //                       ],
-      //                       begin: Alignment.bottomLeft,
-      //                       end: Alignment.topRight,
-      //                       stops: [0, 0.2, 1],
-      //                     ),
-      //                   ),
-      //                   bottomContent: Text('bottom content'),),
-      //     Center(
-      //     child: ElevatedButton(
-      //       onPressed: () {
-      //         Navigator.of(context).push(MaterialPageRoute(builder: (context) => const MyHomePage()));
-      //       },
-      //       child: const Text('Go back!'),
-      //     ),
-      //   )],
-      // ),
+      body: Column(
+        children:[
+          Row(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  'How to manage ${widget.category.toUpperCase()}', 
+                  style: const TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold, fontSize: 18),
+                ),
+              ),
+            ],
+          ),
+          Flexible(
+            child: Row(
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.15,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: (){
+                          _previousCard();
+                        }, 
+                        icon: Icon(Icons.arrow_back)
+                      ),
+                      Container(
+                        child: Text("Back")
+                      )
+                  ]),
+                ),
+                Container(
+                  child: _buildBodySection(context, widget.category),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.15,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: (){
+                          _nextCard();
+                        }, 
+                        icon: Icon(Icons.arrow_forward)
+                      ),
+                      Container(
+                        child: Text("Next")
+                      )
+                    ]
+                    ),)
+              ],
+            ),
+          )
+        ]
+      )
     );
   }
-}
+  
+  void _previousCard() {
+    _swiperController.previous(animation: true);
+  }
+  void _nextCard() {
+    _swiperController.next(animation: true);
+  }
 
-Widget _buildBodySection(BuildContext context, String category) {
+  Widget _buildBodySection(BuildContext context, String category) {
     final firestoreDatabase =
         Provider.of<FirestoreDatabase>(context, listen: false);
 
@@ -208,59 +129,10 @@ Widget _buildBodySection(BuildContext context, String category) {
         stream: firestoreDatabase.promptsCategoryStream(category: category),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            List<Prompt> prompts = snapshot.data as List<Prompt>;
-            if (prompts.isNotEmpty) {
-              return ListView.separated(
-                itemCount: prompts.length,
-                itemBuilder: (context, index) {
-                  return Dismissible(
-                    background: Container(
-                      color: Colors.red,
-                      child: Center(
-                          child: Text(
-                        'dissmiable',
-                        style: TextStyle(color: Theme.of(context).canvasColor),
-                      )),
-                    ),
-                    key: Key(prompts[index].id),
-                    // onDismissed: (direction) {
-                    //   firestoreDatabase.deleteTodo(prompts[index]);
+            promptsList = snapshot.data as List<Prompt>;
 
-                    //   _scaffoldKey.currentState!.showSnackBar(SnackBar(
-                    //     backgroundColor: Theme.of(context).appBarTheme.color,
-                    //     content: Text(
-                    //       AppLocalizations.of(context)
-                    //               .translate("promptsSnackBarContent") +
-                    //           prompts[index].task,
-                    //       style:
-                    //           TextStyle(color: Theme.of(context).canvasColor),
-                    //     ),
-                    //     duration: Duration(seconds: 3),
-                    //     action: SnackBarAction(
-                    //       label: AppLocalizations.of(context)
-                    //           .translate("promptsSnackBarActionLbl"),
-                    //       textColor: Theme.of(context).canvasColor,
-                    //       onPressed: () {
-                    //         firestoreDatabase.setTodo(prompts[index]);
-                    //       },
-                    //     ),
-                    //   ));
-                    // },
-                    child: ListTile(
-                      leading: Text(
-                        prompts[index].id),
-                      title: Text(prompts[index].title),
-                      onTap: () {
-                        // Navigator.of(context).pushNamed(Routes.create_edit_todo,
-                        //     arguments: todos[index]);
-                      },
-                    ),
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return Divider(height: 0.5);
-                },
-              );
+            if (promptsList.isNotEmpty) {
+             return buildSwiper();
             } else {
               //todosEmptyTopMsgDefaultTxt
               return Container(color: Colors.grey,);
@@ -272,3 +144,154 @@ Widget _buildBodySection(BuildContext context, String category) {
           return Center(child: CircularProgressIndicator());
         });
   }
+
+  Widget buildSwiper() {
+    return Expanded(
+      child: Swiper(itemCount: promptsList.length, itemBuilder: _buildItem,
+        onIndexChanged: (index) {
+          setState(() {
+            _currentIndex = index;
+            inspect(promptsList[index]);
+            log(promptsList[index].body ?? "");
+          });
+        },
+        controller: _swiperController,
+        // control: const SwiperControl(
+        //   size: 60,
+        //   padding: EdgeInsets.all(8)
+        // ),
+        index: _currentIndex,
+        loop: true,
+        scrollDirection: Axis.horizontal,
+        axisDirection: AxisDirection.left,
+        physics: NeverScrollableScrollPhysics(),
+        pagination: const SwiperPagination(
+            builder: DotSwiperPaginationBuilder(
+                size: 20.0, activeSize: 20.0, space: 10.0))),
+    );
+  }
+
+  Widget _buildItem(BuildContext context, int index) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: Card(
+        color: Colors.blueGrey,
+        elevation: 8,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          children: [
+            Flexible(
+              flex: 1,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                child: Row(
+                  children: [
+                    Flexible(
+                      flex: 1,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),
+                            child: Container(
+                                child: const Text('Step', 
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 22
+                                )
+                              )
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+                            child: Container(
+                                  child: Text('# ${promptsList[index].step}', 
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 32
+                                )
+                              )
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Flexible(
+                      flex: 6,
+                      child: Padding(
+                        padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+                        child: SizedBox(
+                          width: MediaQuery.of(context).size.width * 0.55,
+                          child: AutoSizeText(
+                            '${promptsList[index].title}', 
+                          maxLines: 2,
+                          minFontSize: 22,
+                          maxFontSize: 30,
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 32
+                            )
+                          )
+                        ),
+                      ),
+                    ),
+                    Flexible(
+                      flex: 1,
+                      child: displayPlayButton(index)
+                    )
+                  ]
+                ),
+              ),
+            ),
+            Flexible(
+              flex: 3,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                child: Row(
+                  children: [
+                    Container(
+                      child: Expanded(
+                        child: TextField(
+                          autofocus: true,
+                          keyboardType: TextInputType.multiline,
+                          maxLines: null,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(),
+                            hintText: promptsList[index].body ?? ""
+                        ),),
+                      )
+                    )
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+  
+  Widget displayPlayButton(int index) {
+    if (promptsList[index].videoUrl!.isNotEmpty) {
+      return Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
+            child: IconButton(
+              onPressed: () {
+                // Go to video url
+              }, 
+              icon: Icon(Icons.play_arrow)
+            ),
+          )
+        ],
+      );
+    }
+    return Container();    
+  }
+}
+
