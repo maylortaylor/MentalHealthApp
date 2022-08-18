@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/screens/decision.screen.dart';
+import 'package:mental_health_app/screens/video.screen.dart';
 import 'package:mental_health_app/ui/auth/register_screen.dart';
 import 'package:mental_health_app/ui/auth/sign_in_screen.dart';
 import 'package:mental_health_app/ui/setting/setting_screen.dart';
@@ -13,6 +14,7 @@ class Routes {
   static const String register = '/register';
   static const String home = '/home';
   static const String setting = '/setting';
+  static const String video = '/video';
 
   static final routes = <String, WidgetBuilder>{
     splash: (BuildContext context) => SplashScreen(),
@@ -20,5 +22,6 @@ class Routes {
     register: (BuildContext context) => RegisterScreen(),
     home: (BuildContext context) => DecisionScreen(),
     setting: (BuildContext context) => SettingScreen(),
+    // video: (BuildContext context) => VideoScreen(),
   };
 }

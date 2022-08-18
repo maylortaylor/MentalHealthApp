@@ -5,7 +5,8 @@ class AppThemes {
   AppThemes._();
 
   //constants color range for light theme
-  static const Color _lightPrimaryColor = Colors.black;
+  static const Color _lightPrimaryColor = Color.fromRGBO(15,10,51,1);
+  static const Color _lightCardColor = Color.fromRGBO(15,10,51,1);
   static const Color _lightPrimaryVariantColor = Colors.white;
   static const Color _lightSecondaryColor = Colors.green;
   static const Color _lightOnPrimaryColor = Colors.black;
@@ -38,7 +39,7 @@ class AppThemes {
 
   //constants color range for dark theme
   static const Color _darkPrimaryColor = Colors.white;
-  static const Color _darkPrimaryVariantColor = Colors.black;
+  static const Color _darkPrimaryVariantColor = Color.fromRGBO(15,10,51,1);
   static const Color _darkSecondaryColor = Colors.white;
   static const Color _darkOnPrimaryColor = Colors.white;
   static const Color _darkButtonPrimaryColor = Colors.deepPurpleAccent;
@@ -78,11 +79,14 @@ class AppThemes {
     appBarTheme: AppBarTheme(
       color: _lightAppBarColor,
       iconTheme: IconThemeData(color: _lightOnPrimaryColor),
-      textTheme: _lightTextTheme,
+      // textTheme: _lightTextTheme,
+    ),
+    cardTheme: CardTheme(
+      color: _lightCardColor
     ),
     colorScheme: ColorScheme.light(
       primary: _lightPrimaryColor,
-      primaryVariant: _lightPrimaryVariantColor,
+      // primaryVariant: _lightPrimaryVariantColor,
       secondary: _lightSecondaryColor,
       onPrimary: _lightOnPrimaryColor,
     ),

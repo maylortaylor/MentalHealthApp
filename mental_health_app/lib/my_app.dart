@@ -71,7 +71,7 @@ class MyApp extends StatelessWidget {
                   theme: AppThemes.lightTheme,
                   darkTheme: AppThemes.darkTheme,
                   themeMode: themeProviderRef.isDarkModeOn
-                      ? ThemeMode.dark
+                      ? ThemeMode.light
                       : ThemeMode.light,
                   home: Consumer<AuthProvider>(
                     builder: (_, authProviderRef, __) {

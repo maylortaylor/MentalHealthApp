@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:mental_health_app/screens/video.screen.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:provider/provider.dart';
 import 'package:mental_health_app/models/prompts_model.dart';
@@ -53,7 +54,14 @@ class _PromptScreenState extends State<PromptScreen> {
         
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Theme.of(context).cardTheme.color,
         title: Text(widget.category),
+        iconTheme: IconThemeData(
+          color: Colors.white, //change your color here
+        ),
+        titleTextStyle: TextStyle(
+          color: Colors.white
+        ),
       ),
       body: Column(
         children:[
@@ -175,7 +183,7 @@ class _PromptScreenState extends State<PromptScreen> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
-        color: Colors.blueGrey,
+        color: Theme.of(context).cardTheme.color,
         elevation: 8,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Column(
@@ -255,12 +263,26 @@ class _PromptScreenState extends State<PromptScreen> {
                     Container(
                       child: Expanded(
                         child: TextField(
-                          autofocus: true,
+                          style: TextStyle(
+                            color: Colors.white,
+                          ),
+                          cursorColor: Colors.white,
+                          autofocus: false,
                           keyboardType: TextInputType.multiline,
                           maxLines: null,
                           decoration: InputDecoration(
+                            hintText: promptsList[index].body ?? "",
+                            hintMaxLines: 40,
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white, width: 0.0),
+                            ),
+                            focusedBorder: const OutlineInputBorder(
+                              borderSide: const BorderSide(color: Colors.white, width: 0.0),
+                            ),
                             border: OutlineInputBorder(),
-                            hintText: promptsList[index].body ?? ""
+                            hintStyle: TextStyle(
+                              color: Colors.white
+                            ),
                         ),),
                       )
                     )
@@ -284,10 +306,22 @@ class _PromptScreenState extends State<PromptScreen> {
             child: IconButton(
               onPressed: () {
                 // Go to video url
+                Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return VideoScreen(videoUrl: promptsList[index].videoUrl!,);
+                        },
+                      ),
+                    );
               }, 
               icon: Icon(Icons.play_arrow)
             ),
-          )
+          ),
+          Text("Play Video",
+          style: TextStyle(
+            color: Colors.white
+          ),)
         ],
       );
     }
