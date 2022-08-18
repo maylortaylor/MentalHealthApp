@@ -2,10 +2,8 @@ import 'dart:math';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:mental_health_app/constants/app_themes.dart';
 
-import '../main_2.dart';
-import '../models/prompts.model.dart';
-import '../widgets/colored_card.dart';
 import '../screens/prompt.screen.dart';
 
 class Constants {
@@ -19,30 +17,12 @@ class Constants {
   late DatabaseReference _promptsRef;
 
 class DecisionScreen extends StatefulWidget {
-  const DecisionScreen({Key? key}) : super(key: key);
-
   @override
   _DecisionScreenState createState() => _DecisionScreenState();
 }
 
 class _DecisionScreenState extends  State<DecisionScreen> {
-  // List<Prompt> promptsList = [];
   var rng = Random();
-
-  // getPrompts() async {
-  //   List<Prompt> tempList = [];
-  //   _promptsRef.onValue.listen((DatabaseEvent event) {
-  //       var map = event.snapshot.value as List<dynamic>;
-  //       for (var element in map) {
-  //         final prompt = Prompt.fromJson(element);
-  //         tempList.add(prompt);
-  //         print('Prompt added: ${prompt.title}');
-  //       }
-  //       setState(() {
-  //         promptsList = tempList;
-  //       });
-  //     });
-  // }
 
   @override
   void initState() {
@@ -53,8 +33,6 @@ class _DecisionScreenState extends  State<DecisionScreen> {
   Future<void> init() async {
     final database = FirebaseDatabase.instance;
     _promptsRef = database.ref('prompts');
-    // getPrompts();
-
     database.setLoggingEnabled(false);
   }
 
@@ -106,29 +84,29 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                     );
                   },
                   "Angry",
-                const Color.fromRGBO(210,71,42,1)
+                AppThemes.angryColor
                 ),
                 buildCardWithIcon(
                   null,
                   context,
                   () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return PromptScreen(category: "Anxious");
+                      return PromptScreen(category: "Anxiety");
                     }));
                   },
                   "Anxious",
-                const Color.fromRGBO(51,117,90,1)
+                AppThemes.anxiousColor
                 ),
                 buildCardWithIcon(
                   null,
                   context,
                   () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return PromptScreen(category: "Depressed");
+                      return PromptScreen(category: "Depression");
                     }));
                   },
                   "Depressed",
-                  const Color.fromRGBO(42,86,105,1)
+                  AppThemes.depressedColor
                 ),
                 buildCardWithIcon(
                   null,
@@ -139,7 +117,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                     }));
                   },
                   "Guilty",
-                  const Color.fromRGBO(212,171,113,1)
+                  AppThemes.guiltyColor
                 )
               ],
                      ),
@@ -150,7 +128,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               children: [
                Expanded(
                  child: Container(
-                  color: const Color.fromRGBO(162,201,186,1),
+                  color: Theme.of(context).colorScheme.tertiary,
                    child: RichText(
                     textAlign: TextAlign.center,
                     text: const TextSpan(
@@ -166,7 +144,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                ),
               Expanded(
                   child: Container(
-                    color: const Color.fromRGBO(95,176,144,1),
+                    color: Theme.of(context).colorScheme.secondary,
                     child: RichText(
                     textAlign: TextAlign.center,
                     text: const TextSpan(
@@ -181,7 +159,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                 ),
                 Expanded(
                   child: Container(
-                    color: const Color.fromRGBO(51,117,90,1),
+                    color: Theme.of(context).colorScheme.primary,
                     child: RichText(
                     textAlign: TextAlign.center,
                     text: const TextSpan(
