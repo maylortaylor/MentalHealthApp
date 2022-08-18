@@ -4,11 +4,17 @@ import 'package:mental_health_app/constants/app_font_family.dart';
 class AppThemes {
   AppThemes._();
 
+  static final Color angryColor = const Color.fromRGBO(210,71,42,1);
+  static final Color anxiousColor = const Color.fromRGBO(51,117,90,1);
+  static final Color depressedColor = const Color.fromRGBO(42,86,105,1);
+  static final Color guiltyColor = const Color.fromRGBO(212,171,113,1);
+
   //constants color range for light theme
-  static const Color _lightPrimaryColor = Color.fromRGBO(15,10,51,1);
+  static const Color _lightPrimaryColor = const Color.fromRGBO(51,117,90,1);
   static const Color _lightCardColor = Color.fromRGBO(15,10,51,1);
   static const Color _lightPrimaryVariantColor = Colors.white;
-  static const Color _lightSecondaryColor = Colors.green;
+  static const Color _lightSecondaryColor = const Color.fromRGBO(95,176,144,1);
+  static const Color _lightTertiaryColor = const Color.fromRGBO(162,201,186,1);
   static const Color _lightOnPrimaryColor = Colors.black;
   static const Color _lightButtonPrimaryColor = Colors.orangeAccent;
   static const Color _lightAppBarColor = Colors.orangeAccent;
@@ -89,6 +95,7 @@ class AppThemes {
       // primaryVariant: _lightPrimaryVariantColor,
       secondary: _lightSecondaryColor,
       onPrimary: _lightOnPrimaryColor,
+      tertiary: _lightTertiaryColor
     ),
     snackBarTheme:
         SnackBarThemeData(backgroundColor: _lightSnackBarBackgroundErrorColor),

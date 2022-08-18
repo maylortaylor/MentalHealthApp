@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:mental_health_app/constants/app_themes.dart';
 
 import '../screens/prompt.screen.dart';
 
@@ -83,7 +84,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                     );
                   },
                   "Angry",
-                const Color.fromRGBO(210,71,42,1)
+                AppThemes.angryColor
                 ),
                 buildCardWithIcon(
                   null,
@@ -94,7 +95,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                     }));
                   },
                   "Anxious",
-                const Color.fromRGBO(51,117,90,1)
+                AppThemes.anxiousColor
                 ),
                 buildCardWithIcon(
                   null,
@@ -105,7 +106,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                     }));
                   },
                   "Depressed",
-                  const Color.fromRGBO(42,86,105,1)
+                  AppThemes.depressedColor
                 ),
                 buildCardWithIcon(
                   null,
@@ -116,7 +117,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                     }));
                   },
                   "Guilty",
-                  const Color.fromRGBO(212,171,113,1)
+                  AppThemes.guiltyColor
                 )
               ],
                      ),
@@ -127,7 +128,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               children: [
                Expanded(
                  child: Container(
-                  color: const Color.fromRGBO(162,201,186,1),
+                  color: Theme.of(context).colorScheme.tertiary,
                    child: RichText(
                     textAlign: TextAlign.center,
                     text: const TextSpan(
@@ -143,7 +144,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                ),
               Expanded(
                   child: Container(
-                    color: const Color.fromRGBO(95,176,144,1),
+                    color: Theme.of(context).colorScheme.secondary,
                     child: RichText(
                     textAlign: TextAlign.center,
                     text: const TextSpan(
@@ -158,7 +159,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                 ),
                 Expanded(
                   child: Container(
-                    color: const Color.fromRGBO(51,117,90,1),
+                    color: Theme.of(context).colorScheme.primary,
                     child: RichText(
                     textAlign: TextAlign.center,
                     text: const TextSpan(

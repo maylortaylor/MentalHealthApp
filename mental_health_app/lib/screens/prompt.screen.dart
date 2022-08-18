@@ -54,7 +54,7 @@ class _PromptScreenState extends State<PromptScreen> {
         
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).cardTheme.color,
+        backgroundColor: Theme.of(context).colorScheme.primary,
         title: Text(widget.category),
         iconTheme: IconThemeData(
           color: Colors.white, //change your color here
@@ -196,55 +196,11 @@ class _PromptScreenState extends State<PromptScreen> {
                   children: [
                     Flexible(
                       flex: 1,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),
-                            child: Container(
-                                child: const Text('Step', 
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 22
-                                )
-                              )
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
-                            child: Container(
-                                  child: Text('# ${promptsList[index].step}', 
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 32
-                                )
-                              )
-                            ),
-                          ),
-                        ],
-                      ),
+                      child: cardStepArea(index)
                     ),
                     Flexible(
                       flex: 6,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-                        child: SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.55,
-                          child: AutoSizeText(
-                            '${promptsList[index].title}', 
-                          maxLines: 2,
-                          minFontSize: 22,
-                          maxFontSize: 30,
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                              fontSize: 32
-                            )
-                          )
-                        ),
-                      ),
+                      child: cardTitleArea(index)
                     ),
                     Flexible(
                       flex: 1,
@@ -254,48 +210,104 @@ class _PromptScreenState extends State<PromptScreen> {
                 ),
               ),
             ),
-            Flexible(
-              flex: 3,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                child: Row(
-                  children: [
-                    Container(
-                      child: Expanded(
-                        child: TextField(
-                          style: TextStyle(
-                            color: Colors.white,
-                          ),
-                          cursorColor: Colors.white,
-                          autofocus: false,
-                          keyboardType: TextInputType.multiline,
-                          maxLines: null,
-                          decoration: InputDecoration(
-                            hintText: promptsList[index].body ?? "",
-                            hintMaxLines: 40,
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white, width: 0.0),
-                            ),
-                            focusedBorder: const OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.white, width: 0.0),
-                            ),
-                            border: OutlineInputBorder(),
-                            hintStyle: TextStyle(
-                              color: Colors.white
-                            ),
-                        ),),
-                      )
-                    )
-                  ],
-                ),
-              ),
+           textBoxArea(index)
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget cardStepArea(int index) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),
+          child: Container(
+              child: const Text('Step', 
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 22
+              )
+            )
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+          child: Container(
+                child: Text('# ${promptsList[index].step}', 
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 32
+              )
+            )
+          ),
+        ),
+      ],
+    );
+  }
+  
+  Widget cardTitleArea(int index) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.55,
+        child: AutoSizeText(
+          '${promptsList[index].title}', 
+        maxLines: 2,
+        minFontSize: 22,
+        maxFontSize: 30,
+        style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 32
+          )
+        )
+      ),
+    );
+  }
+  Widget textBoxArea(int index) {
+    return  Flexible(
+      flex: 3,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+        child: Row(
+          children: [
+            Container(
+              child: Expanded(
+                child: TextField(
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                  cursorColor: Colors.white,
+                  autofocus: false,
+                  keyboardType: TextInputType.multiline,
+                  maxLines: null,
+                  decoration: InputDecoration(
+                    hintText: promptsList[index].body ?? "",
+                    hintMaxLines: 40,
+                    enabledBorder: const OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white, width: 0.0),
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                      borderSide: const BorderSide(color: Colors.white, width: 0.0),
+                    ),
+                    border: OutlineInputBorder(),
+                    hintStyle: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontStyle: FontStyle.italic
+                    ),
+                ),),
+              )
             )
           ],
         ),
       ),
     );
   }
-  
   Widget displayPlayButton(int index) {
     if (promptsList[index].videoUrl!.isNotEmpty) {
       return Column(
