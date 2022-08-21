@@ -49,10 +49,9 @@ class _DecisionScreenState extends  State<DecisionScreen> {
         children: [
           Container(
             height: MediaQuery.of(context).size.height * .20,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-              RichText(
+            child: Center(
+              child: RichText(
+                textAlign: TextAlign.center,
                 text: const TextSpan(
                   text: 'How are ',
                   style: TextStyle(fontSize: 42),
@@ -62,8 +61,8 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                     TextSpan(text: 'today?', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 42)),
                   ],
                 ),
-              )
-            ],),
+              ),
+            ),
           ),
            Expanded(
              child: GridView.count(
@@ -122,58 +121,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               ],
                      ),
            ),
-           Container(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-               Expanded(
-                 child: Container(
-                  color: Theme.of(context).colorScheme.tertiary,
-                   child: RichText(
-                    textAlign: TextAlign.center,
-                    text: const TextSpan(
-                      text: 'Get the ',
-                      style: TextStyle(fontSize: 18),
-                      children:  [
-                        TextSpan(text: 'my4blocks ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                        TextSpan(text: 'masterclass', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 18)),
-                      ],
-                    ),
-                               ),
-                 ),
-               ),
-              Expanded(
-                  child: Container(
-                    color: Theme.of(context).colorScheme.secondary,
-                    child: RichText(
-                    textAlign: TextAlign.center,
-                    text: const TextSpan(
-                      text: 'The Ultimate ',
-                      style: TextStyle(fontSize: 18),
-                      children:  [
-                        TextSpan(text: 'Mental Health Nutitrion Guide ', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 18)),
-                      ],
-                    ),
-                                ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    color: Theme.of(context).colorScheme.primary,
-                    child: RichText(
-                    textAlign: TextAlign.center,
-                    text: const TextSpan(
-                      text: 'Try ',
-                      style: TextStyle(fontSize: 18),
-                      children:  [
-                        TextSpan(text: 'Personalized Coaching ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                      ],
-                    ),
-                                ),
-                  ),
-                )
-            ]),
-           )
+           footer()
          ],
       ),
     );    
@@ -201,7 +149,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                 Text(
                   pageName,
                   style: const TextStyle(
-                    fontSize: 18,
+                    fontSize: 64,
                     color: Colors.white,
                   ),
                   softWrap: true,
@@ -214,6 +162,71 @@ class _DecisionScreenState extends  State<DecisionScreen> {
         ),
       ),
     );
+  }
+
+  Widget footer() {
+    return Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Expanded(
+            child: Container(
+            height: 40,
+            color: Theme.of(context).colorScheme.tertiary,
+              child: Center(
+                child: RichText(
+                textAlign: TextAlign.center,
+                text: const TextSpan(
+                  text: 'Get the ',
+                  style: TextStyle(fontSize: 18),
+                  children:  [
+                    TextSpan(text: 'my4blocks ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                    TextSpan(text: 'masterclass', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 18)),
+                  ],
+                ),
+                            ),
+              ),
+            ),
+          ),
+        Expanded(
+          child: Container(
+          height: 40,
+            color: Theme.of(context).colorScheme.secondary,
+            child: Center(
+              child: RichText(
+              textAlign: TextAlign.center,
+              text: const TextSpan(
+                text: 'The Ultimate ',
+                style: TextStyle(fontSize: 18),
+                children:  [
+                  TextSpan(text: 'Mental Health Nutitrion Guide ', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 18)),
+                ],
+              ),
+                          ),
+            ),
+          ),
+        ),
+        Expanded(
+          child: Container(
+            height: 40,
+            color: Theme.of(context).colorScheme.primary,
+            child: Center(
+              child: RichText(
+              textAlign: TextAlign.center,
+              text: const TextSpan(
+                text: 'Try ',
+                style: TextStyle(fontSize: 18),
+                children:  [
+                  TextSpan(text: 'Personalized Coaching ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                ],
+              ),
+                          ),
+            ),
+          ),
+        )
+      ]),
+      );
   }
 }
 

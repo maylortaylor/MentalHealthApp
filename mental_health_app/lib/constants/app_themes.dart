@@ -8,6 +8,9 @@ class AppThemes {
   static final Color anxiousColor = const Color.fromRGBO(51,117,90,1);
   static final Color depressedColor = const Color.fromRGBO(42,86,105,1);
   static final Color guiltyColor = const Color.fromRGBO(212,171,113,1);
+  static final Color darkCardColor = Color.fromRGBO(15,10,51,1);
+  static final Color midCardColor = Color.fromRGBO(115, 110, 144,1);
+  static final Color lightCardColor = Color.fromRGBO(140, 138, 150,1);
 
   //constants color range for light theme
   static const Color _lightPrimaryColor = const Color.fromRGBO(51,117,90,1);

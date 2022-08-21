@@ -4,6 +4,7 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:mental_health_app/constants/app_themes.dart';
 import 'package:mental_health_app/screens/video.screen.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:provider/provider.dart';
@@ -210,7 +211,10 @@ class _PromptScreenState extends State<PromptScreen> {
                 ),
               ),
             ),
-           textBoxArea(index)
+           textBoxArea(index),
+           Spacer(),
+           answerArea(index),
+           Spacer(),
           ],
         ),
       ),
@@ -240,7 +244,7 @@ class _PromptScreenState extends State<PromptScreen> {
                 style: const TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 32
+                  fontSize: 28
               )
             )
           ),
@@ -269,42 +273,82 @@ class _PromptScreenState extends State<PromptScreen> {
     );
   }
   Widget textBoxArea(int index) {
-    return  Flexible(
-      flex: 3,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-        child: Row(
-          children: [
-            Container(
-              child: Expanded(
-                child: TextField(
-                  style: TextStyle(
-                    color: Colors.white,
+    return  Padding(
+      padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextField(
+              readOnly: true,
+              style: TextStyle(
+                color: Colors.black
+              ),
+              cursorColor: Colors.white,
+              autofocus: false,
+              keyboardType: TextInputType.multiline,
+              maxLines: null,
+              decoration: InputDecoration(
+                fillColor: AppThemes.midCardColor,
+                filled: true,
+                hintText: promptsList[index].body ?? "",
+                hintMaxLines: 40,
+                enabledBorder: const OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.white, width: 0.0),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderSide: const BorderSide(color: Colors.white, width: 0.0),
+                ),
+                border: OutlineInputBorder(),
+                hintStyle: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontStyle: FontStyle.italic
+                ),
+            ),),
+          )
+        ],
+      ),
+    );
+  }
+
+  Widget answerArea(int index) {
+    return  Padding(
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+      child: Row(
+        children: [
+          Container(
+            child: Expanded(
+              child: TextField(
+                readOnly: false,
+                style: TextStyle(
+                  color: Colors.white
+                ),
+                cursorColor: Colors.white,
+                autofocus: false,
+                keyboardType: TextInputType.multiline,
+                maxLines: null,
+                decoration: InputDecoration(
+                  fillColor: AppThemes.midCardColor,
+                  filled: true,
+                  // hintText: "",
+                  hintMaxLines: 40,
+                  enabledBorder: const OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.white, width: 0.0),
                   ),
-                  cursorColor: Colors.white,
-                  autofocus: false,
-                  keyboardType: TextInputType.multiline,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                    hintText: promptsList[index].body ?? "",
-                    hintMaxLines: 40,
-                    enabledBorder: const OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white, width: 0.0),
-                    ),
-                    focusedBorder: const OutlineInputBorder(
-                      borderSide: const BorderSide(color: Colors.white, width: 0.0),
-                    ),
-                    border: OutlineInputBorder(),
-                    hintStyle: TextStyle(
-                      color: Colors.white,
-                      fontSize: 24,
-                      fontStyle: FontStyle.italic
-                    ),
-                ),),
-              )
+                  focusedBorder: const OutlineInputBorder(
+                    borderSide: const BorderSide(color: Colors.white, width: 0.0),
+                  ),
+                  border: OutlineInputBorder(),
+                  // hintStyle: TextStyle(
+                  //   color: Colors.white,
+                  //   fontSize: 18,
+                  //   fontStyle: FontStyle.italic
+                  // ),
+                  // hintText: ""
+              ),),
             )
-          ],
-        ),
+          )
+        ],
       ),
     );
   }
