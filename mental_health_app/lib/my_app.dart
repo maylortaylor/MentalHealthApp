@@ -29,43 +29,41 @@ class MyApp extends StatelessWidget {
     return Consumer<ThemeProvider>(
       builder: (_, themeProviderRef, __) {
         //{context, data, child}
-        return Consumer<LanguageProvider>(
-          builder: (_, languageProviderRef, __) {
             return AuthWidgetBuilder(
               databaseBuilder: databaseBuilder,
               builder: (BuildContext context,
                   AsyncSnapshot<UserModel> userSnapshot) {
                 return MaterialApp(
                   debugShowCheckedModeBanner: false,
-                  // locale: languageProviderRef.appLocale,
-                  //List of all supported locales
-                  supportedLocales: [
-                    Locale('en', 'US'),
-                    // Locale('zh', 'CN'),
-                  ],
-                  //These delegates make sure that the localization data for the proper language is loaded
-                  localizationsDelegates: [
-                    //A class which loads the translations from JSON files
-                    AppLocalizations.delegate,
-                    // //Built-in localization of basic text for Material widgets (means those default Material widget such as alert dialog icon text)
-                    // GlobalMaterialLocalizations.delegate,
-                    // //Built-in localization for text direction LTR/RTL
-                    // GlobalWidgetsLocalizations.delegate,
-                  ],
-                  //return a locale which will be used by the app
-                  localeResolutionCallback: (locale, supportedLocales) {
-                    //check if the current device locale is supported or not
-                    for (var supportedLocale in supportedLocales) {
-                      if (supportedLocale.languageCode ==
-                              locale?.languageCode ||
-                          supportedLocale.countryCode == locale?.countryCode) {
-                        return supportedLocale;
-                      }
-                    }
-                    //if the locale from the mobile device is not supported yet,
-                    //user the first one from the list (in our case, that will be English)
-                    return supportedLocales.first;
-                  },
+                  // // locale: languageProviderRef.appLocale,
+                  // //List of all supported locales
+                  // supportedLocales: [
+                  //   Locale('en', 'US'),
+                  //   // Locale('zh', 'CN'),
+                  // ],
+                  // //These delegates make sure that the localization data for the proper language is loaded
+                  // localizationsDelegates: [
+                  //   //A class which loads the translations from JSON files
+                  //   AppLocalizations.delegate,
+                  //   // //Built-in localization of basic text for Material widgets (means those default Material widget such as alert dialog icon text)
+                  //   // GlobalMaterialLocalizations.delegate,
+                  //   // //Built-in localization for text direction LTR/RTL
+                  //   // GlobalWidgetsLocalizations.delegate,
+                  // ],
+                  // //return a locale which will be used by the app
+                  // localeResolutionCallback: (locale, supportedLocales) {
+                  //   //check if the current device locale is supported or not
+                  //   for (var supportedLocale in supportedLocales) {
+                  //     if (supportedLocale.languageCode ==
+                  //             locale?.languageCode ||
+                  //         supportedLocale.countryCode == locale?.countryCode) {
+                  //       return supportedLocale;
+                  //     }
+                  //   }
+                  //   //if the locale from the mobile device is not supported yet,
+                  //   //user the first one from the list (in our case, that will be English)
+                  //   return supportedLocales.first;
+                  // },
                   title: Provider.of<Flavor>(context).toString(),
                   routes: Routes.routes,
                   theme: AppThemes.lightTheme,
@@ -84,17 +82,13 @@ class MyApp extends StatelessWidget {
                             : SignInScreen();
                       }
 
-                      return Material(
-                        child: CircularProgressIndicator(),
-                      );
+                      return Material();
                     },
                   ),
                 );
               },
               key: Key('AuthWidget'),
             );
-          },
-        );
       },
     );
   }

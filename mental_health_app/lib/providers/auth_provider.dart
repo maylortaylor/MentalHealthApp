@@ -42,7 +42,7 @@ class AuthProvider extends ChangeNotifier {
   //Create user object based on the given User
   UserModel _userFromFirebase(User? user) {
     if (user == null) {
-      return UserModel(displayName: 'Null', uid: 'null');
+      return UserModel(displayName: null, uid: '');
     }
 
     return UserModel(
