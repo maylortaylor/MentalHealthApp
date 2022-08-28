@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
@@ -112,7 +113,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   context,
                   () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return PromptScreen(category: "Guilty");
+                      return PromptScreen(category: "Guilt");
                     }));
                   },
                   "Guilty",
@@ -135,28 +136,24 @@ class _DecisionScreenState extends  State<DecisionScreen> {
         onTap: onTap,
         child: Card(
           color: color,
-          elevation: 8,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-          child: Container(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                const SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  pageName,
-                  style: const TextStyle(
-                    fontSize: 64,
-                    color: Colors.white,
-                  ),
-                  softWrap: true,
-                  overflow: TextOverflow.clip,
-                  textAlign: TextAlign.center,
-                )
-              ],
+          elevation: 20,
+          shadowColor: color,
+          shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(12.0),
+          ),
+          // shape:  OutlineInputBorder(
+          //     borderRadius: BorderRadius.circular(12),
+          //     borderSide: BorderSide(color: Colors.white, width: 1)
+          // ),
+          child: FittedBox(
+            fit: BoxFit.contain,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                '${pageName}',
+                style: const TextStyle(
+                  color: Colors.white,
+                ),),
             ),
           ),
         ),

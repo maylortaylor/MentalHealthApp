@@ -34,10 +34,14 @@ class PromptScreen extends StatefulWidget {
 
 class _PromptScreenState extends State<PromptScreen> {
   late int _currentIndex;
+  bool nextPageIsActive = false;
+  final answerAreaTextController = TextEditingController();
+
   Future<void> init() async {
     _currentIndex = 0;
     _swiperController = new SwiperController();
     final database = FirebaseDatabase.instance;
+    answerAreaTextController.addListener(_textAnswerListener);
     database.setLoggingEnabled(false);
   }
 
@@ -45,6 +49,14 @@ class _PromptScreenState extends State<PromptScreen> {
   void initState() {
     init();
     super.initState();
+  }
+
+   @override
+  void dispose() {
+    // Clean up the controller when the widget is removed from the
+    // widget tree.
+    answerAreaTextController.dispose();
+    super.dispose();
   }
 
   @override
@@ -55,8 +67,10 @@ class _PromptScreenState extends State<PromptScreen> {
         
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        title: Text(widget.category),
+        backgroundColor: _getAppBarColor(),
+        title: Text(
+          'How to manage ${widget.category.toUpperCase()}',
+          style: TextStyle(fontSize: 22),),
         iconTheme: IconThemeData(
           color: Colors.white, //change your color here
         ),
@@ -66,61 +80,44 @@ class _PromptScreenState extends State<PromptScreen> {
       ),
       body: Column(
         children:[
-          Row(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  'How to manage ${widget.category.toUpperCase()}', 
-                  style: const TextStyle(color: Colors.deepOrange, fontWeight: FontWeight.bold, fontSize: 18),
-                ),
-              ),
-            ],
-          ),
-          Flexible(
-            child: Row(
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.15,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        onPressed: (){
-                          _previousCard();
-                        }, 
-                        icon: Icon(Icons.arrow_back)
-                      ),
-                      Container(
-                        child: Text("Back")
-                      )
-                  ]),
-                ),
-                Container(
-                  child: _buildBodySection(context, widget.category),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width * 0.15,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        onPressed: (){
-                          _nextCard();
-                        }, 
-                        icon: Icon(Icons.arrow_forward)
-                      ),
-                      Container(
-                        child: Text("Next")
-                      )
-                    ]
-                    ),)
-              ],
-            ),
-          )
+          _landscapeMode(context)
+          // LayoutBuilder(builder: (context, constraints) {
+          //   if (constraints.maxWidth > 600) {
+          //     return _landscapeMode(context);
+          //   } else {
+          //     return _portraitMode();
+          //   }
+          // },),
         ]
       )
     );
+  }
+
+  void _textAnswerListener() {
+    if (answerAreaTextController.text.isNotEmpty && answerAreaTextController.text.length >= 7) {
+      setState(() {
+        nextPageIsActive = true;
+      });
+    } else {
+      setState(() {
+        nextPageIsActive = false;
+      });
+    }
+  }
+
+  Color _getAppBarColor() {
+    switch (widget.category) {
+      case "Angry":
+        return AppThemes.angryColor;
+      case "Anxiety":
+        return AppThemes.anxiousColor;
+      case "Depression":
+        return AppThemes.depressedColor;
+      case "Guilt":
+        return AppThemes.guiltyColor;
+      default:
+        return AppThemes.angryColor;
+    }
   }
   
   void _previousCard() {
@@ -128,6 +125,103 @@ class _PromptScreenState extends State<PromptScreen> {
   }
   void _nextCard() {
     _swiperController.next(animation: true);
+    setState(() {
+      nextPageIsActive = false;
+      answerAreaTextController.clear();
+    });
+  }
+
+  Widget _landscapeMode(context) {
+    return Flexible(
+      child: Row(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width * 0.15,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: (){
+                    _previousCard();
+                  }, 
+                  icon: Icon(
+                    Icons.arrow_back,
+                  )
+                ),
+                Container(
+                  child: Text("Back")
+                )
+            ]),
+          ),
+          Container(
+            child: _buildBodySection(context, widget.category),
+          ),
+          Container(
+            width: MediaQuery.of(context).size.width * 0.15,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                IconButton(
+                  onPressed: nextPageIsActive ? (){
+                    _nextCard();
+                  } : null, 
+                  icon: Icon(
+                    Icons.arrow_forward,
+                    color: nextPageIsActive ? null : Colors.grey
+                  )
+                ),
+                Container(
+                  child: Text("Next")
+                )
+              ]
+              ),)
+        ],
+      ),
+    );
+  }
+
+  Widget _portraitMode() {
+    return Flexible(
+      child: Row(
+        children: [
+          // Container(
+          //   width: MediaQuery.of(context).size.width * 0.15,
+          //   child: Column(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: [
+          //       IconButton(
+          //         onPressed: (){
+          //           _previousCard();
+          //         }, 
+          //         icon: Icon(Icons.arrow_back)
+          //       ),
+          //       Container(
+          //         child: Text("Back")
+          //       )
+          //   ]),
+          // ),
+          Container(
+            child: _buildBodySection(context, widget.category),
+          ),
+          // Container(
+          //   width: MediaQuery.of(context).size.width * 0.15,
+          //   child: Column(
+          //     mainAxisAlignment: MainAxisAlignment.center,
+          //     children: [
+          //       IconButton(
+          //         onPressed: (){
+          //           _nextCard();
+          //         }, 
+          //         icon: Icon(Icons.arrow_forward)
+          //       ),
+          //       Container(
+          //         child: Text("Next")
+          //       )
+          //     ]
+          //     ),)
+        ],
+      ),
+    );
   }
 
   Widget _buildBodySection(BuildContext context, String category) {
@@ -141,16 +235,18 @@ class _PromptScreenState extends State<PromptScreen> {
             promptsList = snapshot.data as List<Prompt>;
 
             if (promptsList.isNotEmpty) {
-             return buildSwiper();
+              return buildSwiper();
             } else {
               //todosEmptyTopMsgDefaultTxt
-              return Container(color: Colors.grey,);
+              return Flexible(child: Container(
+                color: Theme.of(context).cardTheme.color)
+                );
             }
           } else if (snapshot.hasError) {
             //todosErrorTopMsgTxt
-            return Container(color: Colors.red);
+            return Flexible(child: Container(color: Colors.red,));
           }
-          return Center(child: CircularProgressIndicator());
+          return Flexible(child: Center(child: CircularProgressIndicator()));
         });
   }
 
@@ -319,6 +415,7 @@ class _PromptScreenState extends State<PromptScreen> {
           Container(
             child: Expanded(
               child: TextField(
+                controller: answerAreaTextController,
                 readOnly: false,
                 style: TextStyle(
                   color: Colors.white
