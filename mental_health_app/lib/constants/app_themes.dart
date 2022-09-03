@@ -26,15 +26,15 @@ class AppThemes {
 
   //text theme for light theme
   static final TextStyle _lightScreenHeadingTextStyle =
-      TextStyle(fontSize: 20.0, color: _lightOnPrimaryColor);
+      TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 20.0, color: _lightOnPrimaryColor);
   static final TextStyle _lightScreenTaskNameTextStyle =
-      TextStyle(fontSize: 16.0, color: _lightOnPrimaryColor);
+      TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 16.0, color: _lightOnPrimaryColor);
   static final TextStyle _lightScreenTaskDurationTextStyle =
-      TextStyle(fontSize: 14.0, color: Colors.grey);
+      TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 14.0, color: Colors.grey);
   static final TextStyle _lightScreenButtonTextStyle = TextStyle(
-      fontSize: 14.0, color: _lightOnPrimaryColor, fontWeight: FontWeight.w500);
+      fontFamily:  AppFontFamily.poppins, fontSize: 14.0, color: _lightOnPrimaryColor, fontWeight: FontWeight.w500);
   static final TextStyle _lightScreenCaptionTextStyle = TextStyle(
-      fontSize: 12.0, color: _lightAppBarColor, fontWeight: FontWeight.w100);
+      fontFamily:  AppFontFamily.poppins, fontSize: 12.0, color: _lightAppBarColor, fontWeight: FontWeight.w100);
 
   static final TextTheme _lightTextTheme = TextTheme(
     displayLarge: _lightScreenHeadingTextStyle,
@@ -64,9 +64,9 @@ class AppThemes {
   static final TextStyle _darkScreenTaskDurationTextStyle =
       _lightScreenTaskDurationTextStyle;
   static final TextStyle _darkScreenButtonTextStyle = TextStyle(
-      fontSize: 14.0, color: _darkOnPrimaryColor, fontWeight: FontWeight.w500);
+      fontFamily:  AppFontFamily.poppins, fontSize: 14.0, color: _darkOnPrimaryColor, fontWeight: FontWeight.w500);
   static final TextStyle _darkScreenCaptionTextStyle = TextStyle(
-      fontSize: 12.0, color: _darkAppBarColor, fontWeight: FontWeight.w100);
+      fontFamily:  AppFontFamily.poppins, fontSize: 12.0, color: _darkAppBarColor, fontWeight: FontWeight.w100);
 
   static final TextTheme _darkTextTheme = TextTheme(
     displayLarge: _darkScreenHeadingTextStyle,
@@ -80,7 +80,7 @@ class AppThemes {
 
   //the light theme
   static final ThemeData lightTheme = ThemeData(
-    fontFamily: AppFontFamily.productSans,
+    // fontFamily: AppFontFamily.poppins,
     scaffoldBackgroundColor: _lightPrimaryVariantColor,
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: _lightButtonPrimaryColor,
@@ -120,7 +120,7 @@ class AppThemes {
 
   //the dark theme
   static final ThemeData darkTheme = ThemeData(
-    fontFamily: AppFontFamily.productSans,
+    fontFamily: AppFontFamily.poppins,
     scaffoldBackgroundColor: _darkPrimaryVariantColor,
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: _darkButtonPrimaryColor,

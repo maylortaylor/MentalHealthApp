@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
+import 'package:mental_health_app/constants/app_font_family.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
 
 import '../screens/prompt.screen.dart';
@@ -55,11 +56,14 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                 textAlign: TextAlign.center,
                 text: const TextSpan(
                   text: 'How are ',
-                  style: TextStyle(fontSize: 42),
+                  style: TextStyle(
+                    fontFamily:  AppFontFamily.poppins,
+                    fontSize: 42,
+                  ),
                   children:  [
-                    TextSpan(text: 'you ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 42)),
-                    TextSpan(text: 'feeling ', style: TextStyle(fontSize: 42)),
-                    TextSpan(text: 'today?', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 42)),
+                    TextSpan(text: 'you ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 42)),
+                    TextSpan(text: 'feeling ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 42)),
+                    TextSpan(text: 'today?', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 42)),
                   ],
                 ),
               ),
@@ -70,22 +74,6 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               childAspectRatio: (itemWidth / itemHeight),
               crossAxisCount: 2,
               children: <Widget>[
-                buildCardWithIcon(
-                  null,
-                  context,
-                  () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return PromptScreen(category: "Anger");
-                        },
-                      ),
-                    );
-                  },
-                  "Angry",
-                AppThemes.angryColor
-                ),
                 buildCardWithIcon(
                   null,
                   context,
@@ -118,7 +106,23 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   },
                   "Guilty",
                   AppThemes.guiltyColor
-                )
+                ),
+                buildCardWithIcon(
+                  null,
+                  context,
+                  () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return PromptScreen(category: "Anger");
+                        },
+                      ),
+                    );
+                  },
+                  "Angry",
+                AppThemes.angryColor
+                ),
               ],
                      ),
            ),
@@ -152,6 +156,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               child: Text(
                 '${pageName}',
                 style: const TextStyle(
+                  fontFamily: AppFontFamily.poppins,
                   color: Colors.white,
                 ),),
             ),
@@ -176,10 +181,10 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                 textAlign: TextAlign.center,
                 text: const TextSpan(
                   text: 'Get the ',
-                  style: TextStyle(fontSize: 18),
+                  style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 18),
                   children:  [
-                    TextSpan(text: 'my4blocks ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                    TextSpan(text: 'masterclass', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 18)),
+                    TextSpan(text: 'my4blocks ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 18)),
+                    TextSpan(text: 'masterclass', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 18)),
                   ],
                 ),
                             ),
@@ -195,9 +200,9 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               textAlign: TextAlign.center,
               text: const TextSpan(
                 text: 'The Ultimate ',
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 16),
                 children:  [
-                  TextSpan(text: 'Mental Health Nutitrion Guide ', style: TextStyle(fontStyle: FontStyle.italic, fontSize: 18)),
+                  TextSpan(text: 'Mental Health Nutitrion Guide ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 16)),
                 ],
               ),
                           ),
@@ -213,9 +218,9 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               textAlign: TextAlign.center,
               text: const TextSpan(
                 text: 'Try ',
-                style: TextStyle(fontSize: 18),
+                style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 18),
                 children:  [
-                  TextSpan(text: 'Personalized Coaching ', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                  TextSpan(text: 'Personalized Coaching ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 18)),
                 ],
               ),
                           ),

@@ -67,10 +67,10 @@ class MyApp extends StatelessWidget {
                   title: Provider.of<Flavor>(context).toString(),
                   routes: Routes.routes,
                   theme: AppThemes.lightTheme,
-                  darkTheme: AppThemes.darkTheme,
-                  themeMode: themeProviderRef.isDarkModeOn
-                      ? ThemeMode.light
-                      : ThemeMode.light,
+                  // darkTheme: AppThemes.darkTheme,
+                  // themeMode: themeProviderRef.isDarkModeOn
+                  //     ? ThemeMode.light
+                  //     : ThemeMode.light,
                   home: Consumer<AuthProvider>(
                     builder: (_, authProviderRef, __) {
                       if (userSnapshot.connectionState ==
