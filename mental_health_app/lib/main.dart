@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mental_health_app/flavor.dart';
+import 'package:mental_health_app/locator.dart';
 import 'package:mental_health_app/my_app.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/providers/language_provider.dart';
@@ -9,9 +10,12 @@ import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 import 'firebase_options.dart';
 
 Future<void> main() async {
+  setupLocator();
+  usePathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,

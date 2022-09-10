@@ -3,13 +3,18 @@ import 'package:mental_health_app/app_localizations.dart';
 import 'package:mental_health_app/auth_widget_builder.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
 import 'package:mental_health_app/flavor.dart';
+import 'package:mental_health_app/locator.dart';
 import 'package:mental_health_app/models/user_model.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/providers/language_provider.dart';
 import 'package:mental_health_app/providers/theme_provider.dart';
+import 'package:mental_health_app/route_generator.dart';
+import 'package:mental_health_app/router.dart';
 import 'package:mental_health_app/routes.dart';
 import 'package:mental_health_app/screens/decision.screen.dart';
+import 'package:mental_health_app/screens/prompt.screen.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
+import 'package:mental_health_app/services/navigation_service.dart';
 import 'package:mental_health_app/ui/auth/sign_in_screen.dart';
 import 'package:provider/provider.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
@@ -65,23 +70,31 @@ class MyApp extends StatelessWidget {
                   //   return supportedLocales.first;
                   // },
                   title: Provider.of<Flavor>(context).toString(),
-                  routes: Routes.routes,
+                  // routes: AppRoutes.routes,
+                  routes: <String, WidgetBuilder> {
+                    // '/': (BuildContext context) => DecisionScreen(),
+                    '/prompt': (BuildContext context) => PromptScreen(category: 'Anxiety', step: 1,),
+                  },
+                  onGenerateRoute: generateRoute,
                   theme: AppThemes.lightTheme,
-                  darkTheme: AppThemes.darkTheme,
-                  themeMode: themeProviderRef.isDarkModeOn
-                      ? ThemeMode.light
-                      : ThemeMode.light,
+                  // darkTheme: AppThemes.darkTheme,
+                  // themeMode: themeProviderRef.isDarkModeOn
+                  //     ? ThemeMode.light
+                  //     : ThemeMode.light,
                   home: Consumer<AuthProvider>(
                     builder: (_, authProviderRef, __) {
                       if (userSnapshot.connectionState ==
                           ConnectionState.active) {
                         return userSnapshot.hasData
-                            // "splash screen"
-                            // ? HomeScreen()
-                            ? DecisionScreen()
+                            ? Navigator(
+                                key: locator<NavigationService>().navigatorKey,
+                                onGenerateRoute: generateRoute,
+                                initialRoute: '/'
+                              )
+                          //  ? DecisionScreen()
                             : SignInScreen();
                       }
-
+                
                       return Material();
                     },
                   ),

@@ -1,0 +1,15 @@
+import 'package:flutter/material.dart';
+
+class NavigationService {
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
+  Future<dynamic> navigateTo(String routeName,
+      {required Map<String, String> queryParams}) {
+    routeName = Uri(path: routeName, queryParameters: queryParams).toString();
+    return navigatorKey.currentState!.pushNamed(routeName);
+  }
+
+  void goBack() {
+    return navigatorKey.currentState!.pop();
+  }
+}

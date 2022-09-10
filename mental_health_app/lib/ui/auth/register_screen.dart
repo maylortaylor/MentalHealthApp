@@ -153,7 +153,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         textColor: Theme.of(context).iconTheme.color,
                         onPressed: () {
                           Navigator.of(context)
-                              .pushReplacementNamed(Routes.login);
+                              .pushReplacementNamed(AppRoutes.login);
                         },
                       ),
               ],
