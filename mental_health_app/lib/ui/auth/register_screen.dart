@@ -106,7 +106,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ? Center(
                         child: CircularProgressIndicator(),
                       )
-                    : RaisedButton(
+                    : ElevatedButton(
                         child: Text(
                           AppLocalizations.of(context)
                               .translate("loginBtnSignUp"),
@@ -122,12 +122,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     _emailController.text,
                                     _passwordController.text);
 
-                            if (userModel == null) {
-                              _scaffoldKey.currentState!.showSnackBar(SnackBar(
-                                content: Text(AppLocalizations.of(context)
-                                    .translate("loginTxtErrorSignIn")),
-                              ));
-                            }
+                            // if (userModel == null) {
+                            //   _scaffoldKey.currentState!.showSnackBar(SnackBar(
+                            //     content: Text(AppLocalizations.of(context)
+                            //         .translate("loginTxtErrorSignIn")),
+                            //   ));
+                            // }
                           }
                         }),
                 authProvider.status == Status.Registering
@@ -147,10 +147,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ? Center(
                         child: null,
                       )
-                    : FlatButton(
+                    : TextButton(
                         child: Text(AppLocalizations.of(context)
                             .translate("loginBtnLinkSignIn")),
-                        textColor: Theme.of(context).iconTheme.color,
+                        style: ButtonStyle(
+                          textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
+                            (Set<MaterialState> states) {
+                              if (states.contains(MaterialState.pressed))
+                                return Theme.of(context).textTheme.bodyText1;
+                              return null; // Use the component's default.
+                            },
+                          ),),
                         onPressed: () {
                           Navigator.of(context)
                               .pushReplacementNamed(AppRoutes.login);
@@ -161,7 +168,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
           ),
         ));
   }
-
   Widget _buildBackground() {
     return ClipPath(
       clipper: SignInCustomClipper(),

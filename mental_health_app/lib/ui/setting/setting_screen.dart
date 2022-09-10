@@ -48,7 +48,7 @@ class SettingScreen extends StatelessWidget {
               AppLocalizations.of(context).translate("settingLogoutListTitle")),
           subtitle: Text(AppLocalizations.of(context)
               .translate("settingLogoutListSubTitle")),
-          trailing: RaisedButton(
+          trailing: ElevatedButton(
               onPressed: () {
                 _confirmSignOut(context);
               },
