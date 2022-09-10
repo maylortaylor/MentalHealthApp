@@ -208,29 +208,26 @@ Widget _buildVimeoCard(BuildContext context) {
               )
             ),
           ],),
-          Flexible(
-            flex: 1,
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Center(
-                    child: VimeoVideoPlayer(
-                        vimeoPlayerModel: VimeoPlayerModel(
-                          url: promptsList[_currentIndex].videoUrl!,
-                          // url: 'https://vimeo.com/253989945',
-                          deviceOrientation: DeviceOrientation.portraitUp,
-                          systemUiOverlay: const [
-                            SystemUiOverlay.top,
-                            SystemUiOverlay.bottom,
-                            ],
-                        ),
-                      )
-                    ),
-                  )
-                ]
-              ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: Center(
+                  child: VimeoVideoPlayer(
+                      vimeoPlayerModel: VimeoPlayerModel(
+                        url: promptsList[_currentIndex].videoUrl!,
+                        // url: 'https://vimeo.com/253989945',
+                        deviceOrientation: DeviceOrientation.portraitUp,
+                        systemUiOverlay: const [
+                          SystemUiOverlay.top,
+                          SystemUiOverlay.bottom,
+                          ],
+                      ),
+                    )
+                  ),
+                )
+              ]
             ),
           ),
         ],
@@ -239,7 +236,7 @@ Widget _buildVimeoCard(BuildContext context) {
   }
 
   Widget _buildFlipAnimation(context) {
-    return Flexible(
+    return Expanded(
       child: AnimatedSwitcher(
         duration: Duration(milliseconds: 800),
         transitionBuilder: __transitionBuilder,
@@ -273,51 +270,49 @@ Widget _buildVimeoCard(BuildContext context) {
   }
 
   Widget _landscapeMode(context) {
-    return Flexible(
-      child: Row(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width * 0.15,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: (){
-                    _previousCard();
-                  }, 
-                  icon: Icon(
-                    Icons.arrow_back,
-                  )
-                ),
-                Container(
-                  child: Text("Back")
+    return Row(
+      children: [
+        Container(
+          width: MediaQuery.of(context).size.width * 0.15,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                onPressed: (){
+                  _previousCard();
+                }, 
+                icon: Icon(
+                  Icons.arrow_back,
                 )
-            ]),
-          ),
-          Container(
-            child: _buildBodySection(context, widget.category.toString()),
-          ),
-          Container(
-            width: MediaQuery.of(context).size.width * 0.15,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: nextPageIsActive ? (){
-                    _nextCard();
-                  } : null, 
-                  icon: Icon(
-                    Icons.arrow_forward,
-                    color: nextPageIsActive ? null : Colors.grey
-                  )
-                ),
-                Container(
-                  child: Text("Next")
+              ),
+              Container(
+                child: Text("Back")
+              )
+          ]),
+        ),
+        Container(
+          child: _buildBodySection(context, widget.category.toString()),
+        ),
+        Container(
+          width: MediaQuery.of(context).size.width * 0.15,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                onPressed: nextPageIsActive ? (){
+                  _nextCard();
+                } : null, 
+                icon: Icon(
+                  Icons.arrow_forward,
+                  color: nextPageIsActive ? null : Colors.grey
                 )
-              ]
-              ),)
-        ],
-      ),
+              ),
+              Container(
+                child: Text("Next")
+              )
+            ]
+            ),)
+      ],
     );
   }
 
@@ -426,26 +421,23 @@ Widget _buildVimeoCard(BuildContext context) {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: Column(
           children: [
-            Flexible(
-              flex: 1,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                child: Row(
-                  children: [
-                    Flexible(
-                      flex: 1,
-                      child: cardStepArea(index)
-                    ),
-                    Flexible(
-                      flex: 6,
-                      child: cardTitleArea(index)
-                    ),
-                    Flexible(
-                      flex: 1,
-                      child: displayPlayButton(index)
-                    )
-                  ]
-                ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+              child: Row(
+                children: [
+                  Flexible(
+                    flex: 1,
+                    child: cardStepArea(index)
+                  ),
+                  Flexible(
+                    flex: 6,
+                    child: cardTitleArea(index)
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: displayPlayButton(index)
+                  )
+                ]
               ),
             ),
            textBoxArea(index),
