@@ -1,38 +1,37 @@
 import 'dart:developer';
+import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/services.dart';
+import 'package:mental_health_app/constants/app_font_family.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
 import 'package:mental_health_app/screens/video.screen.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:provider/provider.dart';
 import 'package:mental_health_app/models/prompts_model.dart';
+import 'package:vimeo_video_player/vimeo_video_player.dart';
 
 import '../models/prompts_model.dart';
-
-class Constants {
-  static const String Subscribe = 'Go Home Page';
-  static const String Settings = 'Go Another Page';
-  static const String SignOut = 'Refresh Page';
-
-  static const List<String> choices = <String>[Subscribe, Settings, SignOut];
-}
 
 late DatabaseReference _promptsRef;
 late SwiperController _swiperController;
 List<Prompt> promptsList = [];
 class PromptScreen extends StatefulWidget {
   // const PromptScreen({Key? key}) : super(key: key);
-  const PromptScreen({super.key, required this.category});
+  const PromptScreen({super.key, required this.category, this.step = 1});
   final String category;
+  final int? step;
 
   @override
   _PromptScreenState createState() => _PromptScreenState();
 }
 
 class _PromptScreenState extends State<PromptScreen> {
+  bool _showFrontSide = true;
+  bool _flipXAxis = true;
   late int _currentIndex;
   bool nextPageIsActive = false;
   final answerAreaTextController = TextEditingController();
@@ -69,18 +68,23 @@ class _PromptScreenState extends State<PromptScreen> {
       appBar: AppBar(
         backgroundColor: _getAppBarColor(),
         title: Text(
-          'How to manage ${widget.category.toUpperCase()}',
-          style: TextStyle(fontSize: 22),),
-        iconTheme: IconThemeData(
+          'How to manage ${widget.category}',
+          style: const TextStyle(
+            fontFamily: AppFontFamily.poppins,
+            fontSize: 22
+          ),),
+        iconTheme: const IconThemeData(
           color: Colors.white, //change your color here
         ),
-        titleTextStyle: TextStyle(
+        titleTextStyle: const TextStyle(
+          fontFamily: AppFontFamily.poppins,
           color: Colors.white
         ),
       ),
       body: Column(
         children:[
-          _landscapeMode(context)
+          _buildFlipAnimation(context)
+          // _landscapeMode(context)
           // LayoutBuilder(builder: (context, constraints) {
           //   if (constraints.maxWidth > 600) {
           //     return _landscapeMode(context);
@@ -91,6 +95,12 @@ class _PromptScreenState extends State<PromptScreen> {
         ]
       )
     );
+  }
+
+ void _switchCard() {
+    setState(() {
+      _showFrontSide = !_showFrontSide;
+    });
   }
 
   void _textAnswerListener() {
@@ -131,6 +141,137 @@ class _PromptScreenState extends State<PromptScreen> {
     });
   }
 
+
+  Widget _buildFront(context) {
+  // return __buildLayout(
+  //   key: ValueKey(true),
+  //   backgroundColor: Colors.blue,
+  //   faceName: "F",
+  // );
+  return __buildLayout(context);
+}
+
+Widget __buildLayout(context) {
+// Widget __buildLayout({Key? key, String? faceName, Color? backgroundColor}) {
+  return _landscapeMode(context);
+  // return Container(
+  //   key: key,
+  //   decoration: BoxDecoration(
+  //     shape: BoxShape.rectangle,
+  //     borderRadius: BorderRadius.circular(20.0),
+  //     color: backgroundColor,
+  //   ),
+  //   child: Center(
+  //     child: Text(faceName!.substring(0, 1), style: TextStyle(fontSize: 80.0)),
+  //   ),
+  // );
+}
+Widget __buildLayoutRear({Key? key, String? faceName, Color? backgroundColor}) {
+  return Container(
+    key: key,
+    decoration: BoxDecoration(
+      shape: BoxShape.rectangle,
+      borderRadius: BorderRadius.circular(20.0),
+      color: backgroundColor,
+    ),
+    child: Center(
+      child: Text(faceName!.substring(0, 1), style: TextStyle(
+        fontFamily: AppFontFamily.poppins,
+        fontSize: 80.0)),
+    ),
+  );
+}
+
+Widget _buildRear(context) {
+  // return __buildLayoutRear(
+  //   key: ValueKey(false),
+  //   backgroundColor: Colors.blue.shade700,
+  //   faceName: "R",
+  // );
+  return _buildVimeoCard(context);
+}
+
+Widget _buildVimeoCard(BuildContext context) {
+    return Card(
+      color: Theme.of(context).cardTheme.color,
+      elevation: 8,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      child: Column(
+        children: [
+          Row(children: [
+            IconButton(
+              onPressed: (){
+                _switchCard();
+              }, 
+              icon: const Icon(
+                Icons.arrow_back,
+              )
+            ),
+          ],),
+          Flexible(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Center(
+                    child: VimeoVideoPlayer(
+                        vimeoPlayerModel: VimeoPlayerModel(
+                          url: promptsList[_currentIndex].videoUrl!,
+                          // url: 'https://vimeo.com/253989945',
+                          deviceOrientation: DeviceOrientation.portraitUp,
+                          systemUiOverlay: const [
+                            SystemUiOverlay.top,
+                            SystemUiOverlay.bottom,
+                            ],
+                        ),
+                      )
+                    ),
+                  )
+                ]
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFlipAnimation(context) {
+    return Flexible(
+      child: AnimatedSwitcher(
+        duration: Duration(milliseconds: 800),
+        transitionBuilder: __transitionBuilder,
+        layoutBuilder: (widget, list) => Stack(children: [widget!, ...list]),
+        child: _showFrontSide ? _buildFront(context) : _buildRear(context),
+        switchInCurve: Curves.easeInBack,
+        switchOutCurve: Curves.easeInBack.flipped,
+      ),
+    );
+  }
+
+    Widget __transitionBuilder(Widget widget, Animation<double> animation) {
+    final rotateAnim = Tween(begin: pi, end: 0.0).animate(animation);
+    return AnimatedBuilder(
+      animation: rotateAnim,
+      child: widget,
+      builder: (context, widget) {
+        final isUnder = (ValueKey(_showFrontSide) != widget!.key);
+        var tilt = ((animation.value - 0.5).abs() - 0.5) * 0.003;
+        tilt *= isUnder ? -1.0 : 1.0;
+        final value = isUnder ? min(rotateAnim.value, pi / 2) : rotateAnim.value;
+        return Transform(
+          transform: _flipXAxis
+              ? (Matrix4.rotationY(value)..setEntry(3, 0, tilt))
+              : (Matrix4.rotationX(value)..setEntry(3, 1, tilt)),
+          child: widget,
+          alignment: Alignment.center,
+        );
+      },
+    );
+  }
+
   Widget _landscapeMode(context) {
     return Flexible(
       child: Row(
@@ -154,7 +295,7 @@ class _PromptScreenState extends State<PromptScreen> {
             ]),
           ),
           Container(
-            child: _buildBodySection(context, widget.category),
+            child: _buildBodySection(context, widget.category.toString()),
           ),
           Container(
             width: MediaQuery.of(context).size.width * 0.15,
@@ -201,7 +342,7 @@ class _PromptScreenState extends State<PromptScreen> {
           //   ]),
           // ),
           Container(
-            child: _buildBodySection(context, widget.category),
+            child: _buildBodySection(context, widget.category.toString()),
           ),
           // Container(
           //   width: MediaQuery.of(context).size.width * 0.15,
@@ -257,7 +398,7 @@ class _PromptScreenState extends State<PromptScreen> {
           setState(() {
             _currentIndex = index;
             inspect(promptsList[index]);
-            log(promptsList[index].body ?? "");
+            // log(promptsList[index].body ?? "");
           });
         },
         controller: _swiperController,
@@ -326,9 +467,10 @@ class _PromptScreenState extends State<PromptScreen> {
           child: Container(
               child: const Text('Step', 
               style: TextStyle(
+                  fontFamily: AppFontFamily.poppins,
+                  fontSize: 22,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 22
               )
             )
           ),
@@ -338,9 +480,10 @@ class _PromptScreenState extends State<PromptScreen> {
           child: Container(
                 child: Text('# ${promptsList[index].step}', 
                 style: const TextStyle(
+                  fontFamily: AppFontFamily.poppins,
+                  fontSize: 28,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
-                  fontSize: 28
               )
             )
           ),
@@ -360,9 +503,10 @@ class _PromptScreenState extends State<PromptScreen> {
         minFontSize: 22,
         maxFontSize: 30,
         style: const TextStyle(
+            fontFamily: AppFontFamily.poppins,
+            fontSize: 32,
             color: Colors.white,
             fontWeight: FontWeight.bold,
-            fontSize: 32
           )
         )
       ),
@@ -374,33 +518,59 @@ class _PromptScreenState extends State<PromptScreen> {
       child: Row(
         children: [
           Expanded(
-            child: TextField(
-              readOnly: true,
-              style: TextStyle(
-                color: Colors.black
-              ),
-              cursorColor: Colors.white,
-              autofocus: false,
-              keyboardType: TextInputType.multiline,
-              maxLines: null,
-              decoration: InputDecoration(
-                fillColor: AppThemes.midCardColor,
-                filled: true,
-                hintText: promptsList[index].body ?? "",
-                hintMaxLines: 40,
-                enabledBorder: const OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.white, width: 0.0),
+            child: Container(
+              color: AppThemes.promptCardColor,
+              child: AutoSizeText(
+                // answerAreaTextController.text,
+                '${promptsList[index].body} ${promptsList[index].body} ${promptsList[index].body} ${promptsList[index].body} ${promptsList[index].body}', 
+              maxLines: 7,
+              // presetFontSizes: [10, 30],
+              minFontSize: 18,
+              maxFontSize: 30,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                    fontFamily: AppFontFamily.poppins,
+                    fontSize: 22,
+                    color: Colors.white,
+                    fontStyle: FontStyle.italic
                 ),
-                focusedBorder: const OutlineInputBorder(
-                  borderSide: const BorderSide(color: Colors.white, width: 0.0),
-                ),
-                border: OutlineInputBorder(),
-                hintStyle: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
-                  fontStyle: FontStyle.italic
-                ),
-            ),),
+              )
+              // child: TextField(
+              //   controller: TextEditingController(text: '${promptsList[index].body} ${promptsList[index].body}'),
+              //   readOnly: true,
+              //   textAlign: TextAlign.center,
+              //   style: TextStyle(
+              //       fontFamily: AppFontFamily.poppins,
+              //       fontSize: 16,
+              //       color: Colors.white,
+              //       fontStyle: FontStyle.italic
+              //   ),
+              //   cursorColor: Colors.white,
+              //   autofocus: false,
+              //   keyboardType: TextInputType.multiline,
+              //   maxLines: null,
+              //   decoration: InputDecoration(
+              //     fillColor: AppThemes.promptCardColor,
+              //     filled: true,
+              //     // hintText: '${promptsList[index].body} ${promptsList[index].body}' ?? '',
+              //     // hintMaxLines: 40,
+              //     enabledBorder: const OutlineInputBorder(
+              //       borderSide: const BorderSide(color: Colors.white, width: 0.0),
+              //     ),
+              //     focusedBorder: const OutlineInputBorder(
+              //       borderSide: const BorderSide(color: Colors.white, width: 0.0),
+              //     ),
+              //     border: OutlineInputBorder(),
+              //     // hintStyle: TextStyle(
+              //     //   fontFamily: AppFontFamily.poppins,
+              //     //   fontSize: 12,
+              //     //   color: Colors.white,
+              //     //   fontStyle: FontStyle.italic
+              //     // ),
+              // ),
+              // ),
+            ),
           )
         ],
       ),
@@ -418,6 +588,7 @@ class _PromptScreenState extends State<PromptScreen> {
                 controller: answerAreaTextController,
                 readOnly: false,
                 style: TextStyle(
+                  fontFamily: AppFontFamily.poppins,
                   color: Colors.white
                 ),
                 cursorColor: Colors.white,
@@ -459,20 +630,22 @@ class _PromptScreenState extends State<PromptScreen> {
             child: IconButton(
               onPressed: () {
                 // Go to video url
-                Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return VideoScreen(videoUrl: promptsList[index].videoUrl!,);
-                        },
-                      ),
-                    );
+                _switchCard();
+                // Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //         builder: (context) {
+                //           return VideoScreen(videoUrl: promptsList[index].videoUrl!,);
+                //         },
+                //       ),
+                //     );
               }, 
               icon: Icon(Icons.play_arrow)
             ),
           ),
           Text("Play Video",
           style: TextStyle(
+            fontFamily: AppFontFamily.poppins,
             color: Colors.white
           ),)
         ],

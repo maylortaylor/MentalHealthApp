@@ -5,6 +5,9 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
+import 'package:mental_health_app/locator.dart';
+import 'package:mental_health_app/routes.dart';
+import 'package:mental_health_app/services/navigation_service.dart';
 
 import '../screens/prompt.screen.dart';
 
@@ -25,6 +28,7 @@ class DecisionScreen extends StatefulWidget {
 
 class _DecisionScreenState extends  State<DecisionScreen> {
   var rng = Random();
+  final NavigationService _navigationService = locator<NavigationService>();
 
   @override
   void initState() {
@@ -78,9 +82,11 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   null,
                   context,
                   () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return PromptScreen(category: "Anxiety");
-                    }));
+                    _navigationService.navigateTo('/prompt', queryParams: {'category': 'Anxiety', 'step': '1'});
+                    // Navigator.pushNamed(context, AppRoutes.prompt, arguments: {'category': 'Anxiety', 'step':1});
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    //   return PromptScreen(data: "Anxiety");
+                    // }));
                   },
                   "Anxious",
                 AppThemes.anxiousColor
@@ -89,9 +95,11 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   null,
                   context,
                   () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return PromptScreen(category: "Depression");
-                    }));
+                    _navigationService.navigateTo('/prompt', queryParams: {'category': 'Depression', 'step': '1'});
+
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    //   return PromptScreen(category: "Depression", step: 1);
+                    // }));
                   },
                   "Depressed",
                   AppThemes.depressedColor
@@ -101,7 +109,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   context,
                   () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return PromptScreen(category: "Guilt");
+                      return PromptScreen(category: "Guilt", step: 1);
                     }));
                   },
                   "Guilty",
@@ -115,7 +123,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                       context,
                       MaterialPageRoute(
                         builder: (context) {
-                          return PromptScreen(category: "Anger");
+                          return PromptScreen(category: "Anger", step: 1);
                         },
                       ),
                     );

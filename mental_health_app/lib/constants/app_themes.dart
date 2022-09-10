@@ -10,6 +10,7 @@ class AppThemes {
   static final Color guiltyColor = const Color.fromRGBO(212,171,113,1);
   static final Color darkCardColor = Color.fromRGBO(15,10,51,1);
   static final Color midCardColor = Color.fromRGBO(115, 110, 144,1);
+  static final Color promptCardColor = Color.fromRGBO(24, 183, 137,1);
   static final Color lightCardColor = Color.fromRGBO(140, 138, 150,1);
 
   //constants color range for light theme
