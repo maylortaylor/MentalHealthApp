@@ -569,7 +569,7 @@ Widget _buildVimeoCard(BuildContext context) {
             autofocus: true,
             keyboardType: TextInputType.multiline,
             minLines: maxLines,
-            maxLines: maxLines * 2,
+            maxLines: maxLines + 2,
             decoration: InputDecoration(
               fillColor: AppThemes.midCardColor,
               filled: true,
