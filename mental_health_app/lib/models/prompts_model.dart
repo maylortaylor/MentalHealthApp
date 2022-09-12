@@ -4,6 +4,7 @@ class Prompt {
   final String id;
   final String title;
   final String? body;
+  final String? textPrompt;
   final String dateCreated;
   final String step;
   final String? videoUrl;
@@ -13,6 +14,7 @@ class Prompt {
     required this.id,
     required this.title,
     required this.body,
+    required this.textPrompt,
     required this.dateCreated,
     required this.step,
     this.videoUrl,
@@ -25,6 +27,7 @@ class Prompt {
     String step = data['step'];
     String title = data['title'] ?? '';
     String body = data['body'] ?? '';
+    String textPrompt = data['textPrompt'] ?? '';
     String videoUrl = data['videoUrl'] ?? '';
     String photoUrl = data['photoUrl'] ?? '';
 
@@ -32,6 +35,7 @@ class Prompt {
       id: documentId, 
       title: title,
       body: body,
+      textPrompt: textPrompt,
       dateCreated: dateCreated,
       step: step,
       videoUrl: videoUrl,
@@ -43,6 +47,7 @@ class Prompt {
       'id': id,
       'title': title,
       'body': body,
+      'textPrompt': textPrompt,
       'dateCreated': dateCreated,
       'step': step,
       'videoUrl': videoUrl,

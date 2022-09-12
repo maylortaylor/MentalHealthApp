@@ -183,7 +183,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
           Expanded(
             child: Container(
             height: 40,
-            color: Theme.of(context).colorScheme.tertiary,
+            color: AppThemes.lightestGreen,
               child: Center(
                 child: RichText(
                 textAlign: TextAlign.center,
@@ -202,13 +202,13 @@ class _DecisionScreenState extends  State<DecisionScreen> {
         Expanded(
           child: Container(
           height: 40,
-            color: Theme.of(context).colorScheme.secondary,
+            color: AppThemes.mediumGreen,
             child: Center(
               child: RichText(
               textAlign: TextAlign.center,
               text: const TextSpan(
                 text: 'The Ultimate ',
-                style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 16),
+                style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 16, color: Colors.white),
                 children:  [
                   TextSpan(text: 'Mental Health Nutitrion Guide ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 16)),
                 ],
@@ -220,13 +220,13 @@ class _DecisionScreenState extends  State<DecisionScreen> {
         Expanded(
           child: Container(
             height: 40,
-            color: Theme.of(context).colorScheme.primary,
+            color: AppThemes.darkGreen,
             child: Center(
               child: RichText(
               textAlign: TextAlign.center,
               text: const TextSpan(
                 text: 'Try ',
-                style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 18),
+                style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 18, color: Colors.white),
                 children:  [
                   TextSpan(text: 'Personalized Coaching ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 18)),
                 ],

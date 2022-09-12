@@ -4,14 +4,17 @@ import 'package:mental_health_app/constants/app_font_family.dart';
 class AppThemes {
   AppThemes._();
 
-  static final Color angryColor = const Color.fromRGBO(210,71,42,1);
-  static final Color anxiousColor = const Color.fromRGBO(51,117,90,1);
-  static final Color depressedColor = const Color.fromRGBO(42,86,105,1);
-  static final Color guiltyColor = const Color.fromRGBO(212,171,113,1);
-  static final Color darkCardColor = Color.fromRGBO(15,10,51,1);
-  static final Color midCardColor = Color.fromRGBO(115, 110, 144,1);
-  static final Color promptCardColor = Color.fromRGBO(24, 183, 137,1);
-  static final Color lightCardColor = Color.fromRGBO(140, 138, 150,1);
+  static Color angryColor = const Color.fromRGBO(225,103,79,1);
+  static Color anxiousColor = const Color.fromRGBO(51,117,90,1);
+  static Color depressedColor = const Color.fromRGBO(28,63,78,1);
+  static Color guiltyColor = const Color.fromRGBO(197,153,91,1);
+  static Color darkCardColor = const Color.fromRGBO(15,10,51,1);
+  static Color midCardColor = const Color.fromRGBO(103,98,132,1);
+  static Color promptCardColor = const Color.fromRGBO(24,183,137,1);
+  static Color lightCardColor = const Color.fromRGBO(140,138,150,1);
+  static Color lightestGreen = const Color.fromRGBO(162,201,186,1);
+  static Color mediumGreen = const Color.fromRGBO(95,176,144,1);
+  static Color darkGreen = const Color.fromRGBO(51,117,90,1);
 
   //constants color range for light theme
   static const Color _lightPrimaryColor = const Color.fromRGBO(51,117,90,1);

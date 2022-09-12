@@ -441,7 +441,7 @@ Widget _buildVimeoCard(BuildContext context) {
               ),
             ),
            textBoxArea(index),
-           Spacer(),
+            Spacer(),
            answerArea(index),
            Spacer(),
           ],
@@ -483,7 +483,6 @@ Widget _buildVimeoCard(BuildContext context) {
       ],
     );
   }
-  
   Widget cardTitleArea(int index) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
@@ -504,110 +503,96 @@ Widget _buildVimeoCard(BuildContext context) {
       ),
     );
   }
+  Widget promptText(int index) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.85,
+        child: AutoSizeText(
+          '${promptsList[index].textPrompt}', 
+        textAlign: TextAlign.left,
+        wrapWords: true,
+        maxLines: 1,
+        // minFontSize: 18,
+        // maxFontSize: 26,
+        style: const TextStyle(
+            fontFamily: AppFontFamily.poppins,
+            // fontSize: 20,
+            color: Colors.white,
+            fontWeight: FontWeight.w300,
+          )
+        )
+      ),
+    );
+  }
   Widget textBoxArea(int index) {
     return  Padding(
       padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
-      child: Row(
-        children: [
-          Expanded(
-            child: Container(
-              color: AppThemes.promptCardColor,
-              child: AutoSizeText(
-                // answerAreaTextController.text,
-                '${promptsList[index].body} ${promptsList[index].body} ${promptsList[index].body} ${promptsList[index].body} ${promptsList[index].body}', 
-              maxLines: 7,
-              // presetFontSizes: [10, 30],
-              minFontSize: 18,
-              maxFontSize: 30,
-              overflow: TextOverflow.ellipsis,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                    fontFamily: AppFontFamily.poppins,
-                    fontSize: 22,
-                    color: Colors.white,
-                    fontStyle: FontStyle.italic
-                ),
-              )
-              // child: TextField(
-              //   controller: TextEditingController(text: '${promptsList[index].body} ${promptsList[index].body}'),
-              //   readOnly: true,
-              //   textAlign: TextAlign.center,
-              //   style: TextStyle(
-              //       fontFamily: AppFontFamily.poppins,
-              //       fontSize: 16,
-              //       color: Colors.white,
-              //       fontStyle: FontStyle.italic
-              //   ),
-              //   cursorColor: Colors.white,
-              //   autofocus: false,
-              //   keyboardType: TextInputType.multiline,
-              //   maxLines: null,
-              //   decoration: InputDecoration(
-              //     fillColor: AppThemes.promptCardColor,
-              //     filled: true,
-              //     // hintText: '${promptsList[index].body} ${promptsList[index].body}' ?? '',
-              //     // hintMaxLines: 40,
-              //     enabledBorder: const OutlineInputBorder(
-              //       borderSide: const BorderSide(color: Colors.white, width: 0.0),
-              //     ),
-              //     focusedBorder: const OutlineInputBorder(
-              //       borderSide: const BorderSide(color: Colors.white, width: 0.0),
-              //     ),
-              //     border: OutlineInputBorder(),
-              //     // hintStyle: TextStyle(
-              //     //   fontFamily: AppFontFamily.poppins,
-              //     //   fontSize: 12,
-              //     //   color: Colors.white,
-              //     //   fontStyle: FontStyle.italic
-              //     // ),
-              // ),
-              // ),
-            ),
-          )
-        ],
+      child: Container(
+        width: MediaQuery.of(context).size.width * .50,
+        decoration: BoxDecoration(
+          color: AppThemes.promptCardColor,
+          border: Border.all(
+            color: Colors.white
+          ),
+        borderRadius: BorderRadius.circular(20) // use instead of BorderRadius.all(Radius.circular(20))
+        ),
+        child: AutoSizeText(
+          // answerAreaTextController.text,
+          '${promptsList[index].body}', 
+        maxLines: 7,
+        // presetFontSizes: [10, 30],
+        minFontSize: 18,
+        maxFontSize: 30,
+        overflow: TextOverflow.ellipsis,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+              fontFamily: AppFontFamily.poppins,
+              fontSize: 22,
+              color: Colors.white,
+              fontStyle: FontStyle.italic
+          ),
+        )
       ),
     );
   }
 
   Widget answerArea(int index) {
-    return  Padding(
-      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-      child: Row(
+    return  Container(
+      padding: const EdgeInsets.fromLTRB(48, 0, 48, 0),
+      child: Column(
         children: [
-          Container(
-            child: Expanded(
-              child: TextField(
-                controller: answerAreaTextController,
-                readOnly: false,
-                style: TextStyle(
-                  fontFamily: AppFontFamily.poppins,
-                  color: Colors.white
-                ),
-                cursorColor: Colors.white,
-                autofocus: false,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                decoration: InputDecoration(
-                  fillColor: AppThemes.midCardColor,
-                  filled: true,
-                  // hintText: "",
-                  hintMaxLines: 40,
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.white, width: 0.0),
-                  ),
-                  focusedBorder: const OutlineInputBorder(
-                    borderSide: const BorderSide(color: Colors.white, width: 0.0),
-                  ),
-                  border: OutlineInputBorder(),
-                  // hintStyle: TextStyle(
-                  //   color: Colors.white,
-                  //   fontSize: 18,
-                  //   fontStyle: FontStyle.italic
-                  // ),
-                  // hintText: ""
-              ),),
-            )
-          )
+          promptText(index),
+          TextField(
+            controller: answerAreaTextController,
+            readOnly: false,
+            style: const TextStyle(
+              fontFamily: AppFontFamily.poppins,
+              color: Colors.white
+            ),
+            cursorColor: Colors.white,
+            autofocus: false,
+            keyboardType: TextInputType.multiline,
+            maxLines: null,
+            decoration: InputDecoration(
+              fillColor: AppThemes.midCardColor,
+              filled: true,
+              // hintText: "",
+              hintMaxLines: 40,
+              enabledBorder: const OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.white, width: 0.0),
+              ),
+              focusedBorder: const OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.white, width: 0.0),
+              ),
+              border: OutlineInputBorder(),
+              // hintStyle: TextStyle(
+              //   color: Colors.white,
+              //   fontSize: 18,
+              //   fontStyle: FontStyle.italic
+              // ),
+              // hintText: ""
+          ),),
         ],
       ),
     );
