@@ -535,13 +535,13 @@ Widget _buildVimeoCard(BuildContext context) {
           '${promptsList[index].body}', 
         maxLines: 9,
         // presetFontSizes: [10, 30],
-        minFontSize: 12,
+        minFontSize: 20,
         maxFontSize: 30,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
         style: const TextStyle(
               fontFamily: AppFontFamily.poppins,
-              fontSize: 22,
+              // fontSize: 18,
               color: Colors.white,
               fontStyle: FontStyle.italic
           ),
