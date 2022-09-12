@@ -425,25 +425,25 @@ Widget _buildVimeoCard(BuildContext context) {
               padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
               child: Row(
                 children: [
-                  Flexible(
-                    flex: 1,
+                  Container(
+                    width: 100,
                     child: cardStepArea(index)
                   ),
                   Flexible(
-                    flex: 6,
+                    flex: 10,
+                    fit: FlexFit.loose,
                     child: cardTitleArea(index)
                   ),
-                  Flexible(
-                    flex: 1,
+                  Container(
+                    width: 100,
                     child: displayPlayButton(index)
                   )
                 ]
               ),
             ),
-           textBoxArea(index),
-            Spacer(),
+           bodyArea(index),
            answerArea(index),
-           Spacer(),
+          //  Spacer(),
           ],
         ),
       ),
@@ -454,19 +454,14 @@ Widget _buildVimeoCard(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 8.0, 8.0, 0),
-          child: Container(
-              child: const Text('Step', 
-              style: TextStyle(
-                  fontFamily: AppFontFamily.poppins,
-                  fontSize: 22,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-              )
-            )
+        const Text('Step', 
+        style: TextStyle(
+            fontFamily: AppFontFamily.poppins,
+            fontSize: 22,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+        )
           ),
-        ),
         Padding(
           padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
           child: Container(
@@ -483,6 +478,7 @@ Widget _buildVimeoCard(BuildContext context) {
       ],
     );
   }
+  
   Widget cardTitleArea(int index) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
@@ -490,8 +486,8 @@ Widget _buildVimeoCard(BuildContext context) {
         width: MediaQuery.of(context).size.width * 0.55,
         child: AutoSizeText(
           '${promptsList[index].title}', 
-        maxLines: 2,
-        minFontSize: 22,
+        maxLines: 1,
+        minFontSize: 8,
         maxFontSize: 30,
         style: const TextStyle(
             fontFamily: AppFontFamily.poppins,
@@ -503,6 +499,7 @@ Widget _buildVimeoCard(BuildContext context) {
       ),
     );
   }
+  
   Widget promptText(int index) {
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
@@ -525,9 +522,10 @@ Widget _buildVimeoCard(BuildContext context) {
       ),
     );
   }
-  Widget textBoxArea(int index) {
+  
+  Widget bodyArea(int index) {
     return  Padding(
-      padding: const EdgeInsets.fromLTRB(8, 8, 8, 0),
+      padding: const EdgeInsets.fromLTRB(8, 32, 8, 0),
       child: Container(
         width: MediaQuery.of(context).size.width * .50,
         decoration: BoxDecoration(
@@ -540,9 +538,9 @@ Widget _buildVimeoCard(BuildContext context) {
         child: AutoSizeText(
           // answerAreaTextController.text,
           '${promptsList[index].body}', 
-        maxLines: 7,
+        maxLines: 9,
         // presetFontSizes: [10, 30],
-        minFontSize: 18,
+        minFontSize: 12,
         maxFontSize: 30,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
@@ -558,27 +556,36 @@ Widget _buildVimeoCard(BuildContext context) {
   }
 
   Widget answerArea(int index) {
+    final maxLines = 5;
+
     return  Container(
-      padding: const EdgeInsets.fromLTRB(48, 0, 48, 0),
+      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
       child: Column(
         children: [
           promptText(index),
           TextField(
             controller: answerAreaTextController,
-            readOnly: false,
             style: const TextStyle(
+              fontSize: 14,
               fontFamily: AppFontFamily.poppins,
               color: Colors.white
             ),
             cursorColor: Colors.white,
-            autofocus: false,
+            autofocus: true,
             keyboardType: TextInputType.multiline,
-            maxLines: null,
+            minLines: maxLines,
+            maxLines: maxLines * 2,
             decoration: InputDecoration(
               fillColor: AppThemes.midCardColor,
               filled: true,
               // hintText: "",
-              hintMaxLines: 40,
+              // hintMaxLines: 40,
+              // hintStyle: TextStyle(
+              //   color: Colors.white,
+              //   fontSize: 18,
+              //   fontStyle: FontStyle.italic
+              // ),
+              // hintText: ""
               enabledBorder: const OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.white, width: 0.0),
               ),
@@ -586,49 +593,42 @@ Widget _buildVimeoCard(BuildContext context) {
                 borderSide: const BorderSide(color: Colors.white, width: 0.0),
               ),
               border: OutlineInputBorder(),
-              // hintStyle: TextStyle(
-              //   color: Colors.white,
-              //   fontSize: 18,
-              //   fontStyle: FontStyle.italic
-              // ),
-              // hintText: ""
           ),),
         ],
       ),
     );
   }
+  
   Widget displayPlayButton(int index) {
     if (promptsList[index].videoUrl!.isNotEmpty) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 8, 0, 8),
-            child: IconButton(
-              onPressed: () {
-                // Go to video url
-                _switchCard();
-                // Navigator.push(
-                //       context,
-                //       MaterialPageRoute(
-                //         builder: (context) {
-                //           return VideoScreen(videoUrl: promptsList[index].videoUrl!,);
-                //         },
-                //       ),
-                //     );
-              }, 
-              icon: Icon(Icons.play_arrow)
-            ),
-          ),
-          Text("Play Video",
-          style: TextStyle(
-            fontFamily: AppFontFamily.poppins,
-            color: Colors.white
-          ),)
-        ],
-      );
+      return Container();    
     }
-    return Container();    
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        IconButton(
+          onPressed: () {
+            // Go to video url
+            _switchCard();
+            // Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (context) {
+            //           return VideoScreen(videoUrl: promptsList[index].videoUrl!,);
+            //         },
+            //       ),
+            //     );
+          }, 
+          icon: Icon(Icons.play_arrow)
+        ),
+        const Text("Play Video",
+        style: TextStyle(
+          fontFamily: AppFontFamily.poppins,
+          color: Colors.white
+        ),)
+      ],
+    );
   }
+
 }
 
