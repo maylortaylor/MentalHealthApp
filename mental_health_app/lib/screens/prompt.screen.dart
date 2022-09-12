@@ -505,14 +505,9 @@ Widget _buildVimeoCard(BuildContext context) {
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.85,
-        child: AutoSizeText(
-          '${promptsList[index].textPrompt}', 
-        textAlign: TextAlign.left,
-        wrapWords: true,
-        maxLines: 1,
-        // minFontSize: 18,
-        // maxFontSize: 26,
-        style: const TextStyle(
+        child: const Text(
+          'Tap to Type', 
+        style: TextStyle(
             fontFamily: AppFontFamily.poppins,
             // fontSize: 20,
             color: Colors.white,
@@ -578,14 +573,13 @@ Widget _buildVimeoCard(BuildContext context) {
             decoration: InputDecoration(
               fillColor: AppThemes.midCardColor,
               filled: true,
-              // hintText: "",
-              // hintMaxLines: 40,
-              // hintStyle: TextStyle(
-              //   color: Colors.white,
-              //   fontSize: 18,
-              //   fontStyle: FontStyle.italic
-              // ),
-              // hintText: ""
+              hintText: promptsList[index].textPrompt,
+              hintMaxLines: 40,
+              hintStyle: const TextStyle(
+                color: Colors.white,
+                fontSize: 18,
+                fontStyle: FontStyle.italic
+              ),
               enabledBorder: const OutlineInputBorder(
                 borderSide: const BorderSide(color: Colors.white, width: 0.0),
               ),
