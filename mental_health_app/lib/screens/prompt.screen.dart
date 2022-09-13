@@ -534,7 +534,6 @@ Widget _buildVimeoCard(BuildContext context) {
           // answerAreaTextController.text,
           '${promptsList[index].body}', 
         maxLines: 9,
-        // presetFontSizes: [10, 30],
         minFontSize: 20,
         maxFontSize: 30,
         overflow: TextOverflow.ellipsis,
@@ -551,43 +550,89 @@ Widget _buildVimeoCard(BuildContext context) {
   }
 
   Widget answerArea(int index) {
-    final maxLines = 5;
+    const maxLines = 5;
+    const numberOfLines = 5;
+    const cursorHeight = 22.0;
 
     return  Container(
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
       child: Column(
         children: [
           promptText(index),
-          TextField(
-            controller: answerAreaTextController,
-            style: const TextStyle(
-              fontSize: 14,
-              fontFamily: AppFontFamily.poppins,
-              color: Colors.white
-            ),
-            cursorColor: Colors.white,
-            autofocus: true,
-            keyboardType: TextInputType.multiline,
-            minLines: maxLines,
-            maxLines: maxLines + 2,
-            decoration: InputDecoration(
-              fillColor: AppThemes.midCardColor,
-              filled: true,
-              hintText: promptsList[index].textPrompt,
-              hintMaxLines: 40,
-              hintStyle: const TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontStyle: FontStyle.italic
+          Stack(
+            children: [
+              for (int i = 0; i < numberOfLines; i++)
+                Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.only(
+                    top: 4 + (i + 1) * cursorHeight,
+                    left: 15,
+                    right: 15,
+                  ),
+                  height: 1,
+                  color: Colors.white,
+                ),
+               SizedBox(
+                height: numberOfLines * (cursorHeight + 8),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  child: TextField(
+                    controller: answerAreaTextController,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      fontFamily: AppFontFamily.poppins,
+                      color: Colors.white
+                    ),
+                    decoration: const InputDecoration(border: InputBorder.none),
+                    cursorHeight: cursorHeight,
+                    keyboardType: TextInputType.multiline,
+                    // expands: true,
+                    maxLines: maxLines,
+                  ),
+                ),
               ),
-              enabledBorder: const OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white, width: 0.0),
-              ),
-              focusedBorder: const OutlineInputBorder(
-                borderSide: const BorderSide(color: Colors.white, width: 0.0),
-              ),
-              border: OutlineInputBorder(),
-          ),),
+            ],
+          ),
+          // TextField(
+          //   controller: answerAreaTextController,
+          //   style: const TextStyle(
+          //     fontSize: 14,
+          //     fontFamily: AppFontFamily.poppins,
+          //     color: Colors.white
+          //   ),
+          //   cursorColor: Colors.white,
+          //   autofocus: true,
+          //   keyboardType: TextInputType.multiline,
+          //   minLines: maxLines,
+          //   maxLines: maxLines + 2,
+          //   decoration: InputDecoration(
+          //     fillColor: AppThemes.midCardColor,
+          //     filled: true,
+          //     hintText: promptsList[index].textPrompt,
+          //     hintMaxLines: 40,
+          //     hintStyle: const TextStyle(
+          //       color: Colors.white,
+          //       fontSize: 18,
+          //       fontStyle: FontStyle.italic
+          //     ),
+          //     // enabledBorder: const OutlineInputBorder(
+          //     //   borderSide: BorderSide(color: Colors.white, width: 0.0),
+          //     // ),
+          //     enabledBorder: const UnderlineInputBorder( //<-- SEE HERE
+          //       borderSide: BorderSide(
+          //           width: 3, color: Colors.greenAccent), 
+          //     ),
+          //     focusedBorder: const OutlineInputBorder( //<-- SEE HERE
+          //       borderSide: BorderSide(
+          //           width: 3, color: Colors.blueAccent), 
+          //     ),
+          //     errorBorder: const OutlineInputBorder( //<-- SEE HERE
+          //       borderSide: BorderSide(
+          //           width: 3, color: Colors.redAccent), 
+          //     ),
+          //     border: const OutlineInputBorder(),
+          //   ),
+          // ),
         ],
       ),
     );
