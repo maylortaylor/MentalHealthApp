@@ -639,7 +639,7 @@ Widget _buildVimeoCard(BuildContext context) {
   }
   
   Widget displayPlayButton(int index) {
-    if (promptsList[index].videoUrl!.isNotEmpty) {
+    if (promptsList[index].videoUrl!.isEmpty) {
       return Container();    
     }
     return Column(
