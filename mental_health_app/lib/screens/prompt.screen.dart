@@ -61,8 +61,8 @@ class _PromptScreenState extends State<PromptScreen> {
   @override
   Widget build(BuildContext context) {
     final _scaffoldKey = GlobalKey<ScaffoldState>();
-    final firestoreDatabase =
-        Provider.of<FirestoreDatabase>(context, listen: false);
+    // final firestoreDatabase =
+    //     Provider.of<FirestoreDatabase>(context, listen: false);
         
     return Scaffold(
       appBar: AppBar(

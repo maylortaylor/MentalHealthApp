@@ -129,7 +129,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               // ));
                             } else {
                               Navigator.of(context)
-                                  .pushReplacementNamed(AppRoutes.home);
+                                  .pushReplacementNamed('/home');
                             }
                           }
                         }),
@@ -156,7 +156,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         // textColor: Theme.of(context).iconTheme.color,
                         onPressed: () {
                           Navigator.of(context)
-                              .pushReplacementNamed(AppRoutes.register);
+                              .pushReplacementNamed('/register');
                         },
                       ),
                 Center(

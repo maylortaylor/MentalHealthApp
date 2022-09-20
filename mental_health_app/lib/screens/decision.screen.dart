@@ -2,7 +2,9 @@ import 'dart:math';
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
+import 'package:mental_health_app/config/Application.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
 import 'package:mental_health_app/locator.dart';
@@ -82,7 +84,8 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   null,
                   context,
                   () {
-                    _navigationService.navigateTo('/prompt', queryParams: {'category': 'Anxiety', 'step': '1'});
+                    Application.router.navigateTo(context, '/prompt/anxiety');
+                    // _navigationService.navigateTo('/prompt', queryParams: {'category': 'Anxiety', 'step': '1'});
                     // Navigator.pushNamed(context, AppRoutes.prompt, arguments: {'category': 'Anxiety', 'step':1});
                     // Navigator.push(context, MaterialPageRoute(builder: (context) {
                     //   return PromptScreen(data: "Anxiety");
@@ -95,11 +98,12 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   null,
                   context,
                   () {
-                    _navigationService.navigateTo('/prompt', queryParams: {'category': 'Depression', 'step': '1'});
+                    // _navigationService.navigateTo('/prompt', queryParams: {'category': 'Depression', 'step': '1'});
+                    // Application.router.navigateTo(context, '/prompt/depression');
 
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    //   return PromptScreen(category: "Depression", step: 1);
-                    // }));
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      return PromptScreen(category: "Depression", step: 1);
+                    }));
                   },
                   "Depressed",
                   AppThemes.depressedColor
@@ -111,6 +115,8 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
                       return PromptScreen(category: "Guilt", step: 1);
                     }));
+                    // Application.router.navigateTo(context, '/prompt/guilt');
+
                   },
                   "Guilty",
                   AppThemes.guiltyColor
@@ -127,6 +133,8 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                         },
                       ),
                     );
+                    // Application.router.navigateTo(context, '/prompt/anger');
+
                   },
                   "Angry",
                 AppThemes.angryColor

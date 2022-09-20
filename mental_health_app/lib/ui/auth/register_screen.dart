@@ -160,7 +160,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           ),),
                         onPressed: () {
                           Navigator.of(context)
-                              .pushReplacementNamed(AppRoutes.login);
+                              .pushReplacementNamed('/login');
                         },
                       ),
               ],

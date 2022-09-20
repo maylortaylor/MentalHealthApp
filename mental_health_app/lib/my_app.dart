@@ -1,6 +1,8 @@
+import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/app_localizations.dart';
 import 'package:mental_health_app/auth_widget_builder.dart';
+import 'package:mental_health_app/config/Application.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
 import 'package:mental_health_app/flavor.dart';
 import 'package:mental_health_app/locator.dart';
@@ -8,8 +10,6 @@ import 'package:mental_health_app/models/user_model.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/providers/language_provider.dart';
 import 'package:mental_health_app/providers/theme_provider.dart';
-import 'package:mental_health_app/route_generator.dart';
-import 'package:mental_health_app/router.dart';
 import 'package:mental_health_app/routes.dart';
 import 'package:mental_health_app/screens/decision.screen.dart';
 import 'package:mental_health_app/screens/prompt.screen.dart';
@@ -19,14 +19,28 @@ import 'package:mental_health_app/ui/auth/sign_in_screen.dart';
 import 'package:provider/provider.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({required Key key, required this.databaseBuilder})
       : super(key: key);
+
 
   // Expose builders for 3rd party services at the root of the widget tree
   // This is useful when mocking services while testing
   final FirestoreDatabase Function(BuildContext context, String uid)
       databaseBuilder;
+
+  @override
+  State<MyApp> createState() {
+    return _MyAppState();
+  }
+}
+
+class _MyAppState extends State<MyApp> {
+  _MyAppState() {
+    final router = FluroRouter();
+    AppRoutes.configureRoutes(router);
+    Application.router = router;
+  }
 
   // This widget is the root of your application.
   @override
@@ -35,7 +49,7 @@ class MyApp extends StatelessWidget {
       builder: (_, themeProviderRef, __) {
         //{context, data, child}
             return AuthWidgetBuilder(
-              databaseBuilder: databaseBuilder,
+              databaseBuilder: widget.databaseBuilder,
               builder: (BuildContext context,
                   AsyncSnapshot<UserModel> userSnapshot) {
                 return MaterialApp(
@@ -71,11 +85,12 @@ class MyApp extends StatelessWidget {
                   // },
                   title: Provider.of<Flavor>(context).toString(),
                   // routes: AppRoutes.routes,
-                  routes: <String, WidgetBuilder> {
-                    // '/': (BuildContext context) => DecisionScreen(),
-                    '/prompt': (BuildContext context) => PromptScreen(category: 'Anxiety', step: 1,),
-                  },
-                  onGenerateRoute: generateRoute,
+                  // routes: <String, WidgetBuilder> {
+                  //   // '/': (BuildContext context) => DecisionScreen(),
+                  //   '/prompt': (BuildContext context) => PromptScreen(category: 'Anxiety', step: 1,),
+                  // },
+                  onGenerateRoute: Application.router.generator,
+                  // onGenerateRoute: generateRoute,
                   theme: AppThemes.lightTheme,
                   // darkTheme: AppThemes.darkTheme,
                   // themeMode: themeProviderRef.isDarkModeOn
@@ -88,8 +103,8 @@ class MyApp extends StatelessWidget {
                         return userSnapshot.hasData
                             ? Navigator(
                                 key: locator<NavigationService>().navigatorKey,
-                                onGenerateRoute: generateRoute,
-                                initialRoute: '/'
+                                onGenerateRoute: Application.router.generator,
+                                // initialRoute: '/'
                               )
                           //  ? DecisionScreen()
                             : SignInScreen();

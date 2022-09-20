@@ -86,7 +86,7 @@ class SettingScreen extends StatelessWidget {
 
                     Navigator.pop(context);
                     Navigator.of(context).pushNamedAndRemoveUntil(
-                        AppRoutes.login, ModalRoute.withName(AppRoutes.login));
+                        '/login', ModalRoute.withName('/login'));
                   },
                 )
               ],
