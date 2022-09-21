@@ -583,7 +583,11 @@ Widget _buildVimeoCard(BuildContext context) {
                       fontFamily: AppFontFamily.poppins,
                       color: Colors.white
                     ),
-                    decoration: const InputDecoration(border: InputBorder.none),
+                    decoration: InputDecoration(
+                      border: InputBorder.none,
+                      hintText: promptsList[index].textPrompt,
+                      hintStyle: TextStyle(color: Colors.white)
+                      ),
                     cursorHeight: cursorHeight,
                     keyboardType: TextInputType.multiline,
                     // expands: true,

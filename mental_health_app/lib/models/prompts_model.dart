@@ -9,6 +9,7 @@ class Prompt {
   final String step;
   final String? videoUrl;
   final String? photoUrl;
+  final String? pdfUrl;
 
   Prompt({
     required this.id,
@@ -19,6 +20,7 @@ class Prompt {
     required this.step,
     this.videoUrl,
     this.photoUrl,
+    this.pdfUrl,
   });
 
   static Prompt fromMap(Map<String, dynamic> data, String documentId) {
@@ -30,6 +32,7 @@ class Prompt {
     String textPrompt = data['textPrompt'] ?? '';
     String videoUrl = data['videoUrl'] ?? '';
     String photoUrl = data['photoUrl'] ?? '';
+    String pdfUrl = data['pdfUrl'] ?? '';
 
     return  Prompt(
       id: documentId, 
@@ -39,7 +42,8 @@ class Prompt {
       dateCreated: dateCreated,
       step: step,
       videoUrl: videoUrl,
-      photoUrl: photoUrl);
+      photoUrl: photoUrl,
+      pdfUrl: pdfUrl);
   }
   
   Map<String, dynamic> toMap() {
@@ -52,6 +56,7 @@ class Prompt {
       'step': step,
       'videoUrl': videoUrl,
       'photoUrl': photoUrl,
+      'pdfUrl': pdfUrl,
     };
 
     return map;
