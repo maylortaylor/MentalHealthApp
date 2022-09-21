@@ -137,7 +137,6 @@ class _PromptScreenState extends State<PromptScreen> {
     });
   }
 
-
   Widget _buildFront(context) {
   // return __buildLayout(
   //   key: ValueKey(true),
@@ -147,7 +146,7 @@ class _PromptScreenState extends State<PromptScreen> {
   return __buildLayout(context);
 }
 
-Widget __buildLayout(context) {
+  Widget __buildLayout(context) {
 // Widget __buildLayout({Key? key, String? faceName, Color? backgroundColor}) {
   return _landscapeMode(context);
   // return Container(
@@ -162,7 +161,7 @@ Widget __buildLayout(context) {
   //   ),
   // );
 }
-Widget __buildLayoutRear({Key? key, String? faceName, Color? backgroundColor}) {
+  Widget __buildLayoutRear({Key? key, String? faceName, Color? backgroundColor}) {
   return Container(
     key: key,
     decoration: BoxDecoration(
@@ -178,7 +177,7 @@ Widget __buildLayoutRear({Key? key, String? faceName, Color? backgroundColor}) {
   );
 }
 
-Widget _buildRear(context) {
+  Widget _buildRear(context) {
   // return __buildLayoutRear(
   //   key: ValueKey(false),
   //   backgroundColor: Colors.blue.shade700,
@@ -187,7 +186,7 @@ Widget _buildRear(context) {
   return _buildVimeoCard(context);
 }
 
-Widget _buildVimeoCard(BuildContext context) {
+  Widget _buildVimeoCard(BuildContext context) {
     return Card(
       color: Theme.of(context).cardTheme.color,
       elevation: 8,
@@ -244,7 +243,7 @@ Widget _buildVimeoCard(BuildContext context) {
     );
   }
 
-    Widget __transitionBuilder(Widget widget, Animation<double> animation) {
+  Widget __transitionBuilder(Widget widget, Animation<double> animation) {
     final rotateAnim = Tween(begin: pi, end: 0.0).animate(animation);
     return AnimatedBuilder(
       animation: rotateAnim,
