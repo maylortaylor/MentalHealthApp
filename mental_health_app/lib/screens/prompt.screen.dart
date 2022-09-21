@@ -52,8 +52,6 @@ class _PromptScreenState extends State<PromptScreen> {
 
    @override
   void dispose() {
-    // Clean up the controller when the widget is removed from the
-    // widget tree.
     answerAreaTextController.dispose();
     super.dispose();
   }
@@ -61,8 +59,6 @@ class _PromptScreenState extends State<PromptScreen> {
   @override
   Widget build(BuildContext context) {
     final _scaffoldKey = GlobalKey<ScaffoldState>();
-    // final firestoreDatabase =
-    //     Provider.of<FirestoreDatabase>(context, listen: false);
         
     return Scaffold(
       appBar: AppBar(
@@ -419,32 +415,33 @@ Widget _buildVimeoCard(BuildContext context) {
         color: Theme.of(context).cardTheme.color,
         elevation: 8,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-              child: Row(
-                children: [
-                  Container(
-                    width: 100,
-                    child: cardStepArea(index)
-                  ),
-                  Flexible(
-                    flex: 10,
-                    fit: FlexFit.loose,
-                    child: cardTitleArea(index)
-                  ),
-                  Container(
-                    width: 100,
-                    child: displayPlayButton(index)
-                  )
-                ]
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 100,
+                      child: cardStepArea(index)
+                    ),
+                    Flexible(
+                      flex: 10,
+                      fit: FlexFit.loose,
+                      child: cardTitleArea(index)
+                    ),
+                    Container(
+                      width: 100,
+                      child: displayPlayButton(index)
+                    )
+                  ]
+                ),
               ),
-            ),
-           bodyArea(index),
-           answerArea(index),
-          //  Spacer(),
-          ],
+             bodyArea(index),
+             answerArea(index),
+            ],
+          ),
         ),
       ),
     );
@@ -523,6 +520,8 @@ Widget _buildVimeoCard(BuildContext context) {
       padding: const EdgeInsets.fromLTRB(8, 32, 8, 0),
       child: Container(
         width: MediaQuery.of(context).size.width * .50,
+        constraints: BoxConstraints(maxHeight: double.infinity),
+        // height: MediaQuery.of(context).size.height * .40,
         decoration: BoxDecoration(
           color: AppThemes.promptCardColor,
           border: Border.all(
@@ -531,10 +530,9 @@ Widget _buildVimeoCard(BuildContext context) {
         borderRadius: BorderRadius.circular(20) // use instead of BorderRadius.all(Radius.circular(20))
         ),
         child: AutoSizeText(
-          // answerAreaTextController.text,
           '${promptsList[index].body}', 
-        maxLines: 9,
-        minFontSize: 20,
+        maxLines: 14,
+        minFontSize: 16,
         maxFontSize: 30,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
@@ -578,6 +576,7 @@ Widget _buildVimeoCard(BuildContext context) {
                   padding: const EdgeInsets.symmetric(horizontal: 15),
                   child: TextField(
                     controller: answerAreaTextController,
+                    autofocus: true,
                     style: const TextStyle(
                       fontSize: 14,
                       fontFamily: AppFontFamily.poppins,
