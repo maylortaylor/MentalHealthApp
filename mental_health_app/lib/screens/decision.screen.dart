@@ -53,20 +53,37 @@ class _DecisionScreenState extends  State<DecisionScreen> {
     final double itemHeight = (size.height - kToolbarHeight - 24) / 5;
     final double itemWidth = size.width / 4;
     final authProvider = Provider.of<AuthProvider>(context);
-    Color? backgroundColor;
-    if (authProvider.status == Status.Unauthenticated){
-      backgroundColor = AppThemes.whiteColor;
+
+    Color getAppBarColor() {
+      if (authProvider.status == Status.Authenticated) {
+        return AppThemes.anxiousColor;
+      }
+      return AppThemes.depressedColor;
+    }
+
+    Color getBackgroundColor() {
+      if (authProvider.status == Status.Authenticated) {
+        print("DecisionScreen Status Check: Status.Authenticated");
+        return AppThemes.whiteColor;
+      }
       print("DecisionScreen Status Check: Status.Unauthenticated");
-    } else if (authProvider.status == Status.Authenticated) {
-      backgroundColor = AppThemes.greyColor;
-      print("DecisionScreen Status Check: Status.Authenticated");
+      return AppThemes.greyColor;
     }
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: AppThemes.anxiousColor,
+        backgroundColor: getAppBarColor(),
         actions: [
           authProvider.status == Status.Unauthenticated ? ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.resolveWith((states) {
+              // If the button is pressed, return green, otherwise blue
+              if (states.contains(MaterialState.pressed)) {
+                return AppThemes.lightestGreen;
+              }
+              return getAppBarColor();
+            })
+            ),
             child: Text(
               "Login",
               style: TextStyle(color: AppThemes.whiteColor),
@@ -77,6 +94,15 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               },
           ) : Container(),
           (authProvider.status == Status.Unauthenticated) ? ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.resolveWith((states) {
+              // If the button is pressed, return green, otherwise blue
+              if (states.contains(MaterialState.pressed)) {
+                return AppThemes.lightestGreen;
+              }
+              return getAppBarColor();
+            })
+            ),
             child: Text(
               "Register",
               style: TextStyle(color: AppThemes.whiteColor),
@@ -87,6 +113,15 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               },
           ) :  Container(),
            authProvider.status == Status.Authenticated ? ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.resolveWith((states) {
+              // If the button is pressed, return green, otherwise blue
+              if (states.contains(MaterialState.pressed)) {
+                return AppThemes.lightestGreen;
+              }
+              return getAppBarColor();
+            })
+            ),
             child: Text(
               "Logout",
               style: TextStyle(color: AppThemes.whiteColor),
@@ -146,7 +181,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
           color: Colors.white
         ),
       ),
-      backgroundColor:  backgroundColor,
+      backgroundColor:  getBackgroundColor(),
       body:Column(
         children: [
           Container(

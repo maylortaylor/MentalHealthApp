@@ -87,6 +87,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 ),
                 TextFormField(
                   controller: _emailController,
+                  autofocus: true,
                   style: Theme.of(context).textTheme.bodyLarge,
                   validator: (value) => value!.isEmpty
                       // ? AppLocalizations.of(context)
