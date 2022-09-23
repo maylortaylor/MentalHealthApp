@@ -189,40 +189,51 @@ class _DecisionScreenState extends  State<DecisionScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Expanded(
-            child: Container(
-            height: 40,
-            color: AppThemes.lightestGreen,
-              child: Center(
-                child: RichText(
-                textAlign: TextAlign.center,
-                text: const TextSpan(
-                  text: 'Get the ',
-                  style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 18),
-                  children:  [
-                    TextSpan(text: 'my4blocks ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 18)),
-                    TextSpan(text: 'masterclass', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 18)),
-                  ],
+            child: GestureDetector(
+              onTap:() {
+                  Application.router.navigateTo(context, AppRoutes.login);
+              },
+              child: Container(
+              height: 40,
+              color: AppThemes.lightestGreen,
+                child: Center(
+                  child: RichText(
+                  textAlign: TextAlign.center,
+                  text: const TextSpan(
+                    text: 'Get the ',
+                    style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 18),
+                    children:  [
+                      TextSpan(text: 'my4blocks ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 18)),
+                      TextSpan(text: 'masterclass', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 18)),
+                    ],
+                  ),
+                              ),
                 ),
-                            ),
               ),
             ),
           ),
         Expanded(
-          child: Container(
-          height: 40,
-            color: AppThemes.mediumGreen,
-            child: Center(
-              child: RichText(
-              textAlign: TextAlign.center,
-              text: const TextSpan(
-                text: 'The Ultimate ',
-                style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 16, color: Colors.white),
-                children:  [
-                  TextSpan(text: 'Mental Health Nutitrion Guide ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 16)),
-                ],
+          child: GestureDetector(
+            onTap:() {
+                  Application.router.navigateTo(context, AppRoutes.login);
+              },
+            child:
+              Container(
+              height: 40,
+                color: AppThemes.mediumGreen,
+                child: Center(
+                  child: RichText(
+                  textAlign: TextAlign.center,
+                  text: const TextSpan(
+                    text: 'The Ultimate ',
+                    style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 16, color: Colors.white),
+                    children:  [
+                      TextSpan(text: 'Mental Health Nutitrion Guide ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 16)),
+                    ],
+                  ),
+                              ),
+                ),
               ),
-                          ),
-            ),
           ),
         ),
         Expanded(

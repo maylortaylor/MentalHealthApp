@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/app_localizations.dart';
+import 'package:mental_health_app/config/Application.dart';
+import 'package:mental_health_app/constants/app_font_family.dart';
+import 'package:mental_health_app/constants/app_themes.dart';
 import 'package:mental_health_app/models/user_model.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/routes.dart';
@@ -27,6 +30,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: AppThemes.anxiousColor,
+        title: const Text(
+          'Register',
+          style: TextStyle(
+            fontFamily: AppFontFamily.poppins,
+            fontSize: 22
+          ),),
+        iconTheme: const IconThemeData(
+          color: Colors.white, //change your color here
+        ),
+        titleTextStyle: const TextStyle(
+          fontFamily: AppFontFamily.poppins,
+          color: Colors.white
+        ),
+      ),
       body: Stack(
         children: <Widget>[
           _buildBackground(),
@@ -69,16 +88,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   controller: _emailController,
                   style: Theme.of(context).textTheme.bodyLarge,
                   validator: (value) => value!.isEmpty
-                      ? AppLocalizations.of(context)
-                          .translate("loginTxtErrorEmail")
+                      // ? AppLocalizations.of(context)
+                      //     .translate("loginTxtErrorEmail")
+                      ? "Error in email"
                       : null,
                   decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.email,
                         color: Theme.of(context).iconTheme.color,
                       ),
-                      labelText: AppLocalizations.of(context)
-                          .translate("loginTxtEmail"),
+                      // labelText: AppLocalizations.of(context)
+                      //     .translate("loginTxtEmail"),
+                      labelText: "Email",
                       border: OutlineInputBorder()),
                 ),
                 Padding(
@@ -89,16 +110,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     controller: _passwordController,
                     style: Theme.of(context).textTheme.bodyLarge,
                     validator: (value) => value!.length < 6
-                        ? AppLocalizations.of(context)
-                            .translate("loginTxtErrorPassword")
+                        // ? AppLocalizations.of(context)
+                        //     .translate("loginTxtErrorPassword")
+                        ? "Error in password"
                         : null,
                     decoration: InputDecoration(
                         prefixIcon: Icon(
                           Icons.lock,
                           color: Theme.of(context).iconTheme.color,
                         ),
-                        labelText: AppLocalizations.of(context)
-                            .translate("loginTxtPassword"),
+                        // labelText: AppLocalizations.of(context)
+                        //     .translate("loginTxtPassword"),
+                        labelText: "Password",
                         border: OutlineInputBorder()),
                   ),
                 ),
@@ -108,8 +131,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       )
                     : ElevatedButton(
                         child: Text(
-                          AppLocalizations.of(context)
-                              .translate("loginBtnSignUp"),
+                          // AppLocalizations.of(context)
+                          //     .translate("loginBtnSignUp"),
+                          "Sign up",
                           style: Theme.of(context).textTheme.button,
                         ),
                         onPressed: () async {
@@ -138,8 +162,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         padding: const EdgeInsets.only(top: 48),
                         child: Center(
                             child: Text(
-                          AppLocalizations.of(context)
-                              .translate("loginTxtHaveAccount"),
+                          // AppLocalizations.of(context)
+                          //     .translate("loginTxtHaveAccount"),
+                          "Have Account",
                           style: Theme.of(context).textTheme.button,
                         )),
                       ),
@@ -148,8 +173,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         child: null,
                       )
                     : TextButton(
-                        child: Text(AppLocalizations.of(context)
-                            .translate("loginBtnLinkSignIn")),
+                        // child: Text(AppLocalizations.of(context)
+                        //     .translate("loginBtnLinkSignIn")),
+                        child: Text("Sign In"),
                         style: ButtonStyle(
                           textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
                             (Set<MaterialState> states) {
@@ -159,8 +185,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             },
                           ),),
                         onPressed: () {
-                          Navigator.of(context)
-                              .pushReplacementNamed('/login');
+                          // Navigator.of(context)
+                          //     .pushReplacementNamed('/login');
+                          Application.router.navigateTo(context, AppRoutes.login);
                         },
                       ),
               ],

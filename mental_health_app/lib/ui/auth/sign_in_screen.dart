@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:mental_health_app/app_localizations.dart';
+import 'package:mental_health_app/config/Application.dart';
+import 'package:mental_health_app/constants/app_font_family.dart';
+import 'package:mental_health_app/constants/app_themes.dart';
+// import 'package:mental_health_app/app_localizations.dart';
 import 'package:mental_health_app/flavor.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/routes.dart';
+// import 'package:mental_health_app/routes.dart';
 import 'package:provider/provider.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -27,9 +31,25 @@ class _SignInScreenState extends State<SignInScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldKey,
+      appBar: AppBar(
+        backgroundColor: AppThemes.anxiousColor,
+        title: const Text(
+          'Login',
+          style: TextStyle(
+            fontFamily: AppFontFamily.poppins,
+            fontSize: 22
+          ),),
+        iconTheme: const IconThemeData(
+          color: Colors.white, //change your color here
+        ),
+        titleTextStyle: const TextStyle(
+          fontFamily: AppFontFamily.poppins,
+          color: Colors.white
+        ),
+      ),
       body: Stack(
         children: <Widget>[
-          _buildBackground(),
+          // _buildBackground(),
           Align(
             alignment: Alignment.center,
             child: _buildForm(context),
@@ -69,16 +89,18 @@ class _SignInScreenState extends State<SignInScreen> {
                   controller: _emailController,
                   style: Theme.of(context).textTheme.bodyLarge,
                   validator: (value) => value!.isEmpty
-                      ? AppLocalizations.of(context)
-                          .translate("loginTxtErrorEmail")
+                      // ? AppLocalizations.of(context)
+                      //     .translate("loginTxtErrorEmail")
+                      ? "Error in email"
                       : null,
                   decoration: InputDecoration(
                       prefixIcon: Icon(
                         Icons.email,
                         color: Theme.of(context).iconTheme.color,
                       ),
-                      labelText: AppLocalizations.of(context)
-                          .translate("loginTxtEmail"),
+                      // labelText: AppLocalizations.of(context)
+                      //     .translate("loginTxtEmail"),
+                      labelText: "Email",
                       border: OutlineInputBorder()),
                 ),
                 Padding(
@@ -89,16 +111,18 @@ class _SignInScreenState extends State<SignInScreen> {
                     controller: _passwordController,
                     style: Theme.of(context).textTheme.bodyLarge,
                     validator: (value) => value!.length < 6
-                        ? AppLocalizations.of(context)
-                            .translate("loginTxtErrorPassword")
+                      ? "Password Error"
+                        // ? AppLocalizations.of(context)
+                        //     .translate("loginTxtErrorPassword")
                         : null,
                     decoration: InputDecoration(
                         prefixIcon: Icon(
                           Icons.lock,
                           color: Theme.of(context).iconTheme.color,
                         ),
-                        labelText: AppLocalizations.of(context)
-                            .translate("loginTxtPassword"),
+                        // labelText: AppLocalizations.of(context)
+                        //     .translate("loginTxtPassword"),
+                        labelText: "Password",
                         border: OutlineInputBorder()),
                   ),
                 ),
@@ -108,8 +132,9 @@ class _SignInScreenState extends State<SignInScreen> {
                       )
                     : ElevatedButton(
                         child: Text(
-                          AppLocalizations.of(context)
-                              .translate("loginBtnSignIn"),
+                          // AppLocalizations.of(context)
+                          //     .translate("loginBtnSignIn"),
+                          "Sign In",
                           style: Theme.of(context).textTheme.button,
                         ),
                         onPressed: () async {
@@ -128,8 +153,8 @@ class _SignInScreenState extends State<SignInScreen> {
                               //       .translate("loginTxtErrorSignIn")),
                               // ));
                             } else {
-                              Navigator.of(context)
-                                  .pushReplacementNamed('/home');
+                                Application.router.navigateTo(context, AppRoutes.root);
+                              
                             }
                           }
                         }),
@@ -141,8 +166,9 @@ class _SignInScreenState extends State<SignInScreen> {
                         padding: const EdgeInsets.only(top: 48),
                         child: Center(
                             child: Text(
-                          AppLocalizations.of(context)
-                              .translate("loginTxtDontHaveAccount"),
+                          // AppLocalizations.of(context)
+                          //     .translate("loginTxtDontHaveAccount"),
+                          "Dont have an account?",
                           style: Theme.of(context).textTheme.button,
                         )),
                       ),
@@ -151,12 +177,12 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: null,
                       )
                     : TextButton(
-                        child: Text(AppLocalizations.of(context)
-                            .translate("loginBtnLinkCreateAccount")),
+                        // child: Text(AppLocalizations.of(context)
+                        //     .translate("loginBtnLinkCreateAccount")),
+                        child: const Text("Create Account"),
                         // textColor: Theme.of(context).iconTheme.color,
                         onPressed: () {
-                          Navigator.of(context)
-                              .pushReplacementNamed('/register');
+                          Application.router.navigateTo(context, '/register');
                         },
                       ),
                 Center(
