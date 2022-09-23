@@ -57,9 +57,11 @@ class AuthProvider extends ChangeNotifier {
   Future<void> onAuthStateChanged(User? firebaseUser) async {
     if (firebaseUser == null) {
       _status = Status.Unauthenticated;
+      print("auth state changed: Unauthenticated");
     } else {
       _userFromFirebase(firebaseUser);
       _status = Status.Authenticated;
+      print("auth state changed: Authenticated");
     }
     notifyListeners();
   }
@@ -72,6 +74,9 @@ class AuthProvider extends ChangeNotifier {
       notifyListeners();
       final UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
+      print(email);
+      print(password);
+      print("Register With Email and Password");
 
       return _userFromFirebase(result.user);
     } catch (e) {
@@ -88,6 +93,9 @@ class AuthProvider extends ChangeNotifier {
       _status = Status.Authenticating;
       notifyListeners();
       await _auth.signInWithEmailAndPassword(email: email, password: password);
+      print(email);
+      print(password);
+      print("Sign In With Email And Password");
       return true;
     } catch (e) {
       print("Error on the sign in = " + e.toString());
@@ -99,6 +107,7 @@ class AuthProvider extends ChangeNotifier {
 
   //Method to handle password reset email
   Future<void> sendPasswordResetEmail(String email) async {
+    print("Send Password Reset Email");
     await _auth.sendPasswordResetEmail(email: email);
   }
 
@@ -107,6 +116,7 @@ class AuthProvider extends ChangeNotifier {
     _auth.signOut();
     _status = Status.Unauthenticated;
     notifyListeners();
+    print("Signed Out");
     return Future.delayed(Duration.zero);
   }
 }

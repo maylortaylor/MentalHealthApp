@@ -10,6 +10,7 @@ class AppRoutes {
   static String root = '/';
   static String login = '/login';
   static String register = '/register';
+  static String settings = '/settings';
   static final FluroRouter router = FluroRouter();
 
 static final _decisionHandler = Handler(handlerFunc: (context, params) =>

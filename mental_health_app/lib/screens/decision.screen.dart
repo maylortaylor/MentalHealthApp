@@ -56,12 +56,96 @@ class _DecisionScreenState extends  State<DecisionScreen> {
     Color? backgroundColor;
     if (authProvider.status == Status.Unauthenticated){
       backgroundColor = AppThemes.whiteColor;
+      print("DecisionScreen Status Check: Status.Unauthenticated");
     } else if (authProvider.status == Status.Authenticated) {
-      backgroundColor = AppThemes.angryColor;
+      backgroundColor = AppThemes.greyColor;
+      print("DecisionScreen Status Check: Status.Authenticated");
     }
 
     return Scaffold(
-      // backgroundColor: const Color.fromRGBO(247,247,248,1),
+      appBar: AppBar(
+        backgroundColor: AppThemes.anxiousColor,
+        actions: [
+          authProvider.status == Status.Unauthenticated ? ElevatedButton(
+            child: Text(
+              "Login",
+              style: TextStyle(color: AppThemes.whiteColor),
+            ),
+            onPressed: () {
+              print("login icon pressed");
+                Application.router.navigateTo(context, AppRoutes.login);
+              },
+          ) : Container(),
+          (authProvider.status == Status.Unauthenticated) ? ElevatedButton(
+            child: Text(
+              "Register",
+              style: TextStyle(color: AppThemes.whiteColor),
+            ),
+            onPressed: () {
+              print("login icon pressed");
+                Application.router.navigateTo(context, AppRoutes.register);
+              },
+          ) :  Container(),
+           authProvider.status == Status.Authenticated ? ElevatedButton(
+            child: Text(
+              "Logout",
+              style: TextStyle(color: AppThemes.whiteColor),
+            ),
+            onPressed: () {
+                print("logout icon pressed");
+                if (authProvider.status == Status.Authenticated) {
+                  authProvider.signOut();
+                }
+              }
+          ) : Container(),
+
+
+          // IconButton(
+          //   tooltip: 'Settings',
+          //   icon: Icon(Icons.settings), 
+          //   color: AppThemes.whiteColor,
+          //   onPressed: () {
+          //     print("settings icon pressed");
+
+          //   },),
+          // IconButton(
+          //   icon: Icon(Icons.account_circle), 
+          //   color: AppThemes.whiteColor,
+          //   onPressed: () {
+          //     print("account icon pressed");
+          //     Application.router.navigateTo(context, AppRoutes.register);
+          //     }
+          //   ),
+          // IconButton(
+          //   tooltip: 'Login',
+          //   icon: Icon(Icons.login), 
+          //   color: AppThemes.whiteColor,
+          //   onPressed: () {
+          //     print("login icon pressed");
+          //     if (authProvider.status == Status.Unauthenticated) {
+          //       Application.router.navigateTo(context, AppRoutes.login);
+          //     }
+          //     },),
+          // authProvider.status == Status.Authenticated ? IconButton(
+          //   tooltip: 'Logout',
+          //   icon: Icon(Icons.logout), 
+          //   color: AppThemes.whiteColor,
+          //   onPressed: () {
+          //     print("logout icon pressed");
+          //     if (authProvider.status == Status.Authenticated) {
+          //       authProvider.signOut();
+          //     }
+          //     }
+          //   ,) : Container()
+        ],
+        iconTheme: const IconThemeData(
+          color: Colors.white, //change your color here
+        ),
+        titleTextStyle: const TextStyle(
+          fontFamily: AppFontFamily.poppins,
+          color: Colors.white
+        ),
+      ),
       backgroundColor:  backgroundColor,
       body:Column(
         children: [
@@ -201,7 +285,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
           Expanded(
             child: GestureDetector(
               onTap:() {
-                  Application.router.navigateTo(context, AppRoutes.login);
+
               },
               child: Container(
               height: 40,
@@ -225,8 +309,8 @@ class _DecisionScreenState extends  State<DecisionScreen> {
         Expanded(
           child: GestureDetector(
             onTap:() {
-                  Application.router.navigateTo(context, AppRoutes.register);
-              },
+            
+            },
             child:
               Container(
               height: 40,
@@ -249,10 +333,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
         Expanded(
           child: GestureDetector(
             onTap: () {
-                 final authProvider =
-                        Provider.of<AuthProvider>(context, listen: false);
 
-                    authProvider.signOut();
             },
             child: Container(
               height: 40,
