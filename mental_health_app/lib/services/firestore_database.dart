@@ -33,6 +33,12 @@ class FirestoreDatabase {
         data: user.toMap(),
       );
 
+  Stream<UserModel> getUser({required String uid}) =>
+      _firestoreService.documentStream(
+        path: FirestorePath.user(uid),
+        builder: (data, documentId) => UserModel.fromMap(data, uid),
+      );
+
   // //Method to delete Prompt entry
   // Future<void> deleteTodo(Prompt todo) async {
   //   await _firestoreService.deleteData(path: FirestorePath.todo(uid, todo.id));

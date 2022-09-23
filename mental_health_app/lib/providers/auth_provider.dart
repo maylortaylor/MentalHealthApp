@@ -50,7 +50,8 @@ class AuthProvider extends ChangeNotifier {
         email: user.email,
         displayName: user.displayName,
         phoneNumber: user.phoneNumber,
-        photoUrl: user.photoURL);
+        photoUrl: user.photoURL
+      );
   }
 
   //Method to detect live auth changes such as user sign in and sign out

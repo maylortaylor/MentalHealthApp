@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mental_health_app/models/user_model.dart';
 
 /*
 This class represent all possible CRUD operation for FirebaseFirestore.
@@ -97,5 +98,13 @@ class FirestoreService {
     final Stream<DocumentSnapshot> snapshots = reference.snapshots();
     return snapshots.map((snapshot) =>
         builder(snapshot.data() as Map<String, dynamic>, snapshot.id));
+  }
+
+  Stream<UserModel> getUser(String uid) {
+    var ref = FirebaseFirestore.instance
+        .doc(uid)
+        .collection('users');
+    return ref.snapshots().map(
+        (val) => UserModel.fromMap(val.docs.single.data(), uid));
   }
 }

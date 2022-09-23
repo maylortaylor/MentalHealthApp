@@ -45,8 +45,16 @@ late UserModel _user;
     _getUser();
   }
 
-  _getUser() async {
+  _getUser() {
+    final firestoreDatabase = Provider.of<FirestoreDatabase>(context, listen: false);
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
+
+    final a = authProvider.user;
+    
+    // firestoreDatabase.getUser(uid: a).listen((val) {
+    //     _user = val;
+    // });
+
     authProvider.user.listen((value) {
       DateTime now = DateTime.now();
 
@@ -62,7 +70,6 @@ late UserModel _user;
           );
           _emailAddressController.text = value.email!;
       });
-
     });
   }
 
@@ -334,7 +341,7 @@ late UserModel _user;
                 onPressed: () {
                   _controller.clearTags();
                 },
-                child: const Text('CLEAR TAGS'),
+                child: const Text('clear paths'),
               ),
             ),
 
@@ -349,7 +356,7 @@ late UserModel _user;
                   saveSettings();
                   Application.router.navigateTo(context, AppRoutes.root);
                 },
-                child: const Text('Save Settings'),
+                child: const Text('SAVE SETTINGS'),
               ),
             ),
           ],
