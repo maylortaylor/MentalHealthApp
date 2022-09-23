@@ -4,6 +4,8 @@ import 'package:mental_health_app/constants/app_font_family.dart';
 class AppThemes {
   AppThemes._();
 
+  static Color whiteColor = const Color.fromRGBO(242,242,242,1);
+  static Color greyColor = const Color.fromRGBO(195,195,195,1);
   static Color angryColor = const Color.fromRGBO(225,103,79,1);
   static Color anxiousColor = const Color.fromRGBO(51,117,90,1);
   static Color depressedColor = const Color.fromRGBO(28,63,78,1);

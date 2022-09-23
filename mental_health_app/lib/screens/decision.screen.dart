@@ -8,8 +8,10 @@ import 'package:mental_health_app/config/Application.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
 import 'package:mental_health_app/locator.dart';
+import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/routes.dart';
 import 'package:mental_health_app/services/navigation_service.dart';
+import 'package:provider/provider.dart';
 
 import '../screens/prompt.screen.dart';
 
@@ -50,9 +52,17 @@ class _DecisionScreenState extends  State<DecisionScreen> {
     var size = MediaQuery.of(context).size;
     final double itemHeight = (size.height - kToolbarHeight - 24) / 5;
     final double itemWidth = size.width / 4;
+    final authProvider = Provider.of<AuthProvider>(context);
+    Color? backgroundColor;
+    if (authProvider.status == Status.Unauthenticated){
+      backgroundColor = AppThemes.whiteColor;
+    } else if (authProvider.status == Status.Authenticated) {
+      backgroundColor = AppThemes.angryColor;
+    }
 
     return Scaffold(
-      backgroundColor: const Color.fromRGBO(247,247,248,1),
+      // backgroundColor: const Color.fromRGBO(247,247,248,1),
+      backgroundColor:  backgroundColor,
       body:Column(
         children: [
           Container(
@@ -237,20 +247,28 @@ class _DecisionScreenState extends  State<DecisionScreen> {
           ),
         ),
         Expanded(
-          child: Container(
-            height: 40,
-            color: AppThemes.darkGreen,
-            child: Center(
-              child: RichText(
-              textAlign: TextAlign.center,
-              text: const TextSpan(
-                text: 'Try ',
-                style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 18, color: Colors.white),
-                children:  [
-                  TextSpan(text: 'Personalized Coaching ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 18)),
-                ],
+          child: GestureDetector(
+            onTap: () {
+                 final authProvider =
+                        Provider.of<AuthProvider>(context, listen: false);
+
+                    authProvider.signOut();
+            },
+            child: Container(
+              height: 40,
+              color: AppThemes.darkGreen,
+              child: Center(
+                child: RichText(
+                textAlign: TextAlign.center,
+                text: const TextSpan(
+                  text: 'Try ',
+                  style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 18, color: Colors.white),
+                  children:  [
+                    TextSpan(text: 'Personalized Coaching ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 18)),
+                  ],
+                ),
+                            ),
               ),
-                          ),
             ),
           ),
         )

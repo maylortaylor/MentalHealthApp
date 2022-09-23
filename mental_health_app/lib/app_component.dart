@@ -98,9 +98,7 @@ class _AppComponentState extends State<AppComponent> {
                             ? Navigator(
                                 key: locator<NavigationService>().navigatorKey,
                                 onGenerateRoute: Application.router.generator,
-                                // initialRoute: '/'
                               )
-                          //  ? DecisionScreen()
                             : SignInScreen();
                       }
                 
