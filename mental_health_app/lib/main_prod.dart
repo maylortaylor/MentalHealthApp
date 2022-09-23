@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mental_health_app/app_component.dart';
 import 'package:mental_health_app/flavor.dart';
-import 'package:mental_health_app/my_app.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/providers/language_provider.dart';
 import 'package:mental_health_app/providers/theme_provider.dart';
@@ -30,7 +30,7 @@ void main() {
             create: (context) => LanguageProvider(),
           ),
         ],
-        child: MyApp(
+        child: AppComponent(
           databaseBuilder: (_, uid) => FirestoreDatabase(uid: uid),
           key: Key('SimpleFinance'),
         ),

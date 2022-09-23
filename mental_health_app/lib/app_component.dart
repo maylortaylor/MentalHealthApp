@@ -19,8 +19,8 @@ import 'package:mental_health_app/ui/auth/sign_in_screen.dart';
 import 'package:provider/provider.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
 
-class MyApp extends StatefulWidget {
-  const MyApp({required Key key, required this.databaseBuilder})
+class AppComponent extends StatefulWidget {
+  const AppComponent({required Key key, required this.databaseBuilder})
       : super(key: key);
 
 
@@ -30,13 +30,13 @@ class MyApp extends StatefulWidget {
       databaseBuilder;
 
   @override
-  State<MyApp> createState() {
-    return _MyAppState();
+  State<AppComponent> createState() {
+    return _AppComponentState();
   }
 }
 
-class _MyAppState extends State<MyApp> {
-  _MyAppState() {
+class _AppComponentState extends State<AppComponent> {
+  _AppComponentState() {
     final router = FluroRouter();
     AppRoutes.configureRoutes(router);
     Application.router = router;
@@ -84,13 +84,7 @@ class _MyAppState extends State<MyApp> {
                   //   return supportedLocales.first;
                   // },
                   title: Provider.of<Flavor>(context).toString(),
-                  // routes: AppRoutes.routes,
-                  // routes: <String, WidgetBuilder> {
-                  //   // '/': (BuildContext context) => DecisionScreen(),
-                  //   '/prompt': (BuildContext context) => PromptScreen(category: 'Anxiety', step: 1,),
-                  // },
-                  onGenerateRoute: Application.router.generator,
-                  // onGenerateRoute: generateRoute,
+                  // onGenerateRoute: Application.router.generator,
                   theme: AppThemes.lightTheme,
                   // darkTheme: AppThemes.darkTheme,
                   // themeMode: themeProviderRef.isDarkModeOn

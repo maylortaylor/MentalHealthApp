@@ -215,7 +215,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
         Expanded(
           child: GestureDetector(
             onTap:() {
-                  Application.router.navigateTo(context, AppRoutes.login);
+                  Application.router.navigateTo(context, AppRoutes.register);
               },
             child:
               Container(
