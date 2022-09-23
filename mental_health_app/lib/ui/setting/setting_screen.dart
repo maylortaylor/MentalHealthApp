@@ -51,26 +51,24 @@ late UserModel _user;
 
     final a = authProvider.user;
     
-    // firestoreDatabase.getUser(uid: a).listen((val) {
-    //     _user = val;
+    // firestoreDatabase.getUser(uid: authProvider.user.)
+
+    // authProvider.user.listen((value) {
+    //   DateTime now = DateTime.now();
+
+    //   setState(() {
+    //         _user = UserModel(
+    //         uid: value.uid,
+    //         email: value.email,
+    //         displayName: value.displayName,
+    //         pathsAllowed: _controller.getTags ?? _availableCategories,
+    //         dateCreated: value.dateCreated ?? now.toIso8601String(),
+    //         lastModified: now.toIso8601String(),
+    //         isSubscribed: false
+    //       );
+    //       _emailAddressController.text = value.email!;
+    //   });
     // });
-
-    authProvider.user.listen((value) {
-      DateTime now = DateTime.now();
-
-      setState(() {
-            _user = UserModel(
-            uid: value.uid,
-            email: value.email,
-            displayName: value.displayName,
-            pathsAllowed: _controller.getTags ?? _availableCategories,
-            dateCreated: value.dateCreated ?? now.toIso8601String(),
-            lastModified: now.toIso8601String(),
-            isSubscribed: false
-          );
-          _emailAddressController.text = value.email!;
-      });
-    });
   }
 
 

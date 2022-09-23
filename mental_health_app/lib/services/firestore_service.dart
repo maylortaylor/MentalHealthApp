@@ -107,4 +107,15 @@ class FirestoreService {
     return ref.snapshots().map(
         (val) => UserModel.fromMap(val.docs.single.data(), uid));
   }
+
+Future<UserModel?> getUserModel(String uid) async {
+    final docUser = FirebaseFirestore.instance
+        .collection("users")
+        .doc(uid);
+    final userSnapshot = await docUser.get();
+    if (userSnapshot.exists) {
+      return UserModel.fromMap(userSnapshot.data()!, uid);
+    }
+    return null;
+  }
 }

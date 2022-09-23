@@ -95,10 +95,11 @@ class _AppComponentState extends State<AppComponent> {
                       if (userSnapshot.connectionState ==
                           ConnectionState.active) {
                         return userSnapshot.hasData
-                            ? Navigator(
-                                key: locator<NavigationService>().navigatorKey,
-                                onGenerateRoute: Application.router.generator,
-                              )
+                            // ? Navigator(
+                            //     key: locator<NavigationService>().navigatorKey,
+                            //     onGenerateRoute: Application.router.generator,
+                            //   )
+                            ? DecisionScreen()
                             : SignInScreen();
                       }
                 

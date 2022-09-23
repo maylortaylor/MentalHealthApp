@@ -213,12 +213,20 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   null,
                   context,
                   () {
-                    Application.router.navigateTo(context, '/prompt/anxiety');
-                    // _navigationService.navigateTo('/prompt', queryParams: {'category': 'Anxiety', 'step': '1'});
-                    // Navigator.pushNamed(context, AppRoutes.prompt, arguments: {'category': 'Anxiety', 'step':1});
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    //   return PromptScreen(data: "Anxiety");
+                    Application.router.navigateTo(
+                      context, 
+                      '/prompt/anxiety',
+                      routeSettings: RouteSettings(name: '/anxiety', arguments: {'category': 'Anxiety', 'step': '1'})
+                    );
+                    
+                    // Navigator.push(context, MaterialPageRoute(
+                    //   settings: RouteSettings(name: '/anxiety', arguments: {'category': 'Anxiety', 'step': '1'}),
+                    //   builder: (context) {
+                    //     return PromptScreen(category: "Anxiety", step: 1);
                     // }));
+                    
+                    // _navigationService.navigateTo('/prompt', queryParams: {'category': 'Anxiety', 'step': '1'});
+                    
                   },
                   "Anxious",
                 AppThemes.anxiousColor
