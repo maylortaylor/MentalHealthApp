@@ -26,14 +26,12 @@ class SettingLanguageActions extends StatelessWidget {
         PopupMenuItem<LanguagesActions>(
           value: LanguagesActions.english,
           enabled: _appCurrentLocale == Locale("en") ? false : true,
-          child: Text(AppLocalizations.of(context)
-              .translate("settingPopUpToggleEnglish")),
+          child: Text("settingPopUpToggleEnglish"),
         ),
         PopupMenuItem<LanguagesActions>(
           value: LanguagesActions.chinese,
           enabled: _appCurrentLocale == Locale("zh") ? false : true,
-          child: Text(AppLocalizations.of(context)
-              .translate("settingPopUpToggleChinese")),
+          child: Text("settingPopUpToggleChinese"),
         ),
       ],
     );

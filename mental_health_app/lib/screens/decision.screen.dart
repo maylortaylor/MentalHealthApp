@@ -135,14 +135,14 @@ class _DecisionScreenState extends  State<DecisionScreen> {
           ) : Container(),
 
 
-          // IconButton(
-          //   tooltip: 'Settings',
-          //   icon: Icon(Icons.settings), 
-          //   color: AppThemes.whiteColor,
-          //   onPressed: () {
-          //     print("settings icon pressed");
-
-          //   },),
+          authProvider.status == Status.Authenticated ? IconButton(
+            tooltip: 'Settings',
+            icon: Icon(Icons.settings), 
+            color: AppThemes.whiteColor,
+            onPressed: () {
+              print("settings icon pressed");
+              Application.router.navigateTo(context, AppRoutes.settings);
+            },) : Container(),
           // IconButton(
           //   icon: Icon(Icons.account_circle), 
           //   color: AppThemes.whiteColor,

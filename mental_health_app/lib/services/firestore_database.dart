@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:mental_health_app/models/prompts_model.dart';
+import 'package:mental_health_app/models/user_model.dart';
 import 'package:mental_health_app/services/firestore_path.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -27,10 +28,10 @@ class FirestoreDatabase {
   final _firestoreService = FirestoreService.instance;
 
   // //Method to create/update todoModel
-  // Future<void> setTodo(Prompt prompt) async => await _firestoreService.set(
-  //       path: FirestorePath.prompt(uid),
-  //       data: prompt.toMap(),
-  //     );
+  Future<void> setUser(UserModel user) async => await _firestoreService.set(
+        path: FirestorePath.user(uid),
+        data: user.toMap(),
+      );
 
   // //Method to delete Prompt entry
   // Future<void> deleteTodo(Prompt todo) async {

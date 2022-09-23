@@ -37,7 +37,7 @@ class AuthWidgetBuilder extends StatelessWidget {
             providers: [
               Provider<UserModel>.value(value: user),
               Provider<FirestoreDatabase>(
-                create: (context) => databaseBuilder(context, user.uid),
+                create: (context) => databaseBuilder(context, user.uid ?? ""),
               ),
             ],
             child: builder(context, snapshot),

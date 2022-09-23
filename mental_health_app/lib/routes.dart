@@ -5,6 +5,7 @@ import 'package:mental_health_app/screens/prompt.screen.dart';
 import 'package:mental_health_app/constants/string_extensions.dart';
 import 'package:mental_health_app/ui/auth/register_screen.dart';
 import 'package:mental_health_app/ui/auth/sign_in_screen.dart';
+import 'package:mental_health_app/ui/setting/setting_screen.dart';
 
 class AppRoutes {
   static String root = '/';
@@ -21,6 +22,9 @@ static final _signInHandler = Handler(handlerFunc: (context, params) =>
 
 static final _registerHandler = Handler(handlerFunc: (context, params) =>
    RegisterScreen());
+
+static final _settingsHandler = Handler(handlerFunc: (context, params) =>
+   SettingScreen());
 
 static final Handler _promptHandler =
     Handler(handlerFunc: (context, params) {
@@ -57,6 +61,10 @@ static final Handler _promptHandler2 =
     router.define(
       register, 
       handler: _registerHandler
+    );
+    router.define(
+      settings,
+      handler: _settingsHandler
     );
     router.define(
       '/prompt/:category',
