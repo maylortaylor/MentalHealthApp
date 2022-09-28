@@ -3,18 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:mental_health_app/app_localizations.dart';
 import 'package:mental_health_app/auth_widget_builder.dart';
 import 'package:mental_health_app/config/Application.dart';
+import 'package:mental_health_app/constants/app_routes.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
 import 'package:mental_health_app/flavor.dart';
 import 'package:mental_health_app/locator.dart';
+import 'package:mental_health_app/models/arguments/PromptArguments.dart';
 import 'package:mental_health_app/models/user_model.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/providers/language_provider.dart';
 import 'package:mental_health_app/providers/theme_provider.dart';
 import 'package:mental_health_app/routes.dart';
 import 'package:mental_health_app/screens/decision.screen.dart';
+import 'package:mental_health_app/screens/error.screen.dart';
 import 'package:mental_health_app/screens/prompt.screen.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:mental_health_app/services/navigation_service.dart';
+import 'package:mental_health_app/ui/auth/register_screen.dart';
 import 'package:mental_health_app/ui/auth/sign_in_screen.dart';
 import 'package:provider/provider.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
@@ -37,9 +41,9 @@ class AppComponent extends StatefulWidget {
 
 class _AppComponentState extends State<AppComponent> {
   _AppComponentState() {
-    final router = FluroRouter();
-    AppRoutes.configureRoutes(router);
-    Application.router = router;
+    // final router = FluroRouter();
+    // AppRoutes.configureRoutes(router);
+    // Application.router = router;
   }
 
   // This widget is the root of your application.
@@ -84,7 +88,12 @@ class _AppComponentState extends State<AppComponent> {
                   //   return supportedLocales.first;
                   // },
                   title: Provider.of<Flavor>(context).toString(),
-                  // onGenerateRoute: Application.router.generator,
+                  routes: {
+                        AppRoutes.home: (context) => DecisionScreen(),
+                        AppRoutes.login: (context) => SignInScreen(),
+                        AppRoutes.register: (context) => RegisterScreen(),
+                  },
+                  onGenerateRoute: generateRoute,
                   theme: AppThemes.lightTheme,
                   // darkTheme: AppThemes.darkTheme,
                   // themeMode: themeProviderRef.isDarkModeOn
@@ -92,8 +101,7 @@ class _AppComponentState extends State<AppComponent> {
                   //     : ThemeMode.light,
                   home: Consumer<AuthProvider>(
                     builder: (_, authProviderRef, __) {
-                      if (userSnapshot.connectionState ==
-                          ConnectionState.active) {
+                      if (userSnapshot.connectionState == ConnectionState.active) {
                         return userSnapshot.hasData
                             // ? Navigator(
                             //     key: locator<NavigationService>().navigatorKey,
@@ -103,7 +111,11 @@ class _AppComponentState extends State<AppComponent> {
                             : SignInScreen();
                       }
                 
-                      return Material();
+                      // return DecisionScreen();
+                      return Navigator(
+                        key: locator<NavigationService>().navigatorKey,
+                        onGenerateRoute: Application.router.generator,
+                      );
                     },
                   ),
                 );
@@ -113,4 +125,45 @@ class _AppComponentState extends State<AppComponent> {
       },
     );
   }
+
+  Route<dynamic> generateRoute(RouteSettings settings) {
+    Uri uri = Uri.parse(settings.name ?? "");
+    Map<String, dynamic> _params = {};
+    uri.queryParameters.forEach((key, value) {
+      _params[key] = int.tryParse(value) ?? value;
+    });
+
+    // final Map<dynamic, dynamic> arguments = (settings.arguments ?? {}) as Map<dynamic, dynamic>;
+
+    return MaterialPageRoute(builder: (context) {
+      switch (uri.path) {
+        case AppRoutes.root:
+        case AppRoutes.home:
+          return DecisionScreen();
+        case AppRoutes.login:
+          return SignInScreen();
+        case AppRoutes.register:
+          return RegisterScreen();
+        case AppRoutes.anger:
+        case AppRoutes.anxiety:
+        case AppRoutes.depression:
+        case AppRoutes.guilt:
+          // var params  = (settings.arguments ?? {}) as Map<dynamic, dynamic>;
+          var cat = uri.path.substring(1);
+          // return PromptScreen(arguments: PromptArguments(cat, _params['step'] ?? 1),);
+          return PromptScreen(args: PromptArguments(cat, step: _params['steps']));
+        default:
+          return ErrorScreen();
+      }
+
+      // Navigator routes update web URLs by default,
+      // while `onGeneratedRoute` does not. That last
+      // line forces it to. The whole of using url
+      // variables for me was so that certainly URLs
+      // were easily copiable for sharing.
+    }, 
+    settings: (RouteSettings(
+      name: settings.name
+    )));
+}
 }

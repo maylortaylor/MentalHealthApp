@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:mental_health_app/app_localizations.dart';
 import 'package:mental_health_app/config/Application.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
+import 'package:mental_health_app/constants/app_routes.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
 import 'package:mental_health_app/models/user_model.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/routes.dart';
+import 'package:mental_health_app/ui/auth/sign_in_screen.dart';
 import 'package:provider/provider.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -188,7 +190,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onPressed: () {
                           // Navigator.of(context)
                           //     .pushReplacementNamed('/login');
-                          Application.router.navigateTo(context, AppRoutes.login);
+                          // Application.router.navigateTo(context, AppRoutes.login);
+                          Navigator.pushNamed(
+                              context,
+                              AppRoutes.login,
+                              // arguments: PromptArguments(
+                              //   'anxiety',
+                              //   1,
+                              // ),
+                            );
                         },
                       ),
               ],

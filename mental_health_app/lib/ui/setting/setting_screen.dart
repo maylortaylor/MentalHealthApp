@@ -3,11 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter_platform_widgets/flutter_platform_widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:mental_health_app/config/Application.dart';
+import 'package:mental_health_app/constants/app_routes.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
+import 'package:mental_health_app/models/arguments/PromptArguments.dart';
 import 'package:mental_health_app/models/user_model.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/providers/theme_provider.dart';
 import 'package:mental_health_app/routes.dart';
+import 'package:mental_health_app/screens/decision.screen.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:mental_health_app/ui/setting/setting_language_actions.dart';
 import 'package:provider/provider.dart';
@@ -352,7 +355,7 @@ late UserModel _user;
                 onPressed: () {
                   // save settings to firebase user
                   saveSettings();
-                  Application.router.navigateTo(context, AppRoutes.root);
+                  Application.router.navigateTo(context, AppRoutes.root);  
                 },
                 child: const Text('SAVE SETTINGS'),
               ),

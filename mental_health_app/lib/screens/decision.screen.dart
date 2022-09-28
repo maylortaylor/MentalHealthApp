@@ -6,23 +6,21 @@ import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/config/Application.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
+import 'package:mental_health_app/constants/app_routes.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
 import 'package:mental_health_app/locator.dart';
+import 'package:mental_health_app/models/arguments/PromptArguments.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/routes.dart';
 import 'package:mental_health_app/services/navigation_service.dart';
+import 'package:mental_health_app/ui/auth/register_screen.dart';
+import 'package:mental_health_app/ui/auth/sign_in_screen.dart';
+import 'package:mental_health_app/ui/setting/setting_screen.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/prompt.screen.dart';
 
-class Constants {
-  static const String Angry = 'Angry';
-  static const String Anxious = 'Anxious';
-  static const String Depressed = 'Depression';
-  static const String Guilty = 'Guilty';
 
-  static const List<String> choices = <String>[Angry, Anxious, Depressed, Guilty];
-}
   late DatabaseReference _promptsRef;
 
 class DecisionScreen extends StatefulWidget {
@@ -90,7 +88,15 @@ class _DecisionScreenState extends  State<DecisionScreen> {
             ),
             onPressed: () {
               print("login icon pressed");
-                Application.router.navigateTo(context, AppRoutes.login);
+                // Application.router.navigateTo(context, AppRoutes.login);
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.login,
+                        // arguments: PromptArguments(
+                        //   'anxiety',
+                        //   1,
+                        // ),
+                      );
               },
           ) : Container(),
           (authProvider.status == Status.Unauthenticated) ? ElevatedButton(
@@ -109,7 +115,15 @@ class _DecisionScreenState extends  State<DecisionScreen> {
             ),
             onPressed: () {
               print("login icon pressed");
-                Application.router.navigateTo(context, AppRoutes.register);
+                // Application.router.navigateTo(context, AppRoutes.register);
+                      Navigator.pushNamed(
+                        context,
+                        AppRoutes.register,
+                        // arguments: PromptArguments(
+                        //   'anxiety',
+                        //   1,
+                        // ),
+                      );
               },
           ) :  Container(),
            authProvider.status == Status.Authenticated ? ElevatedButton(
@@ -141,7 +155,15 @@ class _DecisionScreenState extends  State<DecisionScreen> {
             color: AppThemes.whiteColor,
             onPressed: () {
               print("settings icon pressed");
-              Application.router.navigateTo(context, AppRoutes.settings);
+              // Application.router.navigateTo(context, AppRoutes.settings);
+                    Navigator.pushNamed(
+                        context,
+                        AppRoutes.settings,
+                        // arguments: PromptArguments(
+                        //   'anxiety',
+                        //   1,
+                        // ),
+                      );
             },) : Container(),
           // IconButton(
           //   icon: Icon(Icons.account_circle), 
@@ -213,17 +235,32 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   null,
                   context,
                   () {
-                    Application.router.navigateTo(
-                      context, 
-                      '/prompt/anxiety',
-                      routeSettings: RouteSettings(name: '/anxiety', arguments: {'category': 'Anxiety', 'step': '1'})
-                    );
+                    // Application.router.navigateTo(
+                    //   context, 
+                    //   '/prompt/anxiety',
+                    //   routeSettings: RouteSettings(name: '/anxiety', arguments: {'category': 'Anxiety', 'step': '1'})
+                    // );
                     
-                    // Navigator.push(context, MaterialPageRoute(
-                    //   settings: RouteSettings(name: '/anxiety', arguments: {'category': 'Anxiety', 'step': '1'}),
-                    //   builder: (context) {
-                    //     return PromptScreen(category: "Anxiety", step: 1);
-                    // }));
+                      // Navigator.pushNamed(
+                      //   context,
+                      //   PromptScreen.routeName,
+                      //   arguments: PromptArguments(
+                      //     'anxiety',
+                      //     1,
+                      //   ),
+                      // );
+                      
+                    // Navigator.pushNamed(
+                    //   context,
+                    //   AppRoutes.anxiety,
+                    //   arguments: PromptArguments('anxiety', 1)
+                    // );
+                    Navigator.push(context, MaterialPageRoute(
+                      settings: RouteSettings(name: AppRoutes.anxiety, arguments: PromptArguments('anxiety')),
+                      builder: (context) {
+                        return PromptScreen(args: PromptArguments('anxiety'),);
+                        // return PromptScreen(arguments: PromptArguments('anxiety', 5),);
+                    }));
                     
                     // _navigationService.navigateTo('/prompt', queryParams: {'category': 'Anxiety', 'step': '1'});
                     
@@ -235,12 +272,20 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   null,
                   context,
                   () {
+                    Navigator.pushNamed(
+                      context,
+                      AppRoutes.depression,
+                      arguments: PromptArguments('depression')
+                    );
                     // _navigationService.navigateTo('/prompt', queryParams: {'category': 'Depression', 'step': '1'});
                     // Application.router.navigateTo(context, '/prompt/depression');
 
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return PromptScreen(category: "Depression", step: 1);
-                    }));
+                    // Navigator.push(context, MaterialPageRoute(
+                    //   settings: RouteSettings(name: AppRoutes.depression, arguments: PromptArguments('depression', 1)),
+                    //   builder: (context) {
+                    //     return const PromptScreen();
+                    //     // return PromptScreen(arguments: PromptArguments('depression', 5),);
+                    // }));
                   },
                   "Depressed",
                   AppThemes.depressedColor
@@ -249,9 +294,14 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   null,
                   context,
                   () {
-                    Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return PromptScreen(category: "Guilt", step: 1);
-                    }));
+                    Navigator.pushNamed(
+                      context,
+                      AppRoutes.guilt,
+                      arguments: PromptArguments('guilt')
+                    );
+                    // Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    //   return PromptScreen(category: "Guilt", step: 1);
+                    // }));
                     // Application.router.navigateTo(context, '/prompt/guilt');
 
                   },
@@ -262,14 +312,19 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   null,
                   context,
                   () {
-                    Navigator.push(
+                    Navigator.pushNamed(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) {
-                          return PromptScreen(category: "Anger", step: 1);
-                        },
-                      ),
+                      AppRoutes.anger,
+                      arguments: PromptArguments('anger')
                     );
+                    // Navigator.push(
+                    //   context,
+                    //   MaterialPageRoute(
+                    //     builder: (context) {
+                    //       return PromptScreen(category: "Anger", step: 1);
+                    //     },
+                    //   ),
+                    // );
                     // Application.router.navigateTo(context, '/prompt/anger');
 
                   },

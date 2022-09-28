@@ -8,6 +8,8 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/services.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
+import 'package:mental_health_app/constants/string_extensions.dart';
+import 'package:mental_health_app/models/arguments/PromptArguments.dart';
 import 'package:mental_health_app/screens/video.screen.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:provider/provider.dart';
@@ -20,10 +22,13 @@ late DatabaseReference _promptsRef;
 late SwiperController _swiperController;
 List<Prompt> promptsList = [];
 class PromptScreen extends StatefulWidget {
-  // const PromptScreen({Key? key}) : super(key: key);
-  const PromptScreen({super.key, required this.category, this.step = 1});
-  final String category;
-  final int? step;
+  // const PromptScreen({super.key});
+
+  // const PromptScreen({super.key, this.category, this.step});
+  const PromptScreen({super.key, this.args});
+  // final String? category;
+  // final int? step;
+  final PromptArguments? args;
 
   @override
   _PromptScreenState createState() => _PromptScreenState();
@@ -37,7 +42,6 @@ class _PromptScreenState extends State<PromptScreen> {
   final answerAreaTextController = TextEditingController();
 
   Future<void> init() async {
-    _currentIndex = 0;
     _swiperController = new SwiperController();
     final database = FirebaseDatabase.instance;
     answerAreaTextController.addListener(_textAnswerListener);
@@ -59,12 +63,18 @@ class _PromptScreenState extends State<PromptScreen> {
   @override
   Widget build(BuildContext context) {
     final _scaffoldKey = GlobalKey<ScaffoldState>();
+    
+    print('Category: ${widget.args?.category}');
+    print('Step: ${widget.args?.step}');
+    int? step = widget.args?.step;
+
+    _currentIndex = (step! - 1);
         
     return Scaffold(
       appBar: AppBar(
         backgroundColor: _getAppBarColor(),
         title: Text(
-          'How to manage ${widget.category}',
+          'How to manage ${widget.args?.category}',
           style: const TextStyle(
             fontFamily: AppFontFamily.poppins,
             fontSize: 22
@@ -112,7 +122,7 @@ class _PromptScreenState extends State<PromptScreen> {
   }
 
   Color _getAppBarColor() {
-    switch (widget.category) {
+    switch (widget.args?.category) {
       case "Angry":
         return AppThemes.angryColor;
       case "Anxiety":
@@ -286,7 +296,7 @@ class _PromptScreenState extends State<PromptScreen> {
           ]),
         ),
         Container(
-          child: _buildBodySection(context, widget.category.toString()),
+          child: _buildBodySection(context, widget.args?.category ?? "none"),
         ),
         Container(
           width: MediaQuery.of(context).size.width * 0.15,
@@ -332,7 +342,7 @@ class _PromptScreenState extends State<PromptScreen> {
           //   ]),
           // ),
           Container(
-            child: _buildBodySection(context, widget.category.toString()),
+            child: _buildBodySection(context, widget.args?.category ?? "none"),
           ),
           // Container(
           //   width: MediaQuery.of(context).size.width * 0.15,
