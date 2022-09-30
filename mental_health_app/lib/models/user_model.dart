@@ -29,7 +29,8 @@ class UserModel {
     String photoUrl = data['photoUrl'] ?? '';
     String dateCreated = data['dateCreated'] ?? '';
     String lastModified = data['lastModified'] ?? '';
-    List<String> pathsAllowed = data['pathsAllowed'] ?? '';
+    // List<String> pathsAllowed = data['pathsAllowed'] ?? '';
+    List<String> pathsAllowed = List<String>.from(data['pathsAllowed'] ?? "");
     bool isSubscribed = data['isSubscribed'] ?? false;
 
     return  UserModel(

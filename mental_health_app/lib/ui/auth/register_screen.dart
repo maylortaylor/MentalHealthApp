@@ -149,12 +149,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                     _emailController.text,
                                     _passwordController.text);
 
-                            // if (userModel == null) {
-                            //   _scaffoldKey.currentState!.showSnackBar(SnackBar(
-                            //     content: Text(AppLocalizations.of(context)
-                            //         .translate("loginTxtErrorSignIn")),
-                            //   ));
-                            // }
+                            if (userModel.uid!.isNotEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                backgroundColor: AppThemes.notifGreen,
+                                content: Text("User was created"),
+                              ));
+                            }
+
+                            Navigator.pushNamed(
+                                context,
+                                AppRoutes.home,
+                              );
                           }
                         }),
                 authProvider.status == Status.Registering

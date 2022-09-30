@@ -102,10 +102,10 @@ class FirestoreService {
 
   Stream<UserModel> getUser(String uid) {
     var ref = FirebaseFirestore.instance
-        .doc(uid)
-        .collection('users');
+        .collection('users')
+        .doc(uid);
     return ref.snapshots().map(
-        (val) => UserModel.fromMap(val.docs.single.data(), uid));
+        (val) => UserModel.fromMap(val.data()!, uid));
   }
 
 Future<UserModel?> getUserModel(String uid) async {

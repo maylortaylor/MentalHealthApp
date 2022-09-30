@@ -51,27 +51,22 @@ late UserModel _user;
   _getUser() {
     final firestoreDatabase = Provider.of<FirestoreDatabase>(context, listen: false);
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-
-    final a = authProvider.user;
-    
-    // firestoreDatabase.getUser(uid: authProvider.user.)
-
-    // authProvider.user.listen((value) {
-    //   DateTime now = DateTime.now();
-
-    //   setState(() {
-    //         _user = UserModel(
-    //         uid: value.uid,
-    //         email: value.email,
-    //         displayName: value.displayName,
-    //         pathsAllowed: _controller.getTags ?? _availableCategories,
-    //         dateCreated: value.dateCreated ?? now.toIso8601String(),
-    //         lastModified: now.toIso8601String(),
-    //         isSubscribed: false
-    //       );
-    //       _emailAddressController.text = value.email!;
-    //   });
-    // });
+  
+    authProvider.user.listen((value) {
+      setState(() {
+            _user = UserModel(
+            uid: value.uid,
+            email: value.email,
+            displayName: value.displayName,
+            pathsAllowed: _controller.getTags ?? _availableCategories,
+            // dateCreated: value.dateCreated ?? now.toIso8601String(),
+            // lastModified: now.toIso8601String(),
+            isSubscribed: false
+          );
+          _emailAddressController.text = value.email!;
+          _displayNameController.text = value.displayName!;
+      });
+    });
   }
 
 
@@ -103,6 +98,11 @@ late UserModel _user;
 
       await firestoreDatabase.setUser(_user);
     }
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+      backgroundColor: AppThemes.notifGreen,
+      content: Text("User info was saved"),
+    ));
   }
 
   Widget _buildLayoutSection(BuildContext context) {
@@ -111,7 +111,7 @@ late UserModel _user;
             Padding(
               padding: const EdgeInsets.all(12.0),
               child: Text(
-                _user.uid ?? ""
+                 "${_user.uid}"
                 ,)
             ),
             Container (

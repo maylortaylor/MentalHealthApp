@@ -10,6 +10,7 @@ import 'package:mental_health_app/constants/app_routes.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
 import 'package:mental_health_app/locator.dart';
 import 'package:mental_health_app/models/arguments/PromptArguments.dart';
+import 'package:mental_health_app/models/user_model.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/routes.dart';
 import 'package:mental_health_app/services/navigation_service.dart';
@@ -50,7 +51,13 @@ class _DecisionScreenState extends  State<DecisionScreen> {
     var size = MediaQuery.of(context).size;
     final double itemHeight = (size.height - kToolbarHeight - 24) / 5;
     final double itemWidth = size.width / 4;
-    final authProvider = Provider.of<AuthProvider>(context);
+    final authProvider = Provider.of<AuthProvider>(context, listen: false);
+    UserModel? currentUser;
+    setState(() {
+      currentUser = authProvider.currentUser;
+      print("${currentUser?.displayName} : ${currentUser?.pathsAllowed}");
+    });
+   
 
     Color getAppBarColor() {
       if (authProvider.status == Status.Authenticated) {
@@ -71,6 +78,8 @@ class _DecisionScreenState extends  State<DecisionScreen> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: getAppBarColor(),
+        leading: authProvider.status == Status.Authenticated ? 
+        Center(child: Text("${currentUser?.displayName}")) : Container(),
         actions: [
           authProvider.status == Status.Unauthenticated ? ElevatedButton(
             style: ButtonStyle(
@@ -231,39 +240,17 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               childAspectRatio: (itemWidth / itemHeight),
               crossAxisCount: 2,
               children: <Widget>[
+                
                 buildCardWithIcon(
                   null,
                   context,
                   () {
-                    // Application.router.navigateTo(
-                    //   context, 
-                    //   '/prompt/anxiety',
-                    //   routeSettings: RouteSettings(name: '/anxiety', arguments: {'category': 'Anxiety', 'step': '1'})
-                    // );
-                    
-                      // Navigator.pushNamed(
-                      //   context,
-                      //   PromptScreen.routeName,
-                      //   arguments: PromptArguments(
-                      //     'anxiety',
-                      //     1,
-                      //   ),
-                      // );
-                      
-                    // Navigator.pushNamed(
-                    //   context,
-                    //   AppRoutes.anxiety,
-                    //   arguments: PromptArguments('anxiety', 1)
-                    // );
                     Navigator.push(context, MaterialPageRoute(
                       settings: RouteSettings(name: AppRoutes.anxiety, arguments: PromptArguments('anxiety')),
                       builder: (context) {
                         return PromptScreen(args: PromptArguments('anxiety'),);
                         // return PromptScreen(arguments: PromptArguments('anxiety', 5),);
                     }));
-                    
-                    // _navigationService.navigateTo('/prompt', queryParams: {'category': 'Anxiety', 'step': '1'});
-                    
                   },
                   "Anxious",
                 AppThemes.anxiousColor
@@ -277,15 +264,6 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                       AppRoutes.depression,
                       arguments: PromptArguments('depression')
                     );
-                    // _navigationService.navigateTo('/prompt', queryParams: {'category': 'Depression', 'step': '1'});
-                    // Application.router.navigateTo(context, '/prompt/depression');
-
-                    // Navigator.push(context, MaterialPageRoute(
-                    //   settings: RouteSettings(name: AppRoutes.depression, arguments: PromptArguments('depression', 1)),
-                    //   builder: (context) {
-                    //     return const PromptScreen();
-                    //     // return PromptScreen(arguments: PromptArguments('depression', 5),);
-                    // }));
                   },
                   "Depressed",
                   AppThemes.depressedColor
@@ -299,11 +277,6 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                       AppRoutes.guilt,
                       arguments: PromptArguments('guilt')
                     );
-                    // Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    //   return PromptScreen(category: "Guilt", step: 1);
-                    // }));
-                    // Application.router.navigateTo(context, '/prompt/guilt');
-
                   },
                   "Guilty",
                   AppThemes.guiltyColor
@@ -317,16 +290,6 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                       AppRoutes.anger,
                       arguments: PromptArguments('anger')
                     );
-                    // Navigator.push(
-                    //   context,
-                    //   MaterialPageRoute(
-                    //     builder: (context) {
-                    //       return PromptScreen(category: "Anger", step: 1);
-                    //     },
-                    //   ),
-                    // );
-                    // Application.router.navigateTo(context, '/prompt/anger');
-
                   },
                   "Angry",
                 AppThemes.angryColor
