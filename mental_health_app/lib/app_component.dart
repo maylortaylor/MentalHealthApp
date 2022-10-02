@@ -56,7 +56,7 @@ class _AppComponentState extends State<AppComponent> {
             return AuthWidgetBuilder(
               databaseBuilder: widget.databaseBuilder,
               builder: (BuildContext context,
-                  AsyncSnapshot<UserModel> userSnapshot) {
+                  AsyncSnapshot<UserModel?> userSnapshot) {
                 return MaterialApp(
                   debugShowCheckedModeBanner: false,
                   // // locale: languageProviderRef.appLocale,
@@ -115,7 +115,7 @@ class _AppComponentState extends State<AppComponent> {
                       // return DecisionScreen();
                       return Navigator(
                         key: locator<NavigationService>().navigatorKey,
-                        onGenerateRoute: Application.router.generator,
+                        onGenerateRoute: generateRoute,
                       );
                     },
                   ),

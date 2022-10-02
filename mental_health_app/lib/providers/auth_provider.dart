@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -25,21 +27,24 @@ status for your UI or widgets to listen.
  */
 
 class AuthProvider extends ChangeNotifier {
-  //Firebase Auth object
-  late FirebaseAuth _auth;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   late FirestoreService _firestoreService;
-  UserModel? _currentUser;
-  UserModel? get currentUser => _currentUser;
+  UserModel? _currentUserModel;
+  UserModel? get currentUserModel => _currentUserModel;
 
   //Default status
   Status _status = Status.Uninitialized;
 
   Status get status => _status;
 
-  Stream<UserModel> get user => _auth.authStateChanges().map(_userFromFirebase);
+  Stream<UserModel?> get user => _auth.authStateChanges().map(_userFromFirebaseUser);
+  
+  Future<String> getCurrentUID() async {
+    return (_auth.currentUser!).uid;
+  }
+
 
   AuthProvider() {
-    _auth = FirebaseAuth.instance;
     _firestoreService = FirestoreService.instance;
     //listener for authentication changes such as user sign in and sign out
     _auth.authStateChanges().listen(onAuthStateChanged);
@@ -47,7 +52,9 @@ class AuthProvider extends ChangeNotifier {
 
   Future _populateCurrentUser(User? user) async {
     if (user != null) {
-      _currentUser = await _firestoreService.getUserModel(user.uid);
+      _currentUserModel = await _firestoreService.getUserModel(user.uid);
+      print("Populating CurrentUser");
+      inspect(_currentUserModel);
     }
   }
 
@@ -56,11 +63,11 @@ class AuthProvider extends ChangeNotifier {
     return user != null;
   }
 
-  //Create user object based on the given User
-  UserModel _userFromFirebase(User? user) {
+  //Create user object based on FirebaseUser
+  UserModel? _userFromFirebaseUser(User? user) {
     if (user == null) {
       print("NO USER");
-      return UserModel(displayName: null, uid: '');
+      return null;
     }
 
     return UserModel(
@@ -78,7 +85,7 @@ class AuthProvider extends ChangeNotifier {
       _status = Status.Unauthenticated;
       print("auth state changed: Unauthenticated");
     } else {
-      _userFromFirebase(firebaseUser);
+      _userFromFirebaseUser(firebaseUser);
       await _populateCurrentUser(firebaseUser);
       _status = Status.Authenticated;
       print("auth state changed: Authenticated");
@@ -87,7 +94,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   //Method for new user registration using email and password
-  Future<UserModel> registerWithEmailAndPassword(
+  Future<UserModel?> registerWithEmailAndPassword(
       String email, String password) async {
     try {
       _status = Status.Registering;
@@ -116,7 +123,7 @@ class AuthProvider extends ChangeNotifier {
       print(password);
       print("Register With Email and Password");
 
-      return _userFromFirebase(result.user);
+      return _userFromFirebaseUser(result.user);
     } catch (e) {
       print("Error on the new user registration = " + e.toString());
       _status = Status.Unauthenticated;
@@ -126,7 +133,7 @@ class AuthProvider extends ChangeNotifier {
   }
 
   //Method to handle user sign in using email and password
-  Future<bool> signInWithEmailAndPassword(String email, String password) async {
+  Future signInWithEmailAndPassword(String email, String password) async {
     try {
       _status = Status.Authenticating;
       notifyListeners();
@@ -136,15 +143,15 @@ class AuthProvider extends ChangeNotifier {
       //   _auth.currentUser = event;
       // },);
 
-      await _populateCurrentUser(result.user);
+      // await _populateCurrentUser(result.user);
       print('$email : $password');
       print("Sign In With Email And Password");
-      return true;
+      return _userFromFirebaseUser(result.user);
     } catch (e) {
       print("Error on the sign in = " + e.toString());
       _status = Status.Unauthenticated;
       notifyListeners();
-      return false;
+      return null;
     }
   }
 

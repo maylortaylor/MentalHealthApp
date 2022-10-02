@@ -39,6 +39,9 @@ class FirestoreDatabase {
         builder: (data, documentId) => UserModel.fromMap(data, uid),
       );
 
+  Future<UserModel?> getUserModel({required String uid}) =>
+      _firestoreService.getUserModel(uid);
+
   // //Method to delete Prompt entry
   // Future<void> deleteTodo(Prompt todo) async {
   //   await _firestoreService.deleteData(path: FirestorePath.todo(uid, todo.id));

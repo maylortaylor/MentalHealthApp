@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/app_localizations.dart';
 import 'package:mental_health_app/config/Application.dart';
@@ -142,19 +143,21 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             FocusScope.of(context)
-                                .unfocus(); //to hide the keyboard - if any
+                                .unfocus();
 
-                            UserModel userModel =
+                            UserModel? userModel =
                                 await authProvider.registerWithEmailAndPassword(
                                     _emailController.text,
                                     _passwordController.text);
 
-                            if (userModel.uid!.isNotEmpty) {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
+                            if (userModel!.uid!.isNotEmpty) {
+                              Flushbar(
+                                title:  "User Created",
+                                message:  "User info was created successfully",
                                 backgroundColor: AppThemes.notifGreen,
-                                content: Text("User was created"),
-                              ));
+                                flushbarPosition: FlushbarPosition.TOP,
+                                duration:  Duration(seconds: 3),
+                              ).show(context);
                             }
 
                             Navigator.pushNamed(

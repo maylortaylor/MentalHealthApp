@@ -1,3 +1,4 @@
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/config/Application.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
@@ -5,6 +6,7 @@ import 'package:mental_health_app/constants/app_routes.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
 // import 'package:mental_health_app/app_localizations.dart';
 import 'package:mental_health_app/flavor.dart';
+import 'package:mental_health_app/models/user_model.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/routes.dart';
 import 'package:mental_health_app/screens/decision.screen.dart';
@@ -146,18 +148,27 @@ class _SignInScreenState extends State<SignInScreen> {
                             FocusScope.of(context)
                                 .unfocus(); //to hide the keyboard - if any
 
-                            bool status =
+                            UserModel? userModel =
                                 await authProvider.signInWithEmailAndPassword(
                                     _emailController.text,
                                     _passwordController.text);
 
-                            if (!status) {
-                              // _scaffoldKey.currentState!.showSnackBar(SnackBar(
-                              //   content: Text(AppLocalizations.of(context)
-                              //       .translate("loginTxtErrorSignIn")),
-                              // ));
+                            if (userModel == null) {
+                              Flushbar(
+                                title:  "Error During Login",
+                                message:  "User Info Incorrect",
+                                backgroundColor: AppThemes.notifRed,
+                                flushbarPosition: FlushbarPosition.TOP,
+                                duration:  Duration(seconds: 3),
+                              ).show(context);
                             } else {
-                                // Application.router.navigateTo(context, AppRoutes.root);
+                              // Flushbar(
+                              //   title:  "Login Successful",
+                              //   message:  "User login successful",
+                              //   backgroundColor: AppThemes.notifBlue,
+                              //   flushbarPosition: FlushbarPosition.TOP,
+                              //   duration:  Duration(seconds: 3),
+                              // ).show(context);
                                 Navigator.pushNamed(
                                     context,
                                     AppRoutes.root,
@@ -193,7 +204,10 @@ class _SignInScreenState extends State<SignInScreen> {
                         child: const Text("Create Account"),
                         // textColor: Theme.of(context).iconTheme.color,
                         onPressed: () {
-                          Application.router.navigateTo(context, '/register');
+                          Navigator.pushNamed(
+                            context,
+                            AppRoutes.register,
+                          );
                         },
                       ),
                 Center(

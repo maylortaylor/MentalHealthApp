@@ -24,13 +24,12 @@ class UserModel {
   static UserModel fromMap(Map<String, dynamic> data, String userId) {
     String uid = data['uid'];
     String email = data['email'];
-    String displayName = data['displayName'];
+    String displayName = data['displayName'] ?? '';
     String phoneNumber = data['phoneNumber'] ?? '';
     String photoUrl = data['photoUrl'] ?? '';
     String dateCreated = data['dateCreated'] ?? '';
     String lastModified = data['lastModified'] ?? '';
-    // List<String> pathsAllowed = data['pathsAllowed'] ?? '';
-    List<String> pathsAllowed = List<String>.from(data['pathsAllowed'] ?? "");
+    List<String> pathsAllowed = List<String>.from(data['pathsAllowed'] ?? '');
     bool isSubscribed = data['isSubscribed'] ?? false;
 
     return  UserModel(

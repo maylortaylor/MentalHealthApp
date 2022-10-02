@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:fluro/fluro.dart';
@@ -32,6 +33,7 @@ class DecisionScreen extends StatefulWidget {
 class _DecisionScreenState extends  State<DecisionScreen> {
   var rng = Random();
   final NavigationService _navigationService = locator<NavigationService>();
+  late UserModel? currentUser;
 
   @override
   void initState() {
@@ -45,16 +47,15 @@ class _DecisionScreenState extends  State<DecisionScreen> {
     database.setLoggingEnabled(false);
   }
 
-  
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     final double itemHeight = (size.height - kToolbarHeight - 24) / 5;
     final double itemWidth = size.width / 4;
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    UserModel? currentUser;
+
     setState(() {
-      currentUser = authProvider.currentUser;
+      currentUser = authProvider.currentUserModel;
       print("${currentUser?.displayName} : ${currentUser?.pathsAllowed}");
     });
    
@@ -152,6 +153,13 @@ class _DecisionScreenState extends  State<DecisionScreen> {
             onPressed: () {
                 print("logout icon pressed");
                 if (authProvider.status == Status.Authenticated) {
+                  Flushbar(
+                    title:  "Logout Successful",
+                    message:  "User logout successful",
+                    backgroundColor: AppThemes.notifBlue,
+                    flushbarPosition: FlushbarPosition.TOP,
+                    duration:  Duration(seconds: 3),
+                  ).show(context);
                   authProvider.signOut();
                 }
               }
@@ -174,35 +182,6 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                         // ),
                       );
             },) : Container(),
-          // IconButton(
-          //   icon: Icon(Icons.account_circle), 
-          //   color: AppThemes.whiteColor,
-          //   onPressed: () {
-          //     print("account icon pressed");
-          //     Application.router.navigateTo(context, AppRoutes.register);
-          //     }
-          //   ),
-          // IconButton(
-          //   tooltip: 'Login',
-          //   icon: Icon(Icons.login), 
-          //   color: AppThemes.whiteColor,
-          //   onPressed: () {
-          //     print("login icon pressed");
-          //     if (authProvider.status == Status.Unauthenticated) {
-          //       Application.router.navigateTo(context, AppRoutes.login);
-          //     }
-          //     },),
-          // authProvider.status == Status.Authenticated ? IconButton(
-          //   tooltip: 'Logout',
-          //   icon: Icon(Icons.logout), 
-          //   color: AppThemes.whiteColor,
-          //   onPressed: () {
-          //     print("logout icon pressed");
-          //     if (authProvider.status == Status.Authenticated) {
-          //       authProvider.signOut();
-          //     }
-          //     }
-          //   ,) : Container()
         ],
         iconTheme: const IconThemeData(
           color: Colors.white, //change your color here
@@ -240,60 +219,10 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               childAspectRatio: (itemWidth / itemHeight),
               crossAxisCount: 2,
               children: <Widget>[
-                
-                buildCardWithIcon(
-                  null,
-                  context,
-                  () {
-                    Navigator.push(context, MaterialPageRoute(
-                      settings: RouteSettings(name: AppRoutes.anxiety, arguments: PromptArguments('anxiety')),
-                      builder: (context) {
-                        return PromptScreen(args: PromptArguments('anxiety'),);
-                        // return PromptScreen(arguments: PromptArguments('anxiety', 5),);
-                    }));
-                  },
-                  "Anxious",
-                AppThemes.anxiousColor
-                ),
-                buildCardWithIcon(
-                  null,
-                  context,
-                  () {
-                    Navigator.pushNamed(
-                      context,
-                      AppRoutes.depression,
-                      arguments: PromptArguments('depression')
-                    );
-                  },
-                  "Depressed",
-                  AppThemes.depressedColor
-                ),
-                buildCardWithIcon(
-                  null,
-                  context,
-                  () {
-                    Navigator.pushNamed(
-                      context,
-                      AppRoutes.guilt,
-                      arguments: PromptArguments('guilt')
-                    );
-                  },
-                  "Guilty",
-                  AppThemes.guiltyColor
-                ),
-                buildCardWithIcon(
-                  null,
-                  context,
-                  () {
-                    Navigator.pushNamed(
-                      context,
-                      AppRoutes.anger,
-                      arguments: PromptArguments('anger')
-                    );
-                  },
-                  "Angry",
-                AppThemes.angryColor
-                ),
+                _getAnxiousCard(),
+                _getDepressionCard(),
+                _getGuiltyCard(),
+                _getAngerCard(),
               ],
                      ),
            ),
@@ -301,6 +230,82 @@ class _DecisionScreenState extends  State<DecisionScreen> {
          ],
       ),
     );    
+  }
+
+  _getAnxiousCard() {
+    if (currentUser == null || !currentUser!.pathsAllowed!.contains('anxiety')) {
+      return Container();
+    }
+    return buildCardWithIcon(
+            null,
+            context,
+            () {
+              Navigator.push(context, MaterialPageRoute(
+                settings: RouteSettings(name: AppRoutes.anxiety, arguments: PromptArguments('anxiety')),
+                builder: (context) {
+                  return PromptScreen(args: PromptArguments('anxiety'),);
+                  // return PromptScreen(arguments: PromptArguments('anxiety', 5),);
+              }));
+            },
+            "Anxious",
+          AppThemes.anxiousColor);
+  }
+
+  _getDepressionCard() {
+    if (currentUser == null || !currentUser!.pathsAllowed!.contains('depression')) {
+      return Container();
+    }
+    return buildCardWithIcon(
+            null,
+            context,
+            () {
+              Navigator.pushNamed(
+                context,
+                AppRoutes.depression,
+                arguments: PromptArguments('depression')
+              );
+            },
+            "Depressed",
+            AppThemes.depressedColor
+          );
+  }
+
+  _getGuiltyCard() {
+    if (currentUser == null || !currentUser!.pathsAllowed!.contains('guilt')) {
+      return Container();
+    }
+    return buildCardWithIcon(
+            null,
+            context,
+            () {
+              Navigator.pushNamed(
+                context,
+                AppRoutes.guilt,
+                arguments: PromptArguments('guilty')
+              );
+            },
+            "Guilty",
+            AppThemes.guiltyColor
+          );
+  }
+
+  _getAngerCard() {
+    if (currentUser == null || !currentUser!.pathsAllowed!.contains('anger')) {
+      return Container();
+    }
+    return buildCardWithIcon(
+            null,
+            context,
+            () {
+              Navigator.pushNamed(
+                context,
+                AppRoutes.anger,
+                arguments: PromptArguments('anger')
+              );
+            },
+            "Angry",
+          AppThemes.angryColor
+          );
   }
 
   Padding buildCardWithIcon(

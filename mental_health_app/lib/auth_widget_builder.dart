@@ -16,16 +16,16 @@ class AuthWidgetBuilder extends StatelessWidget {
   const AuthWidgetBuilder(
       {required Key key, required this.builder, required this.databaseBuilder})
       : super(key: key);
-  final Widget Function(BuildContext, AsyncSnapshot<UserModel>) builder;
+  final Widget Function(BuildContext, AsyncSnapshot<UserModel?>) builder;
   final FirestoreDatabase Function(BuildContext context, String uid)
       databaseBuilder;
 
   @override
   Widget build(BuildContext context) {
     final authService = Provider.of<AuthProvider>(context, listen: false);
-    return StreamBuilder<UserModel>(
+    return StreamBuilder<UserModel?>(
       stream: authService.user,
-      builder: (BuildContext context, AsyncSnapshot<UserModel> snapshot) {
+      builder: (BuildContext context, AsyncSnapshot<UserModel?> snapshot) {
         final UserModel? user = snapshot.data;
         if (user != null) {
           /*
@@ -37,7 +37,7 @@ class AuthWidgetBuilder extends StatelessWidget {
             providers: [
               Provider<UserModel>.value(value: user),
               Provider<FirestoreDatabase>(
-                create: (context) => databaseBuilder(context, user.uid ?? ""),
+                create: (context) => databaseBuilder(context, user.uid!),
               ),
             ],
             child: builder(context, snapshot),

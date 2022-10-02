@@ -100,13 +100,13 @@ class FirestoreService {
         builder(snapshot.data() as Map<String, dynamic>, snapshot.id));
   }
 
-  Stream<UserModel> getUser(String uid) {
-    var ref = FirebaseFirestore.instance
-        .collection('users')
-        .doc(uid);
-    return ref.snapshots().map(
-        (val) => UserModel.fromMap(val.data()!, uid));
-  }
+  // Stream<UserModel> getUser(String uid) {
+  //   var ref = FirebaseFirestore.instance
+  //       .collection('users')
+  //       .doc(uid);
+  //   return ref.snapshots().map(
+  //       (val) => UserModel.fromMap(val.data()!, uid));
+  // }
 
 Future<UserModel?> getUserModel(String uid) async {
     final docUser = FirebaseFirestore.instance
