@@ -42,7 +42,7 @@ class UserModel {
       lastModified: lastModified,
       pathsAllowed: pathsAllowed,
       isSubscribed: isSubscribed,
-      );
+    );
   }
 
   Map<String, dynamic> toMap() {
