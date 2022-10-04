@@ -3,9 +3,7 @@ import 'dart:math';
 import 'package:another_flushbar/flushbar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
-import 'package:mental_health_app/config/Application.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
 import 'package:mental_health_app/constants/app_routes.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
@@ -259,11 +257,11 @@ class _DecisionScreenState extends  State<DecisionScreen> {
             null,
             context,
             () {
-              Navigator.pushNamed(
-                context,
-                AppRoutes.depression,
-                arguments: PromptArguments('depression')
-              );
+              Navigator.push(context, MaterialPageRoute(
+                settings: RouteSettings(name: AppRoutes.depression, arguments: PromptArguments('depression')),
+                builder: (context) {
+                  return PromptScreen(args: PromptArguments('depression'),);
+              }));
             },
             "Depressed",
             AppThemes.depressedColor
@@ -278,11 +276,11 @@ class _DecisionScreenState extends  State<DecisionScreen> {
             null,
             context,
             () {
-              Navigator.pushNamed(
-                context,
-                AppRoutes.guilt,
-                arguments: PromptArguments('guilty')
-              );
+              Navigator.push(context, MaterialPageRoute(
+                settings: RouteSettings(name: AppRoutes.guilt, arguments: PromptArguments('guilt')),
+                builder: (context) {
+                  return PromptScreen(args: PromptArguments('guilt'),);
+              }));
             },
             "Guilty",
             AppThemes.guiltyColor
@@ -297,11 +295,11 @@ class _DecisionScreenState extends  State<DecisionScreen> {
             null,
             context,
             () {
-              Navigator.pushNamed(
-                context,
-                AppRoutes.anger,
-                arguments: PromptArguments('anger')
-              );
+              Navigator.push(context, MaterialPageRoute(
+                settings: RouteSettings(name: AppRoutes.anger, arguments: PromptArguments('anger')),
+                builder: (context) {
+                  return PromptScreen(args: PromptArguments('anger'),);
+              }));
             },
             "Angry",
           AppThemes.angryColor

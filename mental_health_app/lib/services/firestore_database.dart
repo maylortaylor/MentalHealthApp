@@ -1,9 +1,9 @@
 import 'dart:async';
 
+import 'package:mental_health_app/models/answer_model.dart';
 import 'package:mental_health_app/models/prompts_model.dart';
 import 'package:mental_health_app/models/user_model.dart';
 import 'package:mental_health_app/services/firestore_path.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'package:mental_health_app/services/firestore_service.dart';
 
@@ -41,6 +41,18 @@ class FirestoreDatabase {
 
   Future<UserModel?> getUserModel({required String uid}) =>
       _firestoreService.getUserModel(uid);
+
+  Future<void> setUserAnswer(AnswerModel answer) async => await _firestoreService.set(
+        path: FirestorePath.answers(uid),
+        data: answer.toMap(),
+      );
+
+   Future<void> setUserAnswerCat(AnswerModel answer, String cat) async => await _firestoreService.setAnswer(
+        uid: uid,
+        category: cat,
+        step: answer.step,
+        data: answer.toMap(),
+      );
 
   // //Method to delete Prompt entry
   // Future<void> deleteTodo(Prompt todo) async {

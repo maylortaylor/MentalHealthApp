@@ -1,16 +1,13 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:mental_health_app/config/Application.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
 import 'package:mental_health_app/constants/app_routes.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
-// import 'package:mental_health_app/app_localizations.dart';
 import 'package:mental_health_app/flavor.dart';
 import 'package:mental_health_app/models/user_model.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/routes.dart';
 import 'package:mental_health_app/screens/decision.screen.dart';
-// import 'package:mental_health_app/routes.dart';
 import 'package:provider/provider.dart';
 
 class SignInScreen extends StatefulWidget {

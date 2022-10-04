@@ -9,7 +9,7 @@ import 'package:provider/provider.dart';
 * need to be available by all downstream widgets.
 * Thus, this widget builder is a must to live above [MaterialApp].
 * As we rely on uid to decide which main screen to display (eg: Home or Sign In),
-* this class will helps to create all providers needed that depends on
+* this class helps to create all providers needed that depends on
 * the user logged data uid.
  */
 class AuthWidgetBuilder extends StatelessWidget {

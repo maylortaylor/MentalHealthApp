@@ -1,7 +1,6 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/app_localizations.dart';
-import 'package:mental_health_app/config/Application.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
 import 'package:mental_health_app/constants/app_routes.dart';
 import 'package:mental_health_app/constants/app_themes.dart';

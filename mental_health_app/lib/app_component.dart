@@ -1,8 +1,6 @@
-import 'package:fluro/fluro.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/app_localizations.dart';
 import 'package:mental_health_app/auth_widget_builder.dart';
-import 'package:mental_health_app/config/Application.dart';
 import 'package:mental_health_app/constants/app_routes.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
 import 'package:mental_health_app/flavor.dart';
@@ -52,11 +50,9 @@ class _AppComponentState extends State<AppComponent> {
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
       builder: (_, themeProviderRef, __) {
-        //{context, data, child}
             return AuthWidgetBuilder(
               databaseBuilder: widget.databaseBuilder,
-              builder: (BuildContext context,
-                  AsyncSnapshot<UserModel?> userSnapshot) {
+              builder: (BuildContext context, AsyncSnapshot<UserModel?> userSnapshot) {
                 return MaterialApp(
                   debugShowCheckedModeBanner: false,
                   // // locale: languageProviderRef.appLocale,
@@ -88,7 +84,7 @@ class _AppComponentState extends State<AppComponent> {
                   //   //user the first one from the list (in our case, that will be English)
                   //   return supportedLocales.first;
                   // },
-                  title: Provider.of<Flavor>(context).toString(),
+                  // title: Provider.of<Flavor>(context).toString(),
                   routes: {
                         AppRoutes.home: (context) => DecisionScreen(),
                         AppRoutes.login: (context) => SignInScreen(),
@@ -129,12 +125,12 @@ class _AppComponentState extends State<AppComponent> {
 
   Route<dynamic> generateRoute(RouteSettings settings) {
     Uri uri = Uri.parse(settings.name ?? "");
-    Map<String, dynamic> _params = {};
+    // final Map<dynamic, dynamic> arguments = (settings.arguments ?? {}) as Map<dynamic, dynamic>;
+    Map<String, dynamic> params = {};
     uri.queryParameters.forEach((key, value) {
-      _params[key] = int.tryParse(value) ?? value;
+      params[key] = int.tryParse(value) ?? value;
     });
 
-    // final Map<dynamic, dynamic> arguments = (settings.arguments ?? {}) as Map<dynamic, dynamic>;
 
     return MaterialPageRoute(builder: (context) {
       switch (uri.path) {
@@ -151,19 +147,11 @@ class _AppComponentState extends State<AppComponent> {
         case AppRoutes.anxiety:
         case AppRoutes.depression:
         case AppRoutes.guilt:
-          // var params  = (settings.arguments ?? {}) as Map<dynamic, dynamic>;
           var cat = uri.path.substring(1);
-          // return PromptScreen(arguments: PromptArguments(cat, _params['step'] ?? 1),);
-          return PromptScreen(args: PromptArguments(cat, step: _params['steps']));
+          return PromptScreen(args: PromptArguments(cat, step: params['step']));
         default:
           return ErrorScreen();
       }
-
-      // Navigator routes update web URLs by default,
-      // while `onGeneratedRoute` does not. That last
-      // line forces it to. The whole of using url
-      // variables for me was so that certainly URLs
-      // were easily copiable for sharing.
     }, 
     settings: (RouteSettings(
       name: settings.name

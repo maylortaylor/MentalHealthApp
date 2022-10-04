@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mental_health_app/models/user_model.dart';
 
@@ -21,19 +23,34 @@ class FirestoreService {
     await reference.set(data);
   }
 
-  Future<void> bulkSet({
-    required String path,
-    required List<Map<String, dynamic>> datas,
+  Future<void> setAnswer({
+    required String uid,
+    required String category,
+    required String step,
+    required Map<String, dynamic> data,
     bool merge = false,
   }) async {
-    final reference = FirebaseFirestore.instance.doc(path);
-    final batchSet = FirebaseFirestore.instance.batch();
-
-//    for()
-//    batchSet.
-
-    print('$path: $datas');
+    final reference = FirebaseFirestore.instance
+      .collection('answers').doc(uid)
+      .collection(category).doc(step);
+    print('answers/$uid/$category');
+    inspect(data);
+    await reference.set(data);
   }
+
+//   Future<void> bulkSet({
+//     required String path,
+//     required List<Map<String, dynamic>> datas,
+//     bool merge = false,
+//   }) async {
+//     final reference = FirebaseFirestore.instance.doc(path);
+//     final batchSet = FirebaseFirestore.instance.batch();
+
+// //    for()
+// //    batchSet.
+
+//     print('$path: $datas');
+//   }
 
   Future<void> deleteData({required String path}) async {
     final reference = FirebaseFirestore.instance.doc(path);

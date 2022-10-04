@@ -43,7 +43,6 @@ class AuthProvider extends ChangeNotifier {
     return (_auth.currentUser!).uid;
   }
 
-
   AuthProvider() {
     _firestoreService = FirestoreService.instance;
     //listener for authentication changes such as user sign in and sign out

@@ -44,7 +44,7 @@ dependencies:
   auto_size_text: ^3.0.0
   vimeo_video_player: ^0.0.4
   get_it: ^7.2.0
-  fluro: ^2.0.3
+  # fluro: ^2.0.3
   textfield_tags: ^2.0.2
   intl: ^0.17.0
   another_flushbar: ^1.12.29

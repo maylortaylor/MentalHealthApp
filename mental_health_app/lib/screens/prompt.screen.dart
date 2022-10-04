@@ -8,19 +8,18 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/services.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
-import 'package:mental_health_app/constants/string_extensions.dart';
+import 'package:mental_health_app/models/answer_model.dart';
 import 'package:mental_health_app/models/arguments/PromptArguments.dart';
-import 'package:mental_health_app/screens/video.screen.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:provider/provider.dart';
 import 'package:mental_health_app/models/prompts_model.dart';
 import 'package:vimeo_video_player/vimeo_video_player.dart';
 
-import '../models/prompts_model.dart';
 
 late DatabaseReference _promptsRef;
 late SwiperController _swiperController;
 List<Prompt> promptsList = [];
+late Prompt currentPrompt;
 class PromptScreen extends StatefulWidget {
   // const PromptScreen({super.key});
 
@@ -35,6 +34,7 @@ class PromptScreen extends StatefulWidget {
 }
 
 class _PromptScreenState extends State<PromptScreen> {
+  late AnswerModel _answerModel;
   bool _showFrontSide = true;
   bool _flipXAxis = true;
   late int _currentIndex;
@@ -42,7 +42,7 @@ class _PromptScreenState extends State<PromptScreen> {
   final answerAreaTextController = TextEditingController();
 
   Future<void> init() async {
-    _swiperController = new SwiperController();
+    _swiperController = SwiperController();
     final database = FirebaseDatabase.instance;
     answerAreaTextController.addListener(_textAnswerListener);
     database.setLoggingEnabled(false);
@@ -140,6 +140,7 @@ class _PromptScreenState extends State<PromptScreen> {
     _swiperController.previous(animation: true);
   }
   void _nextCard() {
+    saveAnswerToDatabase();
     _swiperController.next(animation: true);
     setState(() {
       nextPageIsActive = false;
@@ -147,6 +148,20 @@ class _PromptScreenState extends State<PromptScreen> {
     });
   }
 
+  saveAnswerToDatabase() {
+    final firestoreDatabase =
+        Provider.of<FirestoreDatabase>(context, listen: false);
+
+    _answerModel = AnswerModel(
+      step: currentPrompt.step, 
+      category: widget.args!.category.toLowerCase(),
+      answerText: answerAreaTextController.text, 
+      watchedVideo: false,
+      dateCreated: DateTime.now().toIso8601String()
+    );
+
+    firestoreDatabase.setUserAnswerCat(_answerModel, _answerModel.category);
+  }
   Widget _buildFront(context) {
   // return __buildLayout(
   //   key: ValueKey(true),
@@ -398,7 +413,6 @@ class _PromptScreenState extends State<PromptScreen> {
           setState(() {
             _currentIndex = index;
             inspect(promptsList[index]);
-            // log(promptsList[index].body ?? "");
           });
         },
         controller: _swiperController,
@@ -406,7 +420,7 @@ class _PromptScreenState extends State<PromptScreen> {
         //   size: 60,
         //   padding: EdgeInsets.all(8)
         // ),
-        index: _currentIndex,
+        // index: _currentIndex,
         loop: true,
         scrollDirection: Axis.horizontal,
         axisDirection: AxisDirection.left,
@@ -418,6 +432,15 @@ class _PromptScreenState extends State<PromptScreen> {
   }
 
   Widget _buildItem(BuildContext context, int index) {
+    currentPrompt = Prompt(
+      id: promptsList[index].id,
+      title: promptsList[index].title,
+      body: promptsList[index].body,
+      textPrompt: promptsList[index].textPrompt,
+      step: promptsList[index].step,
+      dateCreated: promptsList[index].dateCreated
+    );
+
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(

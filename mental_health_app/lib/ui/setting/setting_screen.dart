@@ -14,20 +14,20 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-final _formKey = GlobalKey<FormState>();
-late double _distanceToField;
-late TextfieldTagsController _tagsController;
-late TextEditingController _displayNameController;
-late TextEditingController _emailAddressController;
-late TextEditingController _phoneNumberController;
-late UserModel? _user;
+  final _formKey = GlobalKey<FormState>();
+  late double _distanceToField;
+  late TextfieldTagsController _tagsController;
+  late TextEditingController _displayNameController;
+  late TextEditingController _emailAddressController;
+  late TextEditingController _phoneNumberController;
+  late UserModel? _user;
 
-static const List<String> _defaultCategories = <String>[
-  'anger',
-  'anxiety',
-  'depression',
-  'guilt'
-];
+  static const List<String> _defaultCategories = <String>[
+    'anger',
+    'anxiety',
+    'depression',
+    'guilt'
+  ];
 
   @override
   void didChangeDependencies() {
@@ -54,6 +54,16 @@ static const List<String> _defaultCategories = <String>[
     _getUserModel();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Settings"),
+      ),
+      body: _buildLayoutSection(context),
+    );
+  }
+  
   _getUserModel() async {
     final firestoreDatabase = Provider.of<FirestoreDatabase>(context, listen: false);
     final authProvider = Provider.of<AuthProvider>(context, listen: false);
@@ -71,7 +81,19 @@ static const List<String> _defaultCategories = <String>[
         }
       });
     });
+  }
+  
+  saveSettings() async {
+    final firestoreDatabase =
+        Provider.of<FirestoreDatabase>(context, listen: false);
 
+    if (_user!.uid!.isNotEmpty) {
+      _user?.displayName = _displayNameController.text;
+      _user?.pathsAllowed = _tagsController.getTags;
+      _user?.phoneNumber = _phoneNumberController.text;
+      _user?.lastModified = DateTime.now().toIso8601String();
+
+      await firestoreDatabase.setUser(_user!);
   }
 
   @override
@@ -84,19 +106,7 @@ static const List<String> _defaultCategories = <String>[
     );
   }
 
-  saveSettings() async {
-    // on success, notify the parent widget
-    final firestoreDatabase =
-        Provider.of<FirestoreDatabase>(context, listen: false);
 
-    if (_user!.uid!.isNotEmpty) {
-      _user?.displayName = _displayNameController.text;
-      _user?.pathsAllowed = _tagsController.getTags;
-      _user?.phoneNumber = _phoneNumberController.text;
-      _user?.lastModified = DateTime.now().toIso8601String();
-
-      await firestoreDatabase.setUser(_user!);
-    }
 
     Flushbar(
       title:  "User Updated",
@@ -113,303 +123,330 @@ static const List<String> _defaultCategories = <String>[
       key: _formKey,
       child: SingleChildScrollView(
         child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: Text(
-                     "UserId: ${_user?.uid}"
-                    ,)
-                ),
-                Container (
-                    padding: const EdgeInsets.all(30.0),
-                    color: Colors.white,
-                    child: Center(
-                      child: Column(
-                       children : [
-                        TextFormField(
-                        controller: _displayNameController,
-                        decoration: InputDecoration(
-                          labelText: "Display Name",
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: const BorderSide(
-                            ),
-                          ),
-                          //fillColor: Colors.green
-                        ),
-                        validator: (val) {
-                          if(val!.isEmpty) {
-                            return "Name cannot be empty";
-                          }
-                          return null;
-                        },
-                        keyboardType: TextInputType.name,
-                      ),
-                       ]
-                      )
-                     )
-                ),
-                Container (
-                    padding: const EdgeInsets.all(30.0),
-                    color: Colors.white,
-                    child: Center(
-                      child: Column(
-                       children : [
-                        TextFormField(
-                        readOnly: true,
-                        controller: _emailAddressController,
-                        decoration: InputDecoration(
-                          labelText: "Email Address",
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: const BorderSide(
-                            ),
-                          ),
-                          //fillColor: Colors.green
-                        ),
-                        validator: (val) {
-                          if(val!.isEmpty) {
-                            return "Email cannot be empty";
-                          }
-                          return null;
-                        },
-                        keyboardType: TextInputType.emailAddress,
-                      ),
-                       ]
-                      )
-                     )
-                ),
-                Container (
-                    padding: const EdgeInsets.all(30.0),
-                    color: Colors.white,
-                    child: Center(
-                      child: Column(
-                       children : [
-                        TextFormField(
-                        controller: _phoneNumberController,
-                        decoration: InputDecoration(
-                          labelText: "Phone Number",
-                          fillColor: Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(25.0),
-                            borderSide: const BorderSide(
-                            ),
-                          ),
-                        ),
-                        validator: validateMobile,
-                        keyboardType: TextInputType.phone,
-                      ),
-                       ]
-                      )
-                     )
-                ),
-                Autocomplete<String>(
-                  optionsViewBuilder: (context, onSelected, options) {
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                          horizontal: 10.0, vertical: 4.0),
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: Material(
-                          elevation: 4.0,
-                          child: ConstrainedBox(
-                            constraints: const BoxConstraints(maxHeight: 200),
-                            child: ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: options.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                final dynamic option = options.elementAt(index);
-                                return TextButton(
-                                  onPressed: () {
-                                    onSelected(option);
-                                  },
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Padding(
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 15.0),
-                                      child: Text(
-                                        '#$option',
-                                        textAlign: TextAlign.left,
-                                        style: const TextStyle(
-                                          color: Color.fromARGB(255, 74, 137, 92),
-                                        ),
-                                      ),
+          children: [
+            _userIdFormField(),
+            _displayNameFormField(),
+            _emailAddressFormField(),
+            _phoneNumberFormField(),
+            Autocomplete<String>(
+              optionsViewBuilder: (context, onSelected, options) {
+                return Container(
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: 10.0, vertical: 4.0),
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: Material(
+                      elevation: 4.0,
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxHeight: 200),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: options.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final dynamic option = options.elementAt(index);
+                            return TextButton(
+                              onPressed: () {
+                                onSelected(option);
+                              },
+                              child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 15.0),
+                                  child: Text(
+                                    '#$option',
+                                    textAlign: TextAlign.left,
+                                    style: const TextStyle(
+                                      color: Color.fromARGB(255, 74, 137, 92),
                                     ),
                                   ),
-                                );
-                              },
-                            ),
-                          ),
+                                ),
+                              ),
+                            );
+                          },
                         ),
                       ),
-                    );
-                  },
-                  optionsBuilder: (TextEditingValue textEditingValue) {
-                    if (textEditingValue.text == '') {
-                      return const Iterable<String>.empty();
+                    ),
+                  ),
+                );
+              },
+              optionsBuilder: (TextEditingValue textEditingValue) {
+                if (textEditingValue.text == '') {
+                  return const Iterable<String>.empty();
+                }
+                return _defaultCategories.where((String option) {
+                  return option.contains(textEditingValue.text.toLowerCase());
+                });
+              },
+              onSelected: (String selectedTag) {
+                _tagsController.addTag = selectedTag;
+              },
+              fieldViewBuilder: (context, ttec, tfn, onFieldSubmitted) {
+                return TextFieldTags(
+                  textEditingController: ttec,
+                  focusNode: tfn,
+                  textfieldTagsController: _tagsController,
+                  textSeparators: const [' ', ','],
+                  letterCase: LetterCase.normal,
+                  validator: (String tag) {
+                    // if (tag == 'php') {
+                    //   return 'No, please just no';
+                    if (_tagsController.getTags!.contains(tag)) {
+                      return 'you already entered that';
                     }
-                    return _defaultCategories.where((String option) {
-                      return option.contains(textEditingValue.text.toLowerCase());
+                    return null;
+                  },
+                  inputfieldBuilder:
+                      (context, tec, fn, error, onChanged, onSubmitted) {
+                    return ((context, sc, tags, onTagDelete) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: TextField(
+                          controller: tec,
+                          focusNode: fn,
+                          decoration: InputDecoration(
+                            border: const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 74, 137, 92),
+                                  width: 3.0),
+                            ),
+                            focusedBorder: const UnderlineInputBorder(
+                              borderSide: BorderSide(
+                                  color: Color.fromARGB(255, 74, 137, 92),
+                                  width: 3.0),
+                            ),
+                            helperText: 'Choose available categories / paths...',
+                            helperStyle: const TextStyle(
+                              color: Color.fromARGB(255, 74, 137, 92),
+                            ),
+                            hintText: _tagsController.hasTags ? '' : "Enter categories / paths...",
+                            errorText: error,
+                            prefixIconConstraints: BoxConstraints(
+                                maxWidth: _distanceToField * 0.74),
+                            prefixIcon: tags.isNotEmpty
+                                ? SingleChildScrollView(
+                                    controller: sc,
+                                    scrollDirection: Axis.horizontal,
+                                    child: Row(
+                                        children: tags.map((String tag) {
+                                      return Container(
+                                        decoration: const BoxDecoration(
+                                          borderRadius: BorderRadius.all(
+                                            Radius.circular(20.0),
+                                          ),
+                                          color:
+                                              Color.fromARGB(255, 74, 137, 92),
+                                        ),
+                                        margin:
+                                            const EdgeInsets.only(right: 10.0),
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 10.0, vertical: 4.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: [
+                                            InkWell(
+                                              child: Text(
+                                                '#$tag',
+                                                style: const TextStyle(
+                                                    color: Colors.white),
+                                              ),
+                                              onTap: () {
+                                                //print("$tag selected");
+                                              },
+                                            ),
+                                            const SizedBox(width: 4.0),
+                                            InkWell(
+                                              child: const Icon(
+                                                Icons.cancel,
+                                                size: 14.0,
+                                                color: Color.fromARGB(
+                                                    255, 233, 233, 233),
+                                              ),
+                                              onTap: () {
+                                                onTagDelete(tag);
+                                              },
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    }).toList()),
+                                  )
+                                : null,
+                          ),
+                          onChanged: onChanged,
+                          onSubmitted: onSubmitted,
+                        ),
+                      );
                     });
                   },
-                  onSelected: (String selectedTag) {
-                    _tagsController.addTag = selectedTag;
-                  },
-                  fieldViewBuilder: (context, ttec, tfn, onFieldSubmitted) {
-                    return TextFieldTags(
-                      textEditingController: ttec,
-                      focusNode: tfn,
-                      textfieldTagsController: _tagsController,
-                      textSeparators: const [' ', ','],
-                      letterCase: LetterCase.normal,
-                      validator: (String tag) {
-                        // if (tag == 'php') {
-                        //   return 'No, please just no';
-                        if (_tagsController.getTags!.contains(tag)) {
-                          return 'you already entered that';
-                        }
-                        return null;
-                      },
-                      inputfieldBuilder:
-                          (context, tec, fn, error, onChanged, onSubmitted) {
-                        return ((context, sc, tags, onTagDelete) {
-                          return Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                            child: TextField(
-                              controller: tec,
-                              focusNode: fn,
-                              decoration: InputDecoration(
-                                border: const UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Color.fromARGB(255, 74, 137, 92),
-                                      width: 3.0),
-                                ),
-                                focusedBorder: const UnderlineInputBorder(
-                                  borderSide: BorderSide(
-                                      color: Color.fromARGB(255, 74, 137, 92),
-                                      width: 3.0),
-                                ),
-                                helperText: 'Choose available categories / paths...',
-                                helperStyle: const TextStyle(
-                                  color: Color.fromARGB(255, 74, 137, 92),
-                                ),
-                                hintText: _tagsController.hasTags ? '' : "Enter categories / paths...",
-                                errorText: error,
-                                prefixIconConstraints: BoxConstraints(
-                                    maxWidth: _distanceToField * 0.74),
-                                prefixIcon: tags.isNotEmpty
-                                    ? SingleChildScrollView(
-                                        controller: sc,
-                                        scrollDirection: Axis.horizontal,
-                                        child: Row(
-                                            children: tags.map((String tag) {
-                                          return Container(
-                                            decoration: const BoxDecoration(
-                                              borderRadius: BorderRadius.all(
-                                                Radius.circular(20.0),
-                                              ),
-                                              color:
-                                                  Color.fromARGB(255, 74, 137, 92),
-                                            ),
-                                            margin:
-                                                const EdgeInsets.only(right: 10.0),
-                                            padding: const EdgeInsets.symmetric(
-                                                horizontal: 10.0, vertical: 4.0),
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.spaceBetween,
-                                              children: [
-                                                InkWell(
-                                                  child: Text(
-                                                    '#$tag',
-                                                    style: const TextStyle(
-                                                        color: Colors.white),
-                                                  ),
-                                                  onTap: () {
-                                                    //print("$tag selected");
-                                                  },
-                                                ),
-                                                const SizedBox(width: 4.0),
-                                                InkWell(
-                                                  child: const Icon(
-                                                    Icons.cancel,
-                                                    size: 14.0,
-                                                    color: Color.fromARGB(
-                                                        255, 233, 233, 233),
-                                                  ),
-                                                  onTap: () {
-                                                    onTagDelete(tag);
-                                                  },
-                                                )
-                                              ],
-                                            ),
-                                          );
-                                        }).toList()),
-                                      )
-                                    : null,
-                              ),
-                              onChanged: onChanged,
-                              onSubmitted: onSubmitted,
-                            ),
-                          );
-                        });
-                      },
-                    );
-                  },
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all<Color>(
-                        const Color.fromARGB(255, 74, 137, 92),
-                      ),
-                    ),
-                    onPressed: () {
-                      _tagsController.clearTags();
-                    },
-                    child: const Text('clear paths'),
+                );
+              },
+            ),
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: ElevatedButton(
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    const Color.fromARGB(255, 74, 137, 92),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: CheckboxListTile(
-                    tileColor: AppThemes.promptCardColor,
-                    title: Text("Is Subscribed?"),
-                    value: _user?.isSubscribed,
-                    onChanged: _onIfSubscribedChanged,
-                    controlAffinity: ListTileControlAffinity.platform,
-                  )
-                ),
-                saveButton()
-              ],
+                onPressed: () {
+                  _tagsController.clearTags();
+                },
+                child: const Text('clear paths'),
+              ),
             ),
+            _isSubscribedCheckbox(),
+            saveButton()
+          ],
+        ),
       ),
     );
   }
 
-   void _onIfSubscribedChanged(bool? newValue) {
+  _userIdFormField() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: Text(
+          "UserId: ${_user?.uid}"
+        ,)
+    );
+  }
+
+  _displayNameFormField() {
+    return Container (
+        padding: const EdgeInsets.all(30.0),
+        color: Colors.white,
+        child: Center(
+          child: Column(
+          children : [
+            TextFormField(
+              controller: _displayNameController,
+              decoration: InputDecoration(
+                labelText: "Display Name",
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                  borderSide: const BorderSide(
+                  ),
+                ),
+                //fillColor: Colors.green
+              ),
+              validator: (val) {
+                if(val!.isEmpty) {
+                  return "Name cannot be empty";
+                }
+                return null;
+              },
+              keyboardType: TextInputType.name,
+            ),
+          ]
+          )
+        )
+    );
+  }
+
+  _emailAddressFormField() {
+    return Container (
+        padding: const EdgeInsets.all(30.0),
+        color: Colors.white,
+        child: Center(
+          child: Column(
+            children : [
+              TextFormField(
+                readOnly: true,
+                controller: _emailAddressController,
+                decoration: InputDecoration(
+                  labelText: "Email Address",
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: const BorderSide(
+                    ),
+                  ),
+                  //fillColor: Colors.green
+                ),
+                validator: validateEmail,
+                keyboardType: TextInputType.emailAddress,
+              ),
+            ]
+          )
+      )
+    );
+  }
+
+  _phoneNumberFormField() {
+    return Container (
+        padding: const EdgeInsets.all(30.0),
+        color: Colors.white,
+        child: Center(
+          child: Column(
+            children : [
+              TextFormField(
+                controller: _phoneNumberController,
+                decoration: InputDecoration(
+                  labelText: "Phone Number",
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(25.0),
+                    borderSide: const BorderSide(
+                    ),
+                  ),
+                ),
+                validator: validateMobile,
+                keyboardType: TextInputType.phone,
+              ),
+            ]
+          )
+          )
+    );
+  }
+
+  _isSubscribedCheckbox() {
+    return Padding(
+      padding: const EdgeInsets.all(12.0),
+      child: CheckboxListTile(
+        tileColor: AppThemes.promptCardColor,
+        title: Text("Is Subscribed?"),
+        value: _user?.isSubscribed,
+        onChanged: _onIfSubscribedChanged,
+        controlAffinity: ListTileControlAffinity.platform,
+      )
+    );
+  }
+
+  void _onIfSubscribedChanged(bool? newValue) {
     if (newValue != null) {
       setState(() {
         _user?.isSubscribed = newValue;
       });
     }
-   }
+  }
 
-    String? validateMobile(String? value) {
-      String pattern = r'(^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$)';
-      RegExp regExp = RegExp(pattern);
-      if (value!.isEmpty) {
-            return 'Please enter mobile number';
-      }
-      else if (!regExp.hasMatch(value)) {
-            return 'Please enter valid mobile number';
-      }
-      return null;
-    }   
+  String? validateEmail(String? value) {
+    String pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+    RegExp regExp = RegExp(pattern);
+    if (value!.isEmpty) {
+      return 'Please enter email address';
+    }
+    else if (!regExp.hasMatch(value)) {
+      return 'Please enter valid email address';
+    }
+    return null;
+  }
+
+  String? validateMobile(String? value) {
+    String pattern = r'(^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$)';
+    RegExp regExp = RegExp(pattern);
+    if (value!.isEmpty) {
+      return 'Please enter mobile number';
+    }
+    else if (!regExp.hasMatch(value)) {
+      return 'Please enter valid mobile number';
+    }
+    return null;
+  }
 
   saveButton() {
     return  Padding(
@@ -431,9 +468,5 @@ static const List<String> _defaultCategories = <String>[
       ),
     );
   }
-
-
-
-
 
 }
