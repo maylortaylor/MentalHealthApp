@@ -17,7 +17,7 @@ import 'package:mental_health_app/screens/prompt.screen.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:mental_health_app/services/navigation_service.dart';
 import 'package:mental_health_app/ui/auth/register_screen.dart';
-import 'package:mental_health_app/ui/auth/sign_in_screen.dart';
+import 'package:mental_health_app/ui/auth/login_screen.dart';
 import 'package:mental_health_app/ui/setting/setting_screen.dart';
 import 'package:provider/provider.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
@@ -87,7 +87,7 @@ class _AppComponentState extends State<AppComponent> {
                   // title: Provider.of<Flavor>(context).toString(),
                   routes: {
                         AppRoutes.home: (context) => DecisionScreen(),
-                        AppRoutes.login: (context) => SignInScreen(),
+                        AppRoutes.login: (context) => LoginScreen(),
                         AppRoutes.register: (context) => RegisterScreen(),
                   },
                   onGenerateRoute: generateRoute,
@@ -105,7 +105,7 @@ class _AppComponentState extends State<AppComponent> {
                             //     onGenerateRoute: Application.router.generator,
                             //   )
                             ? DecisionScreen()
-                            : SignInScreen();
+                            : LoginScreen();
                       }
                 
                       // return DecisionScreen();
@@ -138,7 +138,7 @@ class _AppComponentState extends State<AppComponent> {
         case AppRoutes.home:
           return DecisionScreen();
         case AppRoutes.login:
-          return SignInScreen();
+          return LoginScreen();
         case AppRoutes.register:
           return RegisterScreen();
         case AppRoutes.settings:

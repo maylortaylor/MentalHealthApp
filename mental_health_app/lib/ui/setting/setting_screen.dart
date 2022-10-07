@@ -17,7 +17,8 @@ class _SettingScreenState extends State<SettingScreen> {
   final _formKey = GlobalKey<FormState>();
   late double _distanceToField;
   late TextfieldTagsController _tagsController;
-  late TextEditingController _displayNameController;
+  late TextEditingController _firstNameController;
+  late TextEditingController _lastNameController;
   late TextEditingController _emailAddressController;
   late TextEditingController _phoneNumberController;
   late UserModel? _user;
@@ -39,7 +40,8 @@ class _SettingScreenState extends State<SettingScreen> {
   void dispose() {
     super.dispose();
     _tagsController.dispose();
-    _displayNameController.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
     _emailAddressController.dispose();
   }
   
@@ -48,7 +50,8 @@ class _SettingScreenState extends State<SettingScreen> {
     super.initState();
     _user = UserModel();
     _tagsController = TextfieldTagsController();
-    _displayNameController  = TextEditingController();
+    _firstNameController  = TextEditingController();
+    _lastNameController  = TextEditingController();
     _emailAddressController = TextEditingController();
     _phoneNumberController = TextEditingController();
     _getUserModel();
@@ -74,7 +77,8 @@ class _SettingScreenState extends State<SettingScreen> {
       
       setState(() {
         _emailAddressController.text = _user!.email!;
-        _displayNameController.text = _user!.displayName!;
+        _firstNameController.text = _user!.firstName!;
+        _lastNameController.text = _user!.lastName!;
         _phoneNumberController.text = _user!.phoneNumber!;
         for (var opt in _user!.pathsAllowed!) {
           _tagsController.addTag = opt;
@@ -88,7 +92,8 @@ class _SettingScreenState extends State<SettingScreen> {
         Provider.of<FirestoreDatabase>(context, listen: false);
 
     if (_user!.uid!.isNotEmpty) {
-      _user?.displayName = _displayNameController.text;
+      _user?.firstName = _firstNameController.text;
+      _user?.lastName = _lastNameController.text;
       _user?.pathsAllowed = _tagsController.getTags;
       _user?.phoneNumber = _phoneNumberController.text;
       _user?.lastModified = DateTime.now().toIso8601String();
@@ -125,7 +130,8 @@ class _SettingScreenState extends State<SettingScreen> {
         child: Column(
           children: [
             _userIdFormField(),
-            _displayNameFormField(),
+            _firstNameFormField(),
+            _lastNameFormField(),
             _emailAddressFormField(),
             _phoneNumberFormField(),
             Autocomplete<String>(
@@ -314,7 +320,7 @@ class _SettingScreenState extends State<SettingScreen> {
     );
   }
 
-  _displayNameFormField() {
+  _firstNameFormField() {
     return Container (
         padding: const EdgeInsets.all(30.0),
         color: Colors.white,
@@ -322,9 +328,9 @@ class _SettingScreenState extends State<SettingScreen> {
           child: Column(
           children : [
             TextFormField(
-              controller: _displayNameController,
+              controller: _firstNameController,
               decoration: InputDecoration(
-                labelText: "Display Name",
+                labelText: "First Name",
                 fillColor: Colors.white,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(25.0),
@@ -335,7 +341,40 @@ class _SettingScreenState extends State<SettingScreen> {
               ),
               validator: (val) {
                 if(val!.isEmpty) {
-                  return "Name cannot be empty";
+                  return "First Name required";
+                }
+                return null;
+              },
+              keyboardType: TextInputType.name,
+            ),
+          ]
+          )
+        )
+    );
+  }
+
+  _lastNameFormField() {
+    return Container (
+        padding: const EdgeInsets.all(30.0),
+        color: Colors.white,
+        child: Center(
+          child: Column(
+          children : [
+            TextFormField(
+              controller: _lastNameController,
+              decoration: InputDecoration(
+                labelText: "Last Name",
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(25.0),
+                  borderSide: const BorderSide(
+                  ),
+                ),
+                //fillColor: Colors.green
+              ),
+              validator: (val) {
+                if(val!.isEmpty) {
+                  return "Last Name required";
                 }
                 return null;
               },
@@ -394,7 +433,7 @@ class _SettingScreenState extends State<SettingScreen> {
                     ),
                   ),
                 ),
-                validator: validateMobile,
+                validator: validatePhoneNumber,
                 keyboardType: TextInputType.phone,
               ),
             ]
@@ -428,7 +467,7 @@ class _SettingScreenState extends State<SettingScreen> {
     String pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
     RegExp regExp = RegExp(pattern);
     if (value!.isEmpty) {
-      return 'Please enter email address';
+      return 'Email Address required';
     }
     else if (!regExp.hasMatch(value)) {
       return 'Please enter valid email address';
@@ -436,11 +475,11 @@ class _SettingScreenState extends State<SettingScreen> {
     return null;
   }
 
-  String? validateMobile(String? value) {
+  String? validatePhoneNumber(String? value) {
     String pattern = r'(^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$)';
     RegExp regExp = RegExp(pattern);
     if (value!.isEmpty) {
-      return 'Please enter mobile number';
+      return 'Mobile Number required';
     }
     else if (!regExp.hasMatch(value)) {
       return 'Please enter valid mobile number';

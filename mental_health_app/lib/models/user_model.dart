@@ -1,7 +1,9 @@
 class UserModel {
   String? uid;
   String? email;
-  String? displayName;
+  String? firstName;
+  String? lastName;
+  String? zipcode;
   String? phoneNumber;
   String? photoUrl;
   String? dateCreated;
@@ -12,7 +14,9 @@ class UserModel {
   UserModel(
       {this.uid,
       this.email,
-      this.displayName,
+      this.firstName,
+      this.lastName,
+      this.zipcode,
       this.phoneNumber,
       this.photoUrl,
       this.dateCreated,
@@ -24,7 +28,9 @@ class UserModel {
   static UserModel fromMap(Map<String, dynamic> data, String userId) {
     String uid = data['uid'];
     String email = data['email'];
-    String displayName = data['displayName'] ?? '';
+    String firstName = data['firstName'] ?? '';
+    String lastName = data['lastName'] ?? '';
+    String zipcode = data['zipcode'] ?? '';
     String phoneNumber = data['phoneNumber'] ?? '';
     String photoUrl = data['photoUrl'] ?? '';
     String dateCreated = data['dateCreated'] ?? '';
@@ -35,7 +41,9 @@ class UserModel {
     return  UserModel(
       uid: userId, 
       email: email,
-      displayName: displayName,
+      firstName: firstName,
+      lastName: lastName,
+      zipcode: zipcode,
       phoneNumber: phoneNumber,
       photoUrl: photoUrl,
       dateCreated: dateCreated,
@@ -49,7 +57,9 @@ class UserModel {
     Map<String, dynamic> map = {
       'uid': uid,
       'email': email,
-      'displayName': displayName,
+      'firstName': firstName,
+      'lastName': lastName,
+      'zipcode': zipcode,
       'phoneNumber': phoneNumber,
       'photoUrl': photoUrl,
       'dateCreated': dateCreated,

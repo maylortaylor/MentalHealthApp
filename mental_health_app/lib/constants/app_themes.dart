@@ -11,7 +11,7 @@ class AppThemes {
   static Color depressedColor = const Color.fromRGBO(28,63,78,1);
   static Color guiltyColor = const Color.fromRGBO(197,153,91,1);
   static Color darkCardColor = const Color.fromRGBO(15,10,51,1);
-  static Color midCardColor = const Color.fromRGBO(103,98,132,1);
+  static const Color midCardColor = const Color.fromRGBO(103,98,132,1);
   static Color promptCardColor = const Color.fromRGBO(24,183,137,1);
   static Color lightCardColor = const Color.fromRGBO(140,138,150,1);
   static Color lightestGreen = const Color.fromRGBO(162,201,186,1);
@@ -37,7 +37,7 @@ class AppThemes {
 
   //text theme for light theme
   static final TextStyle _lightScreenHeadingTextStyle =
-      TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 20.0, color: _lightOnPrimaryColor);
+      TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 24.0, color: _lightPrimaryVariantColor, fontWeight: FontWeight.w300);
   static final TextStyle _lightScreenTaskNameTextStyle =
       TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 16.0, color: _lightOnPrimaryColor);
   static final TextStyle _lightScreenTaskDurationTextStyle =

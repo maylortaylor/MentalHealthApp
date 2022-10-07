@@ -72,7 +72,7 @@ class AuthProvider extends ChangeNotifier {
     return UserModel(
         uid: user.uid,
         email: user.email,
-        displayName: user.displayName,
+        // firstName: user.displayName,
         phoneNumber: user.phoneNumber,
         photoUrl: user.photoURL
       );
@@ -94,7 +94,7 @@ class AuthProvider extends ChangeNotifier {
 
   //Method for new user registration using email and password
   Future<UserModel?> registerWithEmailAndPassword(
-      String email, String password) async {
+      String email, String password, String firstName, String lastName, String zipcode, String phoneNumber) async {
     try {
       _status = Status.Registering;
       notifyListeners();
@@ -109,8 +109,10 @@ class AuthProvider extends ChangeNotifier {
         data: UserModel(
           uid: result.user!.uid,
           email: result.user!.email,
-          displayName: result.user!.displayName,
-          phoneNumber: result.user!.phoneNumber,
+          firstName: firstName,
+          lastName: lastName,
+          zipcode: zipcode,
+          phoneNumber: phoneNumber,
           photoUrl: result.user!.photoURL,
           dateCreated: DateTime.now().toIso8601String(),
           isSubscribed: false,
@@ -127,7 +129,7 @@ class AuthProvider extends ChangeNotifier {
       print("Error on the new user registration = " + e.toString());
       _status = Status.Unauthenticated;
       notifyListeners();
-      return UserModel(displayName: 'Null', uid: 'null');
+      return UserModel(uid: 'null');
     }
   }
 

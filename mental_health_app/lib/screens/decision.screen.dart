@@ -14,7 +14,6 @@ import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/routes.dart';
 import 'package:mental_health_app/services/navigation_service.dart';
 import 'package:mental_health_app/ui/auth/register_screen.dart';
-import 'package:mental_health_app/ui/auth/sign_in_screen.dart';
 import 'package:mental_health_app/ui/setting/setting_screen.dart';
 import 'package:provider/provider.dart';
 
@@ -54,7 +53,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
 
     setState(() {
       currentUser = authProvider.currentUserModel;
-      print("${currentUser?.displayName} : ${currentUser?.pathsAllowed}");
+      print("${currentUser?.firstName} : ${currentUser?.pathsAllowed}");
     });
    
 
@@ -78,7 +77,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
       appBar: AppBar(
         backgroundColor: getAppBarColor(),
         leading: authProvider.status == Status.Authenticated ? 
-        Center(child: Text("${currentUser?.displayName}")) : Container(),
+        Center(child: Text("${currentUser?.firstName}")) : Container(),
         actions: [
           authProvider.status == Status.Unauthenticated ? ElevatedButton(
             style: ButtonStyle(

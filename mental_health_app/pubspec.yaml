@@ -47,6 +47,7 @@ dependencies:
   intl: ^0.17.0
   another_flushbar: ^1.12.29
   vimeo_video_player: ^0.0.4
+  responsive_ui: ^3.0.0
   # vimeoplayer_mam: ^1.0.1
   # pod_player: ^0.1.0
   # vimeoplayer: ^0.1.8

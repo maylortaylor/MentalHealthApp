@@ -14,36 +14,30 @@ import 'package:mental_health_app/widgets/responsive.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_ui/responsive_ui.dart';
 
-class RegisterScreen extends StatefulWidget {
+class LoginScreen extends StatefulWidget {
   @override
-  _RegisterScreenState createState() => _RegisterScreenState();
+  _LoginScreenState createState() => _LoginScreenState();
 }
 
-class _RegisterScreenState extends State<RegisterScreen> {
-  late TextEditingController _firstNameController;
-  late TextEditingController _lastNameController;
-  late TextEditingController _zipcodeController;
-  late TextEditingController _phoneNumberController;
+class _LoginScreenState extends State<LoginScreen> {
   late TextEditingController _emailController;
   late TextEditingController _passwordController;
-  late TextEditingController _confirmPasswordontroller;
   final _formKey = GlobalKey<FormState>();
   final _scaffoldKey = GlobalKey<ScaffoldState>();
-  bool _obscurePasswordText = true;
-  bool _obscureConfirmText = true;
-
+  bool _obscureText = true;
 
   @override
   void initState() {
     super.initState();
 
-    _firstNameController = TextEditingController(text: "");
-    _lastNameController = TextEditingController(text: "");
-    _zipcodeController = TextEditingController(text: "");
-    _phoneNumberController = TextEditingController(text: "");
     _emailController = TextEditingController(text: "");
     _passwordController = TextEditingController(text: "");
-    _confirmPasswordontroller = TextEditingController(text: "");
+  }
+
+  void _toggleObscureText() {
+    setState(() {
+      _obscureText = !_obscureText;
+    });
   }
 
   @override
@@ -55,7 +49,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
       appBar: AppBar(
         backgroundColor: AppThemes.anxiousColor,
         title: const Text(
-          'Register',
+          'Login',
           style: TextStyle(
             fontFamily: AppFontFamily.poppins,
             fontSize: 22
@@ -128,13 +122,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   void dispose() {
-    _firstNameController.dispose();
-    _lastNameController.dispose();
-    _zipcodeController.dispose();
-    _phoneNumberController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _confirmPasswordontroller.dispose();
     super.dispose();
   }
 
@@ -155,48 +144,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ) : Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Row(
-                  children: [
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                      child: TextFormField(
-                        controller: _firstNameController,
-                        autofocus: true,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                        validator: (value) => value!.isEmpty
-                            ? "First Name required"
-                            : null,
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.person,
-                              color: Theme.of(context).iconTheme.color,
-                            ),
-                            labelText: "First Name*",
-                            border: OutlineInputBorder()),
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                      child: TextFormField(
-                        controller: _lastNameController,
-                        style: Theme.of(context).textTheme.bodyLarge,
-                        validator: (value) => value!.isEmpty
-                            ? "Last Name required"
-                            : null,
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.person,
-                              color: Theme.of(context).iconTheme.color,
-                            ),
-                            labelText: "Last Name*",
-                            border: OutlineInputBorder()),
-                      ),
-                    ),
-                  )
-                ],),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
@@ -215,7 +162,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: TextFormField(
-                    obscureText: _obscurePasswordText,
+                    obscureText: _obscureText,
                     maxLength: 12,
                     controller: _passwordController,
                     style: Theme.of(context).textTheme.bodyLarge,
@@ -224,9 +171,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         : null,
                     decoration: InputDecoration(
                       suffix: IconButton(
-                        icon: Icon(_obscurePasswordText ? Icons.visibility : Icons.visibility_off),
+                        icon: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
                         color: Theme.of(context).iconTheme.color,
-                        onPressed: _togglePasswordObscureText,
+                        onPressed: _toggleObscureText,
                       ),
                         prefixIcon: Icon(
                           Icons.lock,
@@ -237,111 +184,45 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: TextFormField(
-                    obscureText: _obscureConfirmText,
-                    maxLength: 12,
-                    controller: _confirmPasswordontroller,
-                    style: Theme.of(context).textTheme.bodyLarge,
-                    validator: (value) {
-                        if (value!.length < 6) {
-                         return "Error in Confirm Password";
-                        }
-                        
-                        if (value != _passwordController.text) {
-                          return "Passwords do not match";
-                        }
-                    },
-                    decoration: InputDecoration(
-                      suffix: IconButton(
-                        icon: Icon(_obscureConfirmText ? Icons.visibility : Icons.visibility_off),
-                        color: Theme.of(context).iconTheme.color,
-                        onPressed: _toggleConfirmObscureText,
-                      ),
-                        prefixIcon: Icon(
-                          Icons.lock,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        labelText: "Confirm Password*",
-                        border: OutlineInputBorder()),
-                  ),
-                ),
-                Row(
-                  children: [
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                      child: TextFormField(
-                        controller: _zipcodeController,
-                        autofocus: true,
-                        style: Theme.of(context).textTheme.bodySmall,
-                        validator: validateZipcode,
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.location_on,
-                              color: Theme.of(context).iconTheme.color,
-                            ),
-                            labelText: "Zipcode (optional)",
-                            border: OutlineInputBorder()),
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
-                      child: TextFormField(
-                        controller: _phoneNumberController,
-                        style: Theme.of(context).textTheme.bodySmall,
-                        validator: validatePhoneNumber,
-                        decoration: InputDecoration(
-                            prefixIcon: Icon(
-                              Icons.phone,
-                              color: Theme.of(context).iconTheme.color,
-                            ),
-                            labelText: "Phone (optional)",
-                            border: OutlineInputBorder()),
-                      ),
-                    ),
-                  )
-                ],),
-                Padding(
                   padding: const EdgeInsets.fromLTRB(0, 8, 0, 8),
                   child: SizedBox(
                     height: 50,
                     child: ElevatedButton(
                         child: Text(
-                          "Sign up",
+                          "Sign In",
                           style: Theme.of(context).textTheme.button,
                         ),
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
                             FocusScope.of(context)
-                                .unfocus();
-                  
+                                .unfocus(); //to hide the keyboard - if any
+
                             UserModel? userModel =
-                                await authProvider.registerWithEmailAndPassword(
+                                await authProvider.signInWithEmailAndPassword(
                                     _emailController.text,
-                                    _passwordController.text,
-                                    _firstNameController.text,
-                                    _lastNameController.text,
-                                    _zipcodeController.text,
-                                    _phoneNumberController.text);
-                  
-                            if (userModel!.uid!.isNotEmpty) {
-                              // saveUserToDatabase();
+                                    _passwordController.text);
+
+                            if (userModel == null) {
                               Flushbar(
-                                title:  "User Created",
-                                message:  "User info was created successfully",
-                                backgroundColor: AppThemes.notifGreen,
+                                title:  "Error During Login",
+                                message:  "User Info Incorrect",
+                                backgroundColor: AppThemes.notifRed,
                                 flushbarPosition: FlushbarPosition.TOP,
                                 duration:  Duration(seconds: 3),
                               ).show(context);
+                            } else {
+                              Flushbar(
+                                title:  "Login Successful",
+                                message:  "User login successful",
+                                backgroundColor: AppThemes.notifBlue,
+                                flushbarPosition: FlushbarPosition.TOP,
+                                duration:  Duration(seconds: 3),
+                              ).show(context);
+                                Navigator.pushNamed(
+                                    context,
+                                    AppRoutes.root,
+                               );                              
                             }
-                  
-                            Navigator.pushNamed(
-                                context,
-                                AppRoutes.home,
-                              );
                           }
                         }),
                       ),
@@ -349,7 +230,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Padding(
                       padding: const EdgeInsets.all(20),
                       child: TextButton(
-                          child: Text("Existing Users Login Here"),
+                          child: Text("Don't Have An Account?"),
                           style: ButtonStyle(
                             textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
                               (Set<MaterialState> states) {
@@ -361,7 +242,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           onPressed: () {
                             Navigator.pushNamed(
                                 context,
-                                AppRoutes.login,
+                                AppRoutes.register,
                               );
                           },
                         ),
@@ -372,20 +253,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ));
   }
 
-
-  void _togglePasswordObscureText() {
-    setState(() {
-      _obscurePasswordText = !_obscurePasswordText;
-    });
-  }
-
-  void _toggleConfirmObscureText() {
-    setState(() {
-      _obscureConfirmText = !_obscureConfirmText;
-    });
-  }
 }
-
 
   String? validateEmail(String? value) {
     String pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
@@ -395,30 +263,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     }
     else if (!regExp.hasMatch(value)) {
       return 'Please enter valid email address';
-    }
-    return null;
-  }
-
-   String? validateZipcode(String? value) {
-    String pattern = r"[a-z0-9][a-z0-9\- ]{0,10}[a-z0-9]$";
-    RegExp regExp = RegExp(pattern);
-    // if (value!.isEmpty) {
-    //   return 'Email Address required';
-    // }
-    if (!regExp.hasMatch(value!)) {
-      return 'Please enter valid zipcode';
-    }
-    return null;
-  }
-
-  String? validatePhoneNumber(String? value) {
-    String pattern = r'(^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$)';
-    RegExp regExp = RegExp(pattern);
-    // if (value!.isEmpty) {
-    //   return 'Mobile Number required';
-    // }
-    if (!regExp.hasMatch(value!)) {
-      return 'Please enter valid mobile number';
     }
     return null;
   }
