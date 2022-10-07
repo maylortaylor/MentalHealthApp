@@ -10,6 +10,7 @@ import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/routes.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:mental_health_app/ui/auth/login_screen.dart';
+import 'package:mental_health_app/widgets/platform_aware_asset_image.dart';
 import 'package:mental_health_app/widgets/responsive.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_ui/responsive_ui.dart';
@@ -98,10 +99,14 @@ class _LoginScreenState extends State<LoginScreen> {
                     Center(
                       child: Padding(
                         padding: const EdgeInsets.all(20),
-                        child: Image.asset(
-                          'images/All-White/M4B_LOGO2_AllWhite-34.png',
+                        child: PlatformAwareAssetImage(
+                          asset: 'images/All-White/M4B_LOGO2_AllWhite-34.png',
                           width:400, height:150
-                         ),
+                        )
+                        // child: Image.asset(
+                        //   'images/All-White/M4B_LOGO2_AllWhite-34.png',
+                        //   width:400, height:150
+                        //  ),
                       )
                     )
                   ],
