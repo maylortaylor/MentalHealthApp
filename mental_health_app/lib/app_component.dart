@@ -18,6 +18,7 @@ import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:mental_health_app/services/navigation_service.dart';
 import 'package:mental_health_app/ui/auth/register_screen.dart';
 import 'package:mental_health_app/ui/auth/login_screen.dart';
+import 'package:mental_health_app/ui/payment/pay_wall.screen.dart';
 import 'package:mental_health_app/ui/setting/setting_screen.dart';
 import 'package:provider/provider.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
@@ -89,6 +90,7 @@ class _AppComponentState extends State<AppComponent> {
                         AppRoutes.home: (context) => DecisionScreen(),
                         AppRoutes.login: (context) => LoginScreen(),
                         AppRoutes.register: (context) => RegisterScreen(),
+                        AppRoutes.payment: (context) => PayWallScreen(),
                   },
                   onGenerateRoute: generateRoute,
                   theme: AppThemes.lightTheme,
@@ -141,6 +143,8 @@ class _AppComponentState extends State<AppComponent> {
           return LoginScreen();
         case AppRoutes.register:
           return RegisterScreen();
+        case AppRoutes.payment:
+          return PayWallScreen();
         case AppRoutes.settings:
           return SettingScreen();
         case AppRoutes.anger:

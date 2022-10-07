@@ -95,6 +95,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       maxFontSize: 26, 
                       style: Theme.of(context).textTheme.displayLarge
                     ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Image.asset(
+                          'images/All-White/M4B_LOGO2_AllWhite-34.png',
+                          width:400, height:150
+                         ),
+                      )
+                    )
                   ],
                 ),
               ),

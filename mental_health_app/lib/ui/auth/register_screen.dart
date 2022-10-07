@@ -101,6 +101,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       maxFontSize: 26, 
                       style: Theme.of(context).textTheme.displayLarge
                     ),
+                    Center(
+                      child: Padding(
+                        padding: const EdgeInsets.all(20),
+                        child: Image.asset(
+                          'images/All-White/M4B_LOGO2_AllWhite-34.png',
+                          width:400, height:150
+                         ),
+                      )
+                    )
                   ],
                 ),
               ),
@@ -163,7 +172,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       child: TextFormField(
                         controller: _firstNameController,
                         autofocus: true,
-                        style: Theme.of(context).textTheme.bodyLarge,
+                        style: Theme.of(context).textTheme.bodySmall,
                         validator: (value) => value!.isEmpty
                             ? "First Name required"
                             : null,
@@ -182,7 +191,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       padding: const EdgeInsets.fromLTRB(8, 8, 8, 8),
                       child: TextFormField(
                         controller: _lastNameController,
-                        style: Theme.of(context).textTheme.bodyLarge,
+                        style: Theme.of(context).textTheme.bodySmall,
                         validator: (value) => value!.isEmpty
                             ? "Last Name required"
                             : null,
@@ -201,7 +210,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: _emailController,
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    style: Theme.of(context).textTheme.bodySmall,
                     validator: validateEmail,
                     decoration: InputDecoration(
                         prefixIcon: Icon(
@@ -215,10 +224,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: TextFormField(
+                    controller: _passwordController,
                     obscureText: _obscurePasswordText,
                     maxLength: 12,
-                    controller: _passwordController,
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    style: Theme.of(context).textTheme.bodySmall,
                     validator: (value) => value!.length < 6
                         ? "Error in Password"
                         : null,
@@ -239,10 +248,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: TextFormField(
+                    controller: _confirmPasswordontroller,
                     obscureText: _obscureConfirmText,
                     maxLength: 12,
-                    controller: _confirmPasswordontroller,
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    style: Theme.of(context).textTheme.bodySmall,
                     validator: (value) {
                         if (value!.length < 6) {
                          return "Error in Confirm Password";
