@@ -520,7 +520,7 @@ class _PromptScreenState extends State<PromptScreen> {
       child: AutoSizeText(
         '${promptsList[index].title}', 
       maxLines: 1,
-      minFontSize: 8,
+      minFontSize: 20,
       maxFontSize: 36,
       style: const TextStyle(
           fontFamily: AppFontFamily.poppins,
