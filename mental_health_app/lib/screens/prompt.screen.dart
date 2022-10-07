@@ -39,7 +39,7 @@ class _PromptScreenState extends State<PromptScreen> {
   String _nextButtonText = "Next";
   bool _showFrontSide = true;
   bool _flipXAxis = true;
-  late int _currentIndex;
+  late int _currentIndex = 0;
   bool nextPageIsActive = false;
   final answerAreaTextController = TextEditingController();
 
@@ -150,7 +150,7 @@ class _PromptScreenState extends State<PromptScreen> {
     });
   }
 
-  _saveAnswerToDatabase() {
+  void _saveAnswerToDatabase() {
     final firestoreDatabase =
         Provider.of<FirestoreDatabase>(context, listen: false);
 
