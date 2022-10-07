@@ -398,7 +398,7 @@ class _PromptScreenState extends State<PromptScreen> {
         physics: NeverScrollableScrollPhysics(),
         pagination: const SwiperPagination(
             builder: DotSwiperPaginationBuilder(
-                size: 20.0, activeSize: 20.0, space: 10.0))),
+                size: 10.0, activeSize: 20.0, space: 10.0))),
     );
   }
 
@@ -554,7 +554,8 @@ class _PromptScreenState extends State<PromptScreen> {
     return  Padding(
       padding: const EdgeInsets.fromLTRB(8, 32, 8, 0),
       child: Container(
-        width: MediaQuery.of(context).size.width * .50,
+        width: ResponsiveWidget.isSmallScreen(context) 
+          ? MediaQuery.of(context).size.width * .85 :  MediaQuery.of(context).size.width * .60,
         height: MediaQuery.of(context).size.height * .25,
         decoration: BoxDecoration(
           color: AppThemes.promptCardColor,
