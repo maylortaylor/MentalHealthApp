@@ -237,25 +237,25 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                 ),
                 Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: TextButton(
-                          child: Text("Don't Have An Account?"),
-                          style: ButtonStyle(
-                            textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
-                              (Set<MaterialState> states) {
-                                if (states.contains(MaterialState.pressed))
-                                  return Theme.of(context).textTheme.bodyText1;
-                                return null; // Use the component's default.
-                              },
-                            ),),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                                context,
-                                AppRoutes.register,
-                              );
+                  padding: const EdgeInsets.all(20),
+                  child: TextButton(
+                      child: Text("Don't Have An Account?"),
+                      style: ButtonStyle(
+                        textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
+                          (Set<MaterialState> states) {
+                            if (states.contains(MaterialState.pressed))
+                              return Theme.of(context).textTheme.bodyText1;
+                            return null; // Use the component's default.
                           },
-                        ),
+                        ),),
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context,
+                            AppRoutes.register,
+                          );
+                      },
                     ),
+                ),
               ],
             ),
           ),

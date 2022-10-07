@@ -356,25 +356,25 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                 ),
                 Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: TextButton(
-                          child: Text("Existing Users Login Here"),
-                          style: ButtonStyle(
-                            textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
-                              (Set<MaterialState> states) {
-                                if (states.contains(MaterialState.pressed))
-                                  return Theme.of(context).textTheme.bodyText1;
-                                return null; // Use the component's default.
-                              },
-                            ),),
-                          onPressed: () {
-                            Navigator.pushNamed(
-                                context,
-                                AppRoutes.login,
-                              );
+                  padding: const EdgeInsets.all(20),
+                  child: TextButton(
+                      child: Text("Existing Users Login Here"),
+                      style: ButtonStyle(
+                        textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
+                          (Set<MaterialState> states) {
+                            if (states.contains(MaterialState.pressed))
+                              return Theme.of(context).textTheme.bodyText1;
+                            return null; // Use the component's default.
                           },
-                        ),
+                        ),),
+                      onPressed: () {
+                        Navigator.pushNamed(
+                            context,
+                            AppRoutes.login,
+                          );
+                      },
                     ),
+                ),
               ],
             ),
           ),

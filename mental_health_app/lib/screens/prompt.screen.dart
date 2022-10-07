@@ -603,8 +603,8 @@ Widget _buildPortraitFront(context) {
       padding: const EdgeInsets.fromLTRB(8, 32, 8, 0),
       child: Container(
         width: MediaQuery.of(context).size.width * .50,
-        constraints: BoxConstraints(maxHeight: double.infinity),
-        // height: MediaQuery.of(context).size.height * .40,
+        height: MediaQuery.of(context).size.height * .25,
+        // constraints: BoxConstraints(maxHeight: double.infinity),
         decoration: BoxDecoration(
           color: AppThemes.promptCardColor,
           border: Border.all(
@@ -612,18 +612,23 @@ Widget _buildPortraitFront(context) {
           ),
         borderRadius: BorderRadius.circular(20) // use instead of BorderRadius.all(Radius.circular(20))
         ),
-        child: AutoSizeText(
-          '${promptsList[index].body}', 
-        maxLines: 20,
-        minFontSize: 4,
-        maxFontSize: 24,
-        overflow: TextOverflow.ellipsis,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-              fontFamily: AppFontFamily.poppins,
-              // fontSize: 18,
-              color: Colors.white,
-              fontStyle: FontStyle.italic
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(10),
+            child: AutoSizeText(
+              '${promptsList[index].body}', 
+            maxLines: 20,
+            minFontSize: 4,
+            maxFontSize: 24,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+                  fontFamily: AppFontFamily.poppins,
+                  // fontSize: 18,
+                  color: Colors.white,
+                  fontStyle: FontStyle.italic
+              ),
+            ),
           ),
         )
       ),
