@@ -437,6 +437,7 @@ class _PromptScreenState extends State<PromptScreen> {
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
       child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Container(
             padding: EdgeInsets.all(10),
@@ -516,19 +517,16 @@ class _PromptScreenState extends State<PromptScreen> {
   Widget cardTitleArea(int index) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-      child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.55,
-        child: AutoSizeText(
-          '${promptsList[index].title}', 
-        maxLines: 1,
-        minFontSize: 8,
-        maxFontSize: 30,
-        style: const TextStyle(
-            fontFamily: AppFontFamily.poppins,
-            fontSize: 32,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-          )
+      child: AutoSizeText(
+        '${promptsList[index].title}', 
+      maxLines: 1,
+      minFontSize: 8,
+      maxFontSize: 36,
+      style: const TextStyle(
+          fontFamily: AppFontFamily.poppins,
+          // fontSize: 36,
+          color: Colors.white,
+          fontWeight: FontWeight.bold,
         )
       ),
     );
