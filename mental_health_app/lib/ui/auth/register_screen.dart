@@ -285,6 +285,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         autofocus: true,
                         style: Theme.of(context).textTheme.bodySmall,
                         validator: validateZipcode,
+                        keyboardType: TextInputType.number,
                         decoration: InputDecoration(
                             prefixIcon: Icon(
                               Icons.location_on,
@@ -302,6 +303,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         controller: _phoneNumberController,
                         style: Theme.of(context).textTheme.bodySmall,
                         validator: validatePhoneNumber,
+                        keyboardType: TextInputType.phone,
                         decoration: InputDecoration(
                             prefixIcon: Icon(
                               Icons.phone,
