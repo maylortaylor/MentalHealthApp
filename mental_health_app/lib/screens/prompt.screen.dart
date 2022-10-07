@@ -12,6 +12,7 @@ import 'package:mental_health_app/constants/app_themes.dart';
 import 'package:mental_health_app/models/answer_model.dart';
 import 'package:mental_health_app/models/arguments/PromptArguments.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
+import 'package:mental_health_app/widgets/responsive.dart';
 import 'package:provider/provider.dart';
 import 'package:mental_health_app/models/prompts_model.dart';
 import 'package:vimeo_video_player/vimeo_video_player.dart';
@@ -91,15 +92,45 @@ class _PromptScreenState extends State<PromptScreen> {
       ),
       body: Column(
         children:[
-          _buildFlipAnimation(context)
-          // LayoutBuilder(builder: (context, constraints) {
-          //   if (constraints.maxWidth > 600) {
-          //     // return _landscapeMode(context);
-          //     return _buildFlipAnimation(context);
-          //   } else {
-          //     return _portraitMode(context);
-          //   }
-          // },),
+          _buildFlipAnimation(context),
+          ResponsiveWidget.isSmallScreen(context) ?
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: (){
+                          _previousCard();
+                        }, 
+                        icon: const Icon(
+                          Icons.arrow_back,
+                        )
+                      ),
+                      const Text("Back")
+                  ]),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: nextPageIsActive ? _nextPageAction : () {
+                          
+                        }, 
+                        icon: Icon(
+                          Icons.arrow_forward,
+                          color: nextPageIsActive ? null : Colors.grey
+                        )
+                      ),
+                      Text(_nextButtonText)
+                    ]
+                  ),
+                ],
+              ),
+            )
+           : Container()
         ]
       )
     );
@@ -168,65 +199,6 @@ class _PromptScreenState extends State<PromptScreen> {
     firestoreDatabase.setUserAnswerCat(_answerModel, _answerModel.category);
   }
  
-  Widget _buildFront(context) {
-  // return __buildLayout(
-  //   key: ValueKey(true),
-  //   backgroundColor: Colors.blue,
-  //   faceName: "F",
-  // );
-  return __buildLayout(context);
-}
-
-Widget _buildPortraitFront(context) {
-  // return __buildLayout(
-  //   key: ValueKey(true),
-  //   backgroundColor: Colors.blue,
-  //   faceName: "F",
-  // );
-  // return __buildLayout(context);
-  return _portraitMode(context);
-}
-
-  Widget __buildLayout(context) {
-// Widget __buildLayout({Key? key, String? faceName, Color? backgroundColor}) {
-  return _landscapeMode(context);
-  // return Container(
-  //   key: key,
-  //   decoration: BoxDecoration(
-  //     shape: BoxShape.rectangle,
-  //     borderRadius: BorderRadius.circular(20.0),
-  //     color: backgroundColor,
-  //   ),
-  //   child: Center(
-  //     child: Text(faceName!.substring(0, 1), style: TextStyle(fontSize: 80.0)),
-  //   ),
-  // );
-}
-  Widget __buildLayoutRear({Key? key, String? faceName, Color? backgroundColor}) {
-  return Container(
-    key: key,
-    decoration: BoxDecoration(
-      shape: BoxShape.rectangle,
-      borderRadius: BorderRadius.circular(20.0),
-      color: backgroundColor,
-    ),
-    child: Center(
-      child: Text(faceName!.substring(0, 1), style: TextStyle(
-        fontFamily: AppFontFamily.poppins,
-        fontSize: 80.0)),
-    ),
-  );
-}
-
-  Widget _buildRear(context) {
-  // return __buildLayoutRear(
-  //   key: ValueKey(false),
-  //   backgroundColor: Colors.blue.shade700,
-  //   faceName: "R",
-  // );
-  return _buildVimeoCard(context);
-}
-
   Widget _buildVimeoCard(BuildContext context) {
     return Card(
       color: Theme.of(context).cardTheme.color,
@@ -280,19 +252,9 @@ Widget _buildPortraitFront(context) {
         duration: Duration(milliseconds: 800),
         transitionBuilder: __transitionBuilder,
         layoutBuilder: (widget, list) => Stack(children: [widget!, ...list]),
-        // child: _showFrontSide ? _buildFront(context) : _buildRear(context),
-        child: LayoutBuilder(builder: (context, constraints) {
-                if (constraints.maxWidth > 600) {
-                  // return _landscapeMode(context);
-                  return _showFrontSide ? _buildFront(context) : _buildRear(context);
-                  // return _buildFlipAnimation(context);
-                } else {
-                  // return _portraitMode(context);
-                  return _showFrontSide ? _buildPortraitFront(context) : _buildRear(context);
-                }
-              },),
         switchInCurve: Curves.easeInBack,
         switchOutCurve: Curves.easeInBack.flipped,
+        child:  _showFrontSide ? _mainPromptArea(context) : _buildVimeoCard(context),
       ),
     );
   }
@@ -318,10 +280,10 @@ Widget _buildPortraitFront(context) {
     );
   }
 
-  Widget _landscapeMode(context) {
+  Widget _mainPromptArea(context) {
     return Row(
       children: [
-        Container(
+        (ResponsiveWidget.isLargeScreen(context) || ResponsiveWidget.isMediumScreen(context)) ? Container(
           width: MediaQuery.of(context).size.width * 0.15,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -330,92 +292,59 @@ Widget _buildPortraitFront(context) {
                 onPressed: (){
                   _previousCard();
                 }, 
-                icon: Icon(
+                icon: const Icon(
                   Icons.arrow_back,
                 )
               ),
-              Container(
-                child: Text("Back")
-              )
+              const Text("Back")
           ]),
-        ),
+        ) : Container(),
         Container(
-          child: _buildBodySection(context, widget.args?.category ?? "none"),
+          child: _buildBodySection(context, widget.args!.category),
         ),
-        Container(
+        (ResponsiveWidget.isLargeScreen(context) || ResponsiveWidget.isMediumScreen(context)) ? Container(
           width: MediaQuery.of(context).size.width * 0.15,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                onPressed: nextPageIsActive ? (){
+                onPressed: nextPageIsActive ? _nextPageAction : () {
                   
-                  _saveAnswerToDatabase();
-                  answerAreaTextController.clear();
-
-                  if (promptsList.length == (_currentIndex + 1)) {
-                    // last prompt -- finish
-                    Navigator.pushNamed(
-                        context,
-                        AppRoutes.home,
-                    );
-                  } else {
-                    _nextCard();
-                  }
-                } : null, 
+                }, 
                 icon: Icon(
                   Icons.arrow_forward,
                   color: nextPageIsActive ? null : Colors.grey
                 )
               ),
-              Container(
-                child: Text(_nextButtonText)
-              )
+              Text(_nextButtonText)
             ]
-            ),)
+            ),) : Container()
       ],
     );
+  }
+
+  _nextPageAction() {
+    _saveAnswerToDatabase();
+    answerAreaTextController.clear();
+
+    if (promptsList.length == (_currentIndex + 1)) {
+      // last prompt -- finish
+      Navigator.pushNamed(
+          context,
+          AppRoutes.home,
+      );
+    } else {
+      _nextCard();
+    }
   }
 
   Widget _portraitMode(context) {
     return Flexible(
       child: Row(
         children: [
-          // Container(
-          //   width: MediaQuery.of(context).size.width * 0.15,
-          //   child: Column(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: [
-          //       IconButton(
-          //         onPressed: (){
-          //           _previousCard();
-          //         }, 
-          //         icon: Icon(Icons.arrow_back)
-          //       ),
-          //       Container(
-          //         child: Text("Back")
-          //       )
-          //   ]),
-          // ),
           Container(
             child: _buildBodySection(context, widget.args!.category),
           ),
-          // Container(
-          //   width: MediaQuery.of(context).size.width * 0.15,
-          //   child: Column(
-          //     mainAxisAlignment: MainAxisAlignment.center,
-          //     children: [
-          //       IconButton(
-          //         onPressed: (){
-          //           _nextCard();
-          //         }, 
-          //         icon: Icon(Icons.arrow_forward)
-          //       ),
-          //       Container(
-          //         child: Text("Next")
-          //       )
-          //     ]
-          //     ),)
         ],
       ),
     );
@@ -492,31 +421,56 @@ Widget _buildPortraitFront(context) {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 100,
-                      child: cardStepArea(index)
-                    ),
-                    Flexible(
-                      flex: 10,
-                      fit: FlexFit.loose,
-                      child: cardTitleArea(index)
-                    ),
-                    Container(
-                      width: 100,
-                      child: displayPlayButton(index)
-                    )
-                  ]
-                ),
-              ),
+              (ResponsiveWidget.isLargeScreen(context) || ResponsiveWidget.isMediumScreen(context)) ? 
+                largeScreenTopRow(index) : smallScreenTopRow(index),
+              ResponsiveWidget.isSmallScreen(context) ? cardTitleArea(index) : Container(),
              bodyArea(index),
              answerArea(index),
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  Widget largeScreenTopRow(index) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+      child: Row(
+        children: [
+          Container(
+            padding: EdgeInsets.all(10),
+            child: cardStepArea(index)
+          ),
+          Flexible(
+            flex: 10,
+            fit: FlexFit.loose,
+            child: cardTitleArea(index)
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            child: displayPlayButton(index)
+          )
+        ]
+      ),
+    );
+  }
+
+  Widget smallScreenTopRow(index) {
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            padding: EdgeInsets.all(10),
+            child: cardStepArea(index)
+          ),
+          Container(
+            padding: EdgeInsets.all(10),
+            child: displayPlayButton(index)
+          )
+        ]
       ),
     );
   }
@@ -604,7 +558,6 @@ Widget _buildPortraitFront(context) {
       child: Container(
         width: MediaQuery.of(context).size.width * .50,
         height: MediaQuery.of(context).size.height * .25,
-        // constraints: BoxConstraints(maxHeight: double.infinity),
         decoration: BoxDecoration(
           color: AppThemes.promptCardColor,
           border: Border.all(

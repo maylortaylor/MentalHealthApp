@@ -103,10 +103,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           asset: 'images/All-White/M4B_LOGO2_AllWhite-34.png',
                           width:400, height:150
                         )
-                        // child: Image.asset(
-                        //   'images/All-White/M4B_LOGO2_AllWhite-34.png',
-                        //   width:400, height:150
-                        //  ),
                       )
                     )
                   ],
