@@ -54,6 +54,12 @@ class FirestoreDatabase {
         data: answer.toMap(),
       );
 
+  Stream<List<AnswerModel>> userAnswersStream({required String uid, required String category}) => _firestoreService.collectionUserAnswerStream(
+    uid: uid,
+    category: category,
+    builder: (data, documentId) => AnswerModel.fromMap(data, documentId),
+  );
+
   // //Method to delete Prompt entry
   // Future<void> deleteTodo(Prompt todo) async {
   //   await _firestoreService.deleteData(path: FirestorePath.todo(uid, todo.id));
@@ -72,11 +78,11 @@ class FirestoreDatabase {
   //       builder: (data, documentId) => Prompt.fromMap(data, documentId),
   //     );
 
-      Stream<List<Prompt>> promptsCategoryStream({required String category}) => _firestoreService.collectionCategoryStream(
-        category: category,
-        path: FirestorePath.prompts(),
-        builder: (data, documentId) => Prompt.fromMap(data, documentId),
-      );
+  Stream<List<Prompt>> promptsCategoryStream({required String category}) => _firestoreService.collectionCategoryStream(
+    category: category,
+    path: FirestorePath.prompts(),
+    builder: (data, documentId) => Prompt.fromMap(data, documentId),
+  );
 
   // //Method to mark all todoModel to be complete
   // Future<void> setAllTodoComplete() async {

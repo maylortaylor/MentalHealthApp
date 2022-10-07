@@ -12,5 +12,5 @@ class FirestorePath {
   static String prompts() => 'prompts';
   static String users() => 'users';
   static String answers(String uid) => 'answers/$uid';
-  // static String answersCat(String uid, String cat) => 'answers/$uid/$cat';
+  static String answersCat(String uid, String cat) => 'answers/$uid/$cat';
 }

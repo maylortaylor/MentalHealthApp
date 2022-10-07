@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/services.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
+import 'package:mental_health_app/constants/app_routes.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
 import 'package:mental_health_app/models/answer_model.dart';
 import 'package:mental_health_app/models/arguments/PromptArguments.dart';
@@ -35,6 +36,7 @@ class PromptScreen extends StatefulWidget {
 
 class _PromptScreenState extends State<PromptScreen> {
   late AnswerModel _answerModel;
+  String _nextButtonText = "Next";
   bool _showFrontSide = true;
   bool _flipXAxis = true;
   late int _currentIndex;
@@ -68,7 +70,7 @@ class _PromptScreenState extends State<PromptScreen> {
     print('Step: ${widget.args?.step}');
     int? step = widget.args?.step;
 
-    _currentIndex = (step! - 1);
+    // _currentIndex = (step! - 1);
         
     return Scaffold(
       appBar: AppBar(
@@ -90,12 +92,12 @@ class _PromptScreenState extends State<PromptScreen> {
       body: Column(
         children:[
           _buildFlipAnimation(context)
-          // _landscapeMode(context)
           // LayoutBuilder(builder: (context, constraints) {
           //   if (constraints.maxWidth > 600) {
-          //     return _landscapeMode(context);
+          //     // return _landscapeMode(context);
+          //     return _buildFlipAnimation(context);
           //   } else {
-          //     return _portraitMode();
+          //     return _portraitMode(context);
           //   }
           // },),
         ]
@@ -139,16 +141,16 @@ class _PromptScreenState extends State<PromptScreen> {
   void _previousCard() {
     _swiperController.previous(animation: true);
   }
+  
   void _nextCard() {
-    saveAnswerToDatabase();
     _swiperController.next(animation: true);
+
     setState(() {
       nextPageIsActive = false;
-      answerAreaTextController.clear();
     });
   }
 
-  saveAnswerToDatabase() {
+  _saveAnswerToDatabase() {
     final firestoreDatabase =
         Provider.of<FirestoreDatabase>(context, listen: false);
 
@@ -160,8 +162,12 @@ class _PromptScreenState extends State<PromptScreen> {
       dateCreated: DateTime.now().toIso8601String()
     );
 
+    print("SAVING ANSWER");
+    inspect(_answerModel);
+
     firestoreDatabase.setUserAnswerCat(_answerModel, _answerModel.category);
   }
+ 
   Widget _buildFront(context) {
   // return __buildLayout(
   //   key: ValueKey(true),
@@ -169,6 +175,16 @@ class _PromptScreenState extends State<PromptScreen> {
   //   faceName: "F",
   // );
   return __buildLayout(context);
+}
+
+Widget _buildPortraitFront(context) {
+  // return __buildLayout(
+  //   key: ValueKey(true),
+  //   backgroundColor: Colors.blue,
+  //   faceName: "F",
+  // );
+  // return __buildLayout(context);
+  return _portraitMode(context);
 }
 
   Widget __buildLayout(context) {
@@ -218,7 +234,8 @@ class _PromptScreenState extends State<PromptScreen> {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       child: Column(
         children: [
-          Row(children: [
+          Row(
+            children: [
             IconButton(
               onPressed: (){
                 _switchCard();
@@ -234,10 +251,12 @@ class _PromptScreenState extends State<PromptScreen> {
               children: [
                 Expanded(
                   child: Center(
+                    // child: VimeoPlayer(id:'70591644', autoPlay: true,),
                   child: VimeoVideoPlayer(
                       vimeoPlayerModel: VimeoPlayerModel(
-                        url: promptsList[_currentIndex].videoUrl!,
-                        // url: 'https://vimeo.com/253989945',
+                        // url: promptsList[_currentIndex].videoUrl!,
+                        // url: 'https://vimeo.com/362134114/5fd352ede3',
+                        url: 'https://vimeo.com/70591644',
                         deviceOrientation: DeviceOrientation.portraitUp,
                         systemUiOverlay: const [
                           SystemUiOverlay.top,
@@ -261,7 +280,17 @@ class _PromptScreenState extends State<PromptScreen> {
         duration: Duration(milliseconds: 800),
         transitionBuilder: __transitionBuilder,
         layoutBuilder: (widget, list) => Stack(children: [widget!, ...list]),
-        child: _showFrontSide ? _buildFront(context) : _buildRear(context),
+        // child: _showFrontSide ? _buildFront(context) : _buildRear(context),
+        child: LayoutBuilder(builder: (context, constraints) {
+                if (constraints.maxWidth > 600) {
+                  // return _landscapeMode(context);
+                  return _showFrontSide ? _buildFront(context) : _buildRear(context);
+                  // return _buildFlipAnimation(context);
+                } else {
+                  // return _portraitMode(context);
+                  return _showFrontSide ? _buildPortraitFront(context) : _buildRear(context);
+                }
+              },),
         switchInCurve: Curves.easeInBack,
         switchOutCurve: Curves.easeInBack.flipped,
       ),
@@ -320,7 +349,19 @@ class _PromptScreenState extends State<PromptScreen> {
             children: [
               IconButton(
                 onPressed: nextPageIsActive ? (){
-                  _nextCard();
+                  
+                  _saveAnswerToDatabase();
+                  answerAreaTextController.clear();
+
+                  if (promptsList.length == (_currentIndex + 1)) {
+                    // last prompt -- finish
+                    Navigator.pushNamed(
+                        context,
+                        AppRoutes.home,
+                    );
+                  } else {
+                    _nextCard();
+                  }
                 } : null, 
                 icon: Icon(
                   Icons.arrow_forward,
@@ -328,7 +369,7 @@ class _PromptScreenState extends State<PromptScreen> {
                 )
               ),
               Container(
-                child: Text("Next")
+                child: Text(_nextButtonText)
               )
             ]
             ),)
@@ -336,7 +377,7 @@ class _PromptScreenState extends State<PromptScreen> {
     );
   }
 
-  Widget _portraitMode() {
+  Widget _portraitMode(context) {
     return Flexible(
       child: Row(
         children: [
@@ -357,7 +398,7 @@ class _PromptScreenState extends State<PromptScreen> {
           //   ]),
           // ),
           Container(
-            child: _buildBodySection(context, widget.args?.category ?? "none"),
+            child: _buildBodySection(context, widget.args!.category),
           ),
           // Container(
           //   width: MediaQuery.of(context).size.width * 0.15,
@@ -410,17 +451,18 @@ class _PromptScreenState extends State<PromptScreen> {
     return Expanded(
       child: Swiper(itemCount: promptsList.length, itemBuilder: _buildItem,
         onIndexChanged: (index) {
+          print("ON INDEX CHANGED ${index}");
           setState(() {
             _currentIndex = index;
             inspect(promptsList[index]);
+            if (promptsList.length == (_currentIndex + 1)) {
+              _nextButtonText = "Finish";
+            } else {
+              _nextButtonText = "Next";
+            }
           });
         },
         controller: _swiperController,
-        // control: const SwiperControl(
-        //   size: 60,
-        //   padding: EdgeInsets.all(8)
-        // ),
-        // index: _currentIndex,
         loop: true,
         scrollDirection: Axis.horizontal,
         axisDirection: AxisDirection.left,
@@ -483,21 +525,30 @@ class _PromptScreenState extends State<PromptScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('Step', 
+        const AutoSizeText(
+          'Step',
+        maxLines: 1,
+        minFontSize: 8,
+        maxFontSize: 12, 
         style: TextStyle(
             fontFamily: AppFontFamily.poppins,
-            fontSize: 22,
+            // fontSize: 22,
             color: Colors.white,
             fontWeight: FontWeight.bold,
         )
           ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+          // padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
           child: Container(
-                child: Text('# ${promptsList[index].step}', 
+                child: AutoSizeText(
+                  '# ${promptsList[index].step}',
+                maxLines: 1,
+                minFontSize: 8,
+                maxFontSize: 12,  
                 style: const TextStyle(
                   fontFamily: AppFontFamily.poppins,
-                  fontSize: 28,
+                  // fontSize: 28,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
               )
@@ -563,9 +614,9 @@ class _PromptScreenState extends State<PromptScreen> {
         ),
         child: AutoSizeText(
           '${promptsList[index].body}', 
-        maxLines: 14,
-        minFontSize: 16,
-        maxFontSize: 30,
+        maxLines: 20,
+        minFontSize: 4,
+        maxFontSize: 24,
         overflow: TextOverflow.ellipsis,
         textAlign: TextAlign.center,
         style: const TextStyle(
@@ -695,7 +746,11 @@ class _PromptScreenState extends State<PromptScreen> {
           }, 
           icon: Icon(Icons.play_arrow)
         ),
-        const Text("Play Video",
+        const AutoSizeText(
+          "Play Video",
+        maxLines: 1,
+        minFontSize: 4,
+        maxFontSize: 12, 
         style: TextStyle(
           fontFamily: AppFontFamily.poppins,
           color: Colors.white
