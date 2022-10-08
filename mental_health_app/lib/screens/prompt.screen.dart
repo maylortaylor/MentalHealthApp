@@ -21,6 +21,7 @@ import 'package:vimeo_video_player/vimeo_video_player.dart';
 late DatabaseReference _promptsRef;
 late SwiperController _swiperController;
 List<Prompt> promptsList = [];
+List<AnswerModel> answerList = [];
 late Prompt currentPrompt;
 class PromptScreen extends StatefulWidget {
   // const PromptScreen({super.key});
@@ -42,6 +43,7 @@ class _PromptScreenState extends State<PromptScreen> {
   bool _flipXAxis = true;
   late int _currentIndex = 0;
   bool nextPageIsActive = false;
+  bool prevPageIsActive = false;
   final answerAreaTextController = TextEditingController();
 
   Future<void> init() async {
@@ -103,11 +105,10 @@ class _PromptScreenState extends State<PromptScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconButton(
-                        onPressed: (){
-                          _previousCard();
-                        }, 
-                        icon: const Icon(
+                        onPressed: prevPageIsActive ? _previousCard : () {},
+                        icon: Icon(
                           Icons.arrow_back,
+                          color: prevPageIsActive ? null : Colors.grey,
                         )
                       ),
                       const Text("Back")
@@ -116,9 +117,7 @@ class _PromptScreenState extends State<PromptScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconButton(
-                        onPressed: nextPageIsActive ? _nextPageAction : () {
-                          
-                        }, 
+                        onPressed: nextPageIsActive ? _nextPageAction : () { }, 
                         icon: Icon(
                           Icons.arrow_forward,
                           color: nextPageIsActive ? null : Colors.grey
@@ -171,6 +170,9 @@ class _PromptScreenState extends State<PromptScreen> {
   
   void _previousCard() {
     _swiperController.previous(animation: true);
+    if (!answerList.asMap().containsKey(_currentIndex - 2)) {
+      prevPageIsActive = false;
+    }
   }
   
   void _nextCard() {
@@ -178,6 +180,7 @@ class _PromptScreenState extends State<PromptScreen> {
 
     setState(() {
       nextPageIsActive = false;
+      prevPageIsActive = true;
     });
   }
 
@@ -193,8 +196,10 @@ class _PromptScreenState extends State<PromptScreen> {
       dateCreated: DateTime.now().toIso8601String()
     );
 
+
     print("SAVING ANSWER");
     inspect(_answerModel);
+    answerList.add(_answerModel);
 
     firestoreDatabase.setUserAnswerCat(_answerModel, _answerModel.category);
   }
@@ -289,11 +294,10 @@ class _PromptScreenState extends State<PromptScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                onPressed: (){
-                  _previousCard();
-                }, 
-                icon: const Icon(
+                onPressed: prevPageIsActive ? _previousCard : () {},
+                icon: Icon(
                   Icons.arrow_back,
+                  color: prevPageIsActive ? null : Colors.grey,
                 )
               ),
               const Text("Back")
