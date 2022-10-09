@@ -33,6 +33,8 @@ const writeToDatabase = async (collectionName, records) => {
     record.id = id();
     record.dateCreated = new Date().toISOString();
     record.category = collectionName;
+    record.textPrompts = record.textPrompt?.split('|').map(tp => tp.trim()) || [];
+    // console.log(record);
     firebaseAdmin.firestore().collection(COLLECTION_NAME).doc(record.id).set(record).then(writeResult => {
       // Send back a message that we've succesfully written the message
       console.log(`${record.category} - Wrote ${record.id}`);

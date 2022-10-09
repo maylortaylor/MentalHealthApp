@@ -5,6 +5,7 @@ class Prompt {
   final String title;
   final String? body;
   final String? textPrompt;
+  final List<String?> textPrompts;
   final String dateCreated;
   final String step;
   final String? videoUrl;
@@ -16,6 +17,7 @@ class Prompt {
     required this.title,
     required this.body,
     required this.textPrompt,
+    required this.textPrompts,
     required this.dateCreated,
     required this.step,
     this.videoUrl,
@@ -30,6 +32,7 @@ class Prompt {
     String title = data['title'] ?? '';
     String body = data['body'] ?? '';
     String textPrompt = data['textPrompt'] ?? '';
+    List<String> textPrompts = List<String>.from(data['textPrompts'] ?? '');
     String videoUrl = data['videoUrl'] ?? '';
     String photoUrl = data['photoUrl'] ?? '';
     String pdfUrl = data['pdfUrl'] ?? '';
@@ -39,6 +42,7 @@ class Prompt {
       title: title,
       body: body,
       textPrompt: textPrompt,
+      textPrompts: textPrompts,
       dateCreated: dateCreated,
       step: step,
       videoUrl: videoUrl,
@@ -52,6 +56,7 @@ class Prompt {
       'title': title,
       'body': body,
       'textPrompt': textPrompt,
+      'textPrompts': textPrompts,
       'dateCreated': dateCreated,
       'step': step,
       'videoUrl': videoUrl,

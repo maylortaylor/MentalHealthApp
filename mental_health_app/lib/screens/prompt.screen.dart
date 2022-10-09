@@ -416,6 +416,7 @@ class _PromptScreenState extends State<PromptScreen> {
       title: promptsList[index].title,
       body: promptsList[index].body,
       textPrompt: promptsList[index].textPrompt,
+      textPrompts: promptsList[index].textPrompts,
       step: promptsList[index].step,
       dateCreated: promptsList[index].dateCreated
     );
@@ -433,7 +434,8 @@ class _PromptScreenState extends State<PromptScreen> {
                 largeScreenTopRow(index) : smallScreenTopRow(index),
               ResponsiveWidget.isSmallScreen(context) ? cardTitleArea(index) : Container(),
              bodyArea(index),
-             answerArea(index),
+             for (int i = 0; i < currentPrompt.textPrompts.length; i++)
+              answerArea(index, i),
             ],
           ),
         ),
@@ -540,7 +542,7 @@ class _PromptScreenState extends State<PromptScreen> {
     );
   }
   
-  Widget promptText(int index) {
+  Widget tapToTypeText() {
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
       child: SizedBox(
@@ -595,7 +597,7 @@ class _PromptScreenState extends State<PromptScreen> {
     );
   }
 
-  Widget answerArea(int index) {
+  Widget answerArea(int index, int promptIndex) {
     const maxLines = 5;
     const numberOfLines = 5;
     const cursorHeight = 22.0;
@@ -604,7 +606,7 @@ class _PromptScreenState extends State<PromptScreen> {
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
       child: Column(
         children: [
-          promptText(index),
+          tapToTypeText(),
           Stack(
             children: [
                Container(
@@ -626,7 +628,7 @@ class _PromptScreenState extends State<PromptScreen> {
                        ),
                        decoration: InputDecoration(
                          border: InputBorder.none,
-                         hintText: promptsList[index].textPrompt,
+                         hintText: promptsList[index].textPrompts[promptIndex],
                          hintStyle: TextStyle(color: Colors.white),
                          ),
                        cursorHeight: cursorHeight,
