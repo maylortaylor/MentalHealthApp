@@ -21,6 +21,7 @@ class _SettingScreenState extends State<SettingScreen> {
   late TextEditingController _lastNameController;
   late TextEditingController _emailAddressController;
   late TextEditingController _phoneNumberController;
+  late TextEditingController _zipcodeController;
   late UserModel? _user;
 
   static const List<String> _defaultCategories = <String>[
@@ -43,6 +44,7 @@ class _SettingScreenState extends State<SettingScreen> {
     _firstNameController.dispose();
     _lastNameController.dispose();
     _emailAddressController.dispose();
+    _zipcodeController.dispose();
   }
   
   @override
@@ -54,6 +56,7 @@ class _SettingScreenState extends State<SettingScreen> {
     _lastNameController  = TextEditingController();
     _emailAddressController = TextEditingController();
     _phoneNumberController = TextEditingController();
+    _zipcodeController = TextEditingController();
     _getUserModel();
   }
 
@@ -62,6 +65,24 @@ class _SettingScreenState extends State<SettingScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Settings"),
+        actions: [
+            IconButton(
+            tooltip: 'Answers',
+            icon: Icon(Icons.question_answer), 
+            color: AppThemes.whiteColor,
+            onPressed: () {
+              print("user answers icon pressed");
+              // Application.router.navigateTo(context, AppRoutes.settings);
+                    Navigator.pushNamed(
+                        context,
+                        AppRoutes.answers,
+                        // arguments: PromptArguments(
+                        //   'anxiety',
+                        //   1,
+                        // ),
+                      );
+            },)
+        ],
       ),
       body: _buildLayoutSection(context),
     );
@@ -80,6 +101,7 @@ class _SettingScreenState extends State<SettingScreen> {
         _firstNameController.text = _user!.firstName!;
         _lastNameController.text = _user!.lastName!;
         _phoneNumberController.text = _user!.phoneNumber!;
+        _zipcodeController.text = _user!.zipcode!;
         for (var opt in _user!.pathsAllowed!) {
           _tagsController.addTag = opt;
         }
@@ -96,6 +118,7 @@ class _SettingScreenState extends State<SettingScreen> {
       _user?.lastName = _lastNameController.text;
       _user?.pathsAllowed = _tagsController.getTags;
       _user?.phoneNumber = _phoneNumberController.text;
+      _user?.zipcode = _zipcodeController.text;
       _user?.lastModified = DateTime.now().toIso8601String();
 
       await firestoreDatabase.setUser(_user!);
@@ -130,10 +153,19 @@ class _SettingScreenState extends State<SettingScreen> {
         child: Column(
           children: [
             _userIdFormField(),
-            _firstNameFormField(),
-            _lastNameFormField(),
+            Row(
+              children: [
+                _firstNameFormField(),
+                _lastNameFormField(),
+              ],
+            ),
             _emailAddressFormField(),
-            _phoneNumberFormField(),
+            Row(
+              children: [
+                _phoneNumberFormField(),
+                _zipcodeFormField(),
+              ],
+            ),
             Autocomplete<String>(
               optionsViewBuilder: (context, onSelected, options) {
                 return Container(
@@ -294,7 +326,7 @@ class _SettingScreenState extends State<SettingScreen> {
               child: ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(
-                    const Color.fromARGB(255, 74, 137, 92),
+                    const Color.fromRGBO(255, 74, 137, 92),
                   ),
                 ),
                 onPressed: () {
@@ -321,13 +353,12 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
   _firstNameFormField() {
-    return Container (
-        padding: const EdgeInsets.all(30.0),
-        color: Colors.white,
-        child: Center(
-          child: Column(
-          children : [
-            TextFormField(
+    return Flexible(
+      child: Container (
+          padding: const EdgeInsets.all(10.0),
+          color: Colors.white,
+          child: Center(
+            child: TextFormField(
               controller: _firstNameController,
               decoration: InputDecoration(
                 labelText: "First Name",
@@ -346,21 +377,19 @@ class _SettingScreenState extends State<SettingScreen> {
                 return null;
               },
               keyboardType: TextInputType.name,
-            ),
-          ]
+            )
           )
-        )
+      ),
     );
   }
 
   _lastNameFormField() {
-    return Container (
-        padding: const EdgeInsets.all(30.0),
-        color: Colors.white,
-        child: Center(
-          child: Column(
-          children : [
-            TextFormField(
+    return Flexible(
+      child: Container (
+          padding: const EdgeInsets.all(10.0),
+          color: Colors.white,
+          child: Center(
+            child: TextFormField(
               controller: _lastNameController,
               decoration: InputDecoration(
                 labelText: "Last Name",
@@ -379,16 +408,15 @@ class _SettingScreenState extends State<SettingScreen> {
                 return null;
               },
               keyboardType: TextInputType.name,
-            ),
-          ]
+            )
           )
-        )
+      ),
     );
   }
 
   _emailAddressFormField() {
     return Container (
-        padding: const EdgeInsets.all(30.0),
+        padding: const EdgeInsets.all(10.0),
         color: Colors.white,
         child: Center(
           child: Column(
@@ -416,29 +444,60 @@ class _SettingScreenState extends State<SettingScreen> {
   }
 
   _phoneNumberFormField() {
-    return Container (
-        padding: const EdgeInsets.all(30.0),
-        color: Colors.white,
-        child: Center(
-          child: Column(
-            children : [
-              TextFormField(
-                controller: _phoneNumberController,
-                decoration: InputDecoration(
-                  labelText: "Phone Number",
-                  fillColor: Colors.white,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(25.0),
-                    borderSide: const BorderSide(
+    return Flexible(
+      child: Container (
+          padding: const EdgeInsets.all(10.0),
+          color: Colors.white,
+          child: Center(
+            child: Column(
+              children : [
+                TextFormField(
+                  controller: _phoneNumberController,
+                  decoration: InputDecoration(
+                    labelText: "Phone Number",
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                      borderSide: const BorderSide(
+                      ),
                     ),
                   ),
+                  validator: validatePhoneNumber,
+                  keyboardType: TextInputType.phone,
                 ),
-                validator: validatePhoneNumber,
-                keyboardType: TextInputType.phone,
-              ),
-            ]
-          )
-          )
+              ]
+            )
+            )
+      ),
+    );
+  }
+
+  _zipcodeFormField() {
+    return Flexible(
+      child: Container(
+          padding: const EdgeInsets.all(10.0),
+          color: Colors.white,
+          child: Center(
+            child: Column(
+              children : [
+                TextFormField(
+                  controller: _zipcodeController,
+                  decoration: InputDecoration(
+                    labelText: "Zipcode",
+                    fillColor: Colors.white,
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(25.0),
+                      borderSide: const BorderSide(
+                      ),
+                    ),
+                  ),
+                  validator: validateZipcode,
+                  keyboardType: TextInputType.phone,
+                ),
+              ]
+            )
+            )
+      ),
     );
   }
 
@@ -471,6 +530,18 @@ class _SettingScreenState extends State<SettingScreen> {
     }
     else if (!regExp.hasMatch(value)) {
       return 'Please enter valid email address';
+    }
+    return null;
+  }
+
+   String? validateZipcode(String? value) {
+    String pattern = r"[a-z0-9][a-z0-9\- ]{0,10}[a-z0-9]$";
+    RegExp regExp = RegExp(pattern);
+    // if (value!.isEmpty) {
+    //   return 'Email Address required';
+    // }
+    if (!regExp.hasMatch(value!)) {
+      return 'Please enter valid zipcode';
     }
     return null;
   }

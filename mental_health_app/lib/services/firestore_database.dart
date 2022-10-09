@@ -42,6 +42,8 @@ class FirestoreDatabase {
   Future<UserModel?> getUserModel({required String uid}) =>
       _firestoreService.getUserModel(uid);
 
+ 
+
   Future<void> setUserAnswer(AnswerModel answer) async => await _firestoreService.set(
         path: FirestorePath.answers(uid),
         data: answer.toMap(),
@@ -54,11 +56,11 @@ class FirestoreDatabase {
         data: answer.toMap(),
       );
 
-  Stream<List<AnswerModel>> userAnswersStream({required String uid, required String category}) => _firestoreService.collectionUserAnswerStream(
-    uid: uid,
-    category: category,
-    builder: (data, documentId) => AnswerModel.fromMap(data, documentId),
-  );
+  // Stream<List<AnswerModel>> userAnswersStream({required String uid, required String category}) => _firestoreService.collectionUserAnswerStream(
+  //   uid: uid,
+  //   category: category,
+  //   builder: (data, documentId) => AnswerModel.fromMap(data, documentId),
+  // );
 
   // //Method to delete Prompt entry
   // Future<void> deleteTodo(Prompt todo) async {
@@ -83,6 +85,18 @@ class FirestoreDatabase {
     path: FirestorePath.prompts(),
     builder: (data, documentId) => Prompt.fromMap(data, documentId),
   );
+
+  //   Stream<List<AnswerModel>> userAnswersStream() => _firestoreService.collectionUserAnswerStream(
+  //   uid: uid,
+  //   category: 'anger',
+  //   builder: (data, documentId) => AnswerModel.fromMap(data, documentId),
+  // );
+
+ Stream<AnswerModel> userAnswersStream() =>
+      _firestoreService.documentStream(
+        path: FirestorePath.answers(uid),
+        builder: (data, documentId) => AnswerModel.fromMap(data, documentId),
+      );
 
   // //Method to mark all todoModel to be complete
   // Future<void> setAllTodoComplete() async {

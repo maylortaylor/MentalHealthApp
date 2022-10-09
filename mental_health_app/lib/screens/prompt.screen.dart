@@ -44,6 +44,8 @@ class _PromptScreenState extends State<PromptScreen> {
   late int _currentIndex = 0;
   bool nextPageIsActive = false;
   bool prevPageIsActive = false;
+  String? _argCategory;
+  int? _argStep;
   final answerAreaTextController = TextEditingController();
 
   Future<void> init() async {
@@ -68,18 +70,20 @@ class _PromptScreenState extends State<PromptScreen> {
   @override
   Widget build(BuildContext context) {
     final _scaffoldKey = GlobalKey<ScaffoldState>();
+    _argCategory = widget.args?.category;
+    _argStep = widget.args?.step;
     
-    print('Category: ${widget.args?.category}');
-    print('Step: ${widget.args?.step}');
+    print('Category: ${_argCategory}');
+    print('Step: ${_argStep}');
     int? step = widget.args?.step;
 
-    // _currentIndex = (step! - 1);
+    _currentIndex = (step! - 1);
         
     return Scaffold(
       appBar: AppBar(
         backgroundColor: _getAppBarColor(),
         title: Text(
-          'How to manage ${widget.args?.category}',
+          'How to manage ${_argCategory}',
           style: const TextStyle(
             fontFamily: AppFontFamily.poppins,
             fontSize: 22
@@ -154,7 +158,7 @@ class _PromptScreenState extends State<PromptScreen> {
   }
 
   Color _getAppBarColor() {
-    switch (widget.args?.category) {
+    switch (_argCategory) {
       case "Angry":
         return AppThemes.angryColor;
       case "Anxiety":
@@ -190,7 +194,7 @@ class _PromptScreenState extends State<PromptScreen> {
 
     _answerModel = AnswerModel(
       step: currentPrompt.step, 
-      category: widget.args!.category.toLowerCase(),
+      category: _argCategory!.toLowerCase(),
       answerText: answerAreaTextController.text, 
       watchedVideo: false,
       dateCreated: DateTime.now().toIso8601String()
@@ -304,7 +308,7 @@ class _PromptScreenState extends State<PromptScreen> {
           ]),
         ) : Container(),
         Container(
-          child: _buildBodySection(context, widget.args!.category),
+          child: _buildBodySection(context, _argCategory!),
         ),
         (ResponsiveWidget.isLargeScreen(context) || ResponsiveWidget.isMediumScreen(context)) ? Container(
           width: MediaQuery.of(context).size.width * 0.15,
@@ -347,7 +351,7 @@ class _PromptScreenState extends State<PromptScreen> {
       child: Row(
         children: [
           Container(
-            child: _buildBodySection(context, widget.args!.category),
+            child: _buildBodySection(context, _argCategory!),
           ),
         ],
       ),
@@ -566,7 +570,7 @@ class _PromptScreenState extends State<PromptScreen> {
           border: Border.all(
             color: Colors.white
           ),
-        borderRadius: BorderRadius.circular(20) // use instead of BorderRadius.all(Radius.circular(20))
+        borderRadius: BorderRadius.circular(20)
         ),
         child: Center(
           child: Padding(
@@ -603,8 +607,38 @@ class _PromptScreenState extends State<PromptScreen> {
           promptText(index),
           Stack(
             children: [
+               Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: AppThemes.midCardColor
+                ),
+                 child: SizedBox(
+                  height: numberOfLines * (cursorHeight + 8),
+                   child: Padding(
+                     padding: const EdgeInsets.symmetric(horizontal: 15),
+                     child: TextField(
+                       controller: answerAreaTextController,
+                       autofocus: true,
+                       style: const TextStyle(
+                         fontSize: 14,
+                         fontFamily: AppFontFamily.poppins,
+                         color: Colors.white
+                       ),
+                       decoration: InputDecoration(
+                         border: InputBorder.none,
+                         hintText: promptsList[index].textPrompt,
+                         hintStyle: TextStyle(color: Colors.white),
+                         ),
+                       cursorHeight: cursorHeight,
+                       keyboardType: TextInputType.multiline,
+                       // expands: true,
+                       maxLines: maxLines,
+                     ),
+                   ),
+                 ),
+               ),
               for (int i = 0; i < numberOfLines; i++)
-                Container(
+                answerAreaTextController.text.isEmpty ? Container(
                   width: double.infinity,
                   margin: EdgeInsets.only(
                     top: 4 + (i + 1) * cursorHeight,
@@ -613,73 +647,9 @@ class _PromptScreenState extends State<PromptScreen> {
                   ),
                   height: 1,
                   color: Colors.white,
-                ),
-               SizedBox(
-                height: numberOfLines * (cursorHeight + 8),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                  child: TextField(
-                    controller: answerAreaTextController,
-                    autofocus: true,
-                    style: const TextStyle(
-                      fontSize: 14,
-                      fontFamily: AppFontFamily.poppins,
-                      color: Colors.white
-                    ),
-                    decoration: InputDecoration(
-                      border: InputBorder.none,
-                      hintText: promptsList[index].textPrompt,
-                      hintStyle: TextStyle(color: Colors.white)
-                      ),
-                    cursorHeight: cursorHeight,
-                    keyboardType: TextInputType.multiline,
-                    // expands: true,
-                    maxLines: maxLines,
-                  ),
-                ),
-              ),
+                ) : Container(),
             ],
           ),
-          // TextField(
-          //   controller: answerAreaTextController,
-          //   style: const TextStyle(
-          //     fontSize: 14,
-          //     fontFamily: AppFontFamily.poppins,
-          //     color: Colors.white
-          //   ),
-          //   cursorColor: Colors.white,
-          //   autofocus: true,
-          //   keyboardType: TextInputType.multiline,
-          //   minLines: maxLines,
-          //   maxLines: maxLines + 2,
-          //   decoration: InputDecoration(
-          //     fillColor: AppThemes.midCardColor,
-          //     filled: true,
-          //     hintText: promptsList[index].textPrompt,
-          //     hintMaxLines: 40,
-          //     hintStyle: const TextStyle(
-          //       color: Colors.white,
-          //       fontSize: 18,
-          //       fontStyle: FontStyle.italic
-          //     ),
-          //     // enabledBorder: const OutlineInputBorder(
-          //     //   borderSide: BorderSide(color: Colors.white, width: 0.0),
-          //     // ),
-          //     enabledBorder: const UnderlineInputBorder( //<-- SEE HERE
-          //       borderSide: BorderSide(
-          //           width: 3, color: Colors.greenAccent), 
-          //     ),
-          //     focusedBorder: const OutlineInputBorder( //<-- SEE HERE
-          //       borderSide: BorderSide(
-          //           width: 3, color: Colors.blueAccent), 
-          //     ),
-          //     errorBorder: const OutlineInputBorder( //<-- SEE HERE
-          //       borderSide: BorderSide(
-          //           width: 3, color: Colors.redAccent), 
-          //     ),
-          //     border: const OutlineInputBorder(),
-          //   ),
-          // ),
         ],
       ),
     );

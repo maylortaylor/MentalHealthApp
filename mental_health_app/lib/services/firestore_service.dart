@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:mental_health_app/models/answer_model.dart';
 import 'package:mental_health_app/models/user_model.dart';
 
 /*
@@ -106,30 +107,15 @@ class FirestoreService {
       return result;
     });
   }
-
-  Stream<List<T>> collectionUserAnswerStream<T>({
-    required String uid,
-    required String category,
+  
+   Stream<T> userAnwersStream<T>({
+    required String path,
     required T builder(Map<String, dynamic> data, String documentID),
-    Query queryBuilder(Query query)?,
-    int sort(T lhs, T rhs)?,
   }) {
-    Query query = FirebaseFirestore.instance.collection('answers').doc(uid).collection(category);
-    if (queryBuilder != null) {
-      query = queryBuilder(query);
-    }
-    final Stream<QuerySnapshot> snapshots = query.snapshots();
-    return snapshots.map((snapshot) {
-      final result = snapshot.docs
-          .map((snapshot) =>
-              builder(snapshot.data() as Map<String, dynamic>, snapshot.id))
-          .where((value) => value != null)
-          .toList();
-      if (sort != null) {
-        result.sort(sort);
-      }
-      return result;
-    });
+    final DocumentReference reference = FirebaseFirestore.instance.doc(path);
+    final Stream<DocumentSnapshot> snapshots = reference.snapshots();
+    return snapshots.map((snapshot) =>
+        builder(snapshot.data() as Map<String, dynamic>, snapshot.id));
   }
 
   Stream<T> documentStream<T>({
@@ -160,4 +146,15 @@ Future<UserModel?> getUserModel(String uid) async {
     }
     return null;
   }
+
+  // Future<List<AnswerModel>?> getUserAnswers(String uid) async {
+  //   final docUserAnswer = FirebaseFirestore.instance
+  //       .collection("users")
+  //       .doc(uid);
+  //   final userAnswersSnapshot = await docUserAnswer.get();
+  //   if (userAnswersSnapshot.exists) {
+  //     return AnswerModel.fromMap(userAnswersSnapshot.data()!, uid);
+  //   }
+  //   return null;
+  // }
 }
