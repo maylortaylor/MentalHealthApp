@@ -42,16 +42,17 @@ class _PromptScreenState extends State<PromptScreen> {
   bool _showFrontSide = true;
   bool _flipXAxis = true;
   late int _currentIndex = 0;
-  bool nextPageIsActive = false;
+  bool nextPageIsActive = true;
   bool prevPageIsActive = false;
   String? _argCategory;
   int? _argStep;
   final answerAreaTextController = TextEditingController();
+  late List<TextEditingController> answerAreaTextControllers;
 
   Future<void> init() async {
     _swiperController = SwiperController();
     final database = FirebaseDatabase.instance;
-    answerAreaTextController.addListener(_textAnswerListener);
+    // answerAreaTextController.addListener(_textAnswerListener);
     database.setLoggingEnabled(false);
   }
 
@@ -146,15 +147,28 @@ class _PromptScreenState extends State<PromptScreen> {
   }
 
   void _textAnswerListener() {
-    if (answerAreaTextController.text.isNotEmpty && answerAreaTextController.text.length >= 7) {
-      setState(() {
-        nextPageIsActive = true;
-      });
-    } else {
-      setState(() {
-        nextPageIsActive = false;
-      });
-    }
+    nextPageIsActive = true;
+    // if (answerAreaTextControllers[0].text.isNotEmpty && answerAreaTextControllers[0].text.length >= 7) {
+    //   setState(() {
+    //     nextPageIsActive = true;
+    //   });
+    // } else {
+    //   setState(() {
+    //     nextPageIsActive = false;
+    //   });
+    // }
+
+
+
+    // if (answerAreaTextController.text.isNotEmpty && answerAreaTextController.text.length >= 7) {
+    //   setState(() {
+    //     nextPageIsActive = true;
+    //   });
+    // } else {
+    //   setState(() {
+    //     nextPageIsActive = false;
+    //   });
+    // }
   }
 
   Color _getAppBarColor() {
@@ -183,7 +197,7 @@ class _PromptScreenState extends State<PromptScreen> {
     _swiperController.next(animation: true);
 
     setState(() {
-      nextPageIsActive = false;
+      // nextPageIsActive = false;
       prevPageIsActive = true;
     });
   }
@@ -192,10 +206,16 @@ class _PromptScreenState extends State<PromptScreen> {
     final firestoreDatabase =
         Provider.of<FirestoreDatabase>(context, listen: false);
 
+    List<String> answers = []; 
+
+    for (var ans in promptsList[_currentIndex].textPrompts) {
+      answers.add(ans!);
+    }
+
     _answerModel = AnswerModel(
       step: currentPrompt.step, 
       category: _argCategory!.toLowerCase(),
-      answerText: answerAreaTextController.text, 
+      answerText: answers, 
       watchedVideo: false,
       dateCreated: DateTime.now().toIso8601String()
     );
@@ -346,18 +366,6 @@ class _PromptScreenState extends State<PromptScreen> {
     }
   }
 
-  Widget _portraitMode(context) {
-    return Flexible(
-      child: Row(
-        children: [
-          Container(
-            child: _buildBodySection(context, _argCategory!),
-          ),
-        ],
-      ),
-    );
-  }
-
   Widget _buildBodySection(BuildContext context, String category) {
     final firestoreDatabase =
         Provider.of<FirestoreDatabase>(context, listen: false);
@@ -369,6 +377,7 @@ class _PromptScreenState extends State<PromptScreen> {
             promptsList = snapshot.data as List<Prompt>;
 
             if (promptsList.isNotEmpty) {
+
               return buildSwiper();
             } else {
               //todosEmptyTopMsgDefaultTxt
@@ -420,6 +429,13 @@ class _PromptScreenState extends State<PromptScreen> {
       step: promptsList[index].step,
       dateCreated: promptsList[index].dateCreated
     );
+
+    answerAreaTextControllers =
+      List.generate(currentPrompt.textPrompts.length, (i) => TextEditingController());
+
+    for (var e in answerAreaTextControllers) {
+      e.addListener(_textAnswerListener);
+    }
 
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -619,7 +635,7 @@ class _PromptScreenState extends State<PromptScreen> {
                    child: Padding(
                      padding: const EdgeInsets.symmetric(horizontal: 15),
                      child: TextField(
-                       controller: answerAreaTextController,
+                       controller: answerAreaTextControllers[promptIndex],
                        autofocus: true,
                        style: const TextStyle(
                          fontSize: 14,

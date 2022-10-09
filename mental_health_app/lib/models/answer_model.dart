@@ -1,7 +1,7 @@
 class AnswerModel {
   String step;
   String category;
-  String answerText;
+  List<String> answerText;
   String? dateCreated;
   String? lastModified;
   bool watchedVideo = false;
@@ -18,7 +18,7 @@ class AnswerModel {
   static AnswerModel fromMap(Map<String, dynamic> data, String userId) {
     String step = data['step'];
     String category = data['category'] ?? '';
-    String answerText = data['answerText'] ?? '';
+    List<String> answerText = data['answerText'] ?? '';
     String dateCreated = data['dateCreated'] ?? DateTime.now().toIso8601String();
     String lastModified = data['lastModified'] ?? DateTime.now().toIso8601String();
     bool watchedVideo = data['watchedVideo'] ?? false;
