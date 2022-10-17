@@ -12,47 +12,40 @@ import 'package:mental_health_app/constants/app_themes.dart';
 import 'package:mental_health_app/models/answer_model.dart';
 import 'package:mental_health_app/models/arguments/PromptArguments.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
+import 'package:mental_health_app/widgets/answer_area.dart';
 import 'package:mental_health_app/widgets/responsive.dart';
 import 'package:provider/provider.dart';
 import 'package:mental_health_app/models/prompts_model.dart';
 import 'package:vimeo_video_player/vimeo_video_player.dart';
 
 
-late DatabaseReference _promptsRef;
 late SwiperController _swiperController;
 List<Prompt> promptsList = [];
 List<AnswerModel> answerList = [];
 late Prompt currentPrompt;
 class PromptScreen extends StatefulWidget {
-  // const PromptScreen({super.key});
-
-  // const PromptScreen({super.key, this.category, this.step});
-  const PromptScreen({super.key, this.args});
-  // final String? category;
-  // final int? step;
+  PromptScreen({super.key, this.args});
   final PromptArguments? args;
+  final GlobalKey<PromptScreenState> promptScreenKey = GlobalKey<PromptScreenState>();
 
   @override
-  _PromptScreenState createState() => _PromptScreenState();
+  State<StatefulWidget> createState() => PromptScreenState();
 }
 
-class _PromptScreenState extends State<PromptScreen> {
+class PromptScreenState extends State<PromptScreen> {
   late AnswerModel _answerModel;
   String _nextButtonText = "Next";
   bool _showFrontSide = true;
   bool _flipXAxis = true;
   late int _currentIndex = 0;
-  bool nextPageIsActive = true;
+  bool nextPageIsActive = false;
   bool prevPageIsActive = false;
   String? _argCategory;
   int? _argStep;
-  final answerAreaTextController = TextEditingController();
-  late List<TextEditingController> answerAreaTextControllers;
 
   Future<void> init() async {
     _swiperController = SwiperController();
     final database = FirebaseDatabase.instance;
-    // answerAreaTextController.addListener(_textAnswerListener);
     database.setLoggingEnabled(false);
   }
 
@@ -64,7 +57,6 @@ class _PromptScreenState extends State<PromptScreen> {
 
    @override
   void dispose() {
-    answerAreaTextController.dispose();
     super.dispose();
   }
 
@@ -82,6 +74,7 @@ class _PromptScreenState extends State<PromptScreen> {
         
     return Scaffold(
       appBar: AppBar(
+        // key: _scaffoldKey,
         backgroundColor: _getAppBarColor(),
         title: Text(
           'How to manage ${_argCategory}',
@@ -122,7 +115,7 @@ class _PromptScreenState extends State<PromptScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       IconButton(
-                        onPressed: nextPageIsActive ? _nextPageAction : () { }, 
+                        onPressed: nextPageIsActive ? nextPageAction : () { }, 
                         icon: Icon(
                           Icons.arrow_forward,
                           color: nextPageIsActive ? null : Colors.grey
@@ -146,29 +139,10 @@ class _PromptScreenState extends State<PromptScreen> {
     });
   }
 
-  void _textAnswerListener() {
-    nextPageIsActive = true;
-    // if (answerAreaTextControllers[0].text.isNotEmpty && answerAreaTextControllers[0].text.length >= 7) {
-    //   setState(() {
-    //     nextPageIsActive = true;
-    //   });
-    // } else {
-    //   setState(() {
-    //     nextPageIsActive = false;
-    //   });
-    // }
-
-
-
-    // if (answerAreaTextController.text.isNotEmpty && answerAreaTextController.text.length >= 7) {
-    //   setState(() {
-    //     nextPageIsActive = true;
-    //   });
-    // } else {
-    //   setState(() {
-    //     nextPageIsActive = false;
-    //   });
-    // }
+  setNextPageStatus(bool status) {
+    setState(() {
+      nextPageIsActive = status;
+    });
   }
 
   Color _getAppBarColor() {
@@ -336,7 +310,7 @@ class _PromptScreenState extends State<PromptScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
-                onPressed: nextPageIsActive ? _nextPageAction : () {
+                onPressed: nextPageIsActive ? nextPageAction : () {
                   
                 }, 
                 icon: Icon(
@@ -351,9 +325,8 @@ class _PromptScreenState extends State<PromptScreen> {
     );
   }
 
-  _nextPageAction() {
+  void nextPageAction() {
     _saveAnswerToDatabase();
-    answerAreaTextController.clear();
 
     if (promptsList.length == (_currentIndex + 1)) {
       // last prompt -- finish
@@ -430,13 +403,6 @@ class _PromptScreenState extends State<PromptScreen> {
       dateCreated: promptsList[index].dateCreated
     );
 
-    answerAreaTextControllers =
-      List.generate(currentPrompt.textPrompts.length, (i) => TextEditingController());
-
-    for (var e in answerAreaTextControllers) {
-      e.addListener(_textAnswerListener);
-    }
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
@@ -451,7 +417,10 @@ class _PromptScreenState extends State<PromptScreen> {
               ResponsiveWidget.isSmallScreen(context) ? cardTitleArea(index) : Container(),
              bodyArea(index),
              for (int i = 0; i < currentPrompt.textPrompts.length; i++)
-              answerArea(index, i),
+              AnswerArea(
+                key: widget.promptScreenKey,
+                nextPageStatus: setNextPageStatus,
+                textPrompt: promptsList[index].textPrompts[i]!,)
             ],
           ),
         ),
@@ -609,66 +578,6 @@ class _PromptScreenState extends State<PromptScreen> {
             ),
           ),
         )
-      ),
-    );
-  }
-
-  Widget answerArea(int index, int promptIndex) {
-    const maxLines = 5;
-    const numberOfLines = 5;
-    const cursorHeight = 22.0;
-
-    return  Container(
-      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
-      child: Column(
-        children: [
-          tapToTypeText(),
-          Stack(
-            children: [
-               Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: AppThemes.midCardColor
-                ),
-                 child: SizedBox(
-                  height: numberOfLines * (cursorHeight + 8),
-                   child: Padding(
-                     padding: const EdgeInsets.symmetric(horizontal: 15),
-                     child: TextField(
-                       controller: answerAreaTextControllers[promptIndex],
-                       autofocus: true,
-                       style: const TextStyle(
-                         fontSize: 14,
-                         fontFamily: AppFontFamily.poppins,
-                         color: Colors.white
-                       ),
-                       decoration: InputDecoration(
-                         border: InputBorder.none,
-                         hintText: promptsList[index].textPrompts[promptIndex],
-                         hintStyle: TextStyle(color: Colors.white),
-                         ),
-                       cursorHeight: cursorHeight,
-                       keyboardType: TextInputType.multiline,
-                       // expands: true,
-                       maxLines: maxLines,
-                     ),
-                   ),
-                 ),
-               ),
-              for (int i = 0; i < numberOfLines; i++)
-                answerAreaTextController.text.isEmpty ? Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.only(
-                    top: 4 + (i + 1) * cursorHeight,
-                    left: 15,
-                    right: 15,
-                  ),
-                  height: 1,
-                  color: Colors.white,
-                ) : Container(),
-            ],
-          ),
-        ],
       ),
     );
   }
