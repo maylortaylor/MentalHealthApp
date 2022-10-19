@@ -78,7 +78,7 @@ class _PromptScreenState extends State<PromptScreen> {
     print('Step: ${_argStep}');
     int? step = widget.args?.step;
 
-    _currentIndex = (step! - 1);
+    // _currentIndex = (step! - 1);
         
     return Scaffold(
       appBar: AppBar(

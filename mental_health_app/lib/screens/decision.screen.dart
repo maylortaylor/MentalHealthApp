@@ -15,6 +15,7 @@ import 'package:mental_health_app/routes.dart';
 import 'package:mental_health_app/services/navigation_service.dart';
 import 'package:mental_health_app/ui/auth/register_screen.dart';
 import 'package:mental_health_app/ui/setting/setting_screen.dart';
+import 'package:mental_health_app/widgets/platform_aware_asset_image.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/prompt.screen.dart';
@@ -75,9 +76,18 @@ class _DecisionScreenState extends  State<DecisionScreen> {
 
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 70,
         backgroundColor: getAppBarColor(),
-        leading: authProvider.status == Status.Authenticated ? 
-        Center(child: Text("${currentUser?.firstName}")) : Container(),
+        // leading: authProvider.status == Status.Authenticated ? 
+        // Center(child: Text("${currentUser?.firstName}")) : Container(),
+        leading: leadingAppBar(),
+        leadingWidth: 70,
+        title: const Text(
+          "Try one block now for free!",
+          style: TextStyle(
+            fontSize: 16
+          ),
+          ),
         actions: [
           authProvider.status == Status.Unauthenticated ? ElevatedButton(
             style: ButtonStyle(
@@ -106,33 +116,62 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                       );
               },
           ) : Container(),
-          (authProvider.status == Status.Unauthenticated) ? ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.resolveWith((states) {
-              // If the button is pressed, return green, otherwise blue
-              if (states.contains(MaterialState.pressed)) {
-                return AppThemes.lightestGreen;
-              }
-              return getAppBarColor();
-            })
-            ),
-            child: Text(
-              "Register",
-              style: TextStyle(color: AppThemes.whiteColor),
-            ),
+          // (authProvider.status == Status.Unauthenticated) ? ElevatedButton(
+          //   style: ButtonStyle(
+          //     backgroundColor: MaterialStateProperty.resolveWith((states) {
+          //     // If the button is pressed, return green, otherwise blue
+          //     if (states.contains(MaterialState.pressed)) {
+          //       return AppThemes.lightestGreen;
+          //     }
+          //     return getAppBarColor();
+          //   })
+          //   ),
+          //   child: Text(
+          //     "Register",
+          //     style: TextStyle(color: AppThemes.whiteColor),
+          //   ),
+          //   onPressed: () {
+          //     print("login icon pressed");
+          //       // Application.router.navigateTo(context, AppRoutes.register);
+          //             Navigator.pushNamed(
+          //               context,
+          //               AppRoutes.register,
+          //               // arguments: PromptArguments(
+          //               //   'anxiety',
+          //               //   1,
+          //               // ),
+          //             );
+          //     },
+          // ) :  Container(),
+          ElevatedButton(
             onPressed: () {
-              print("login icon pressed");
                 // Application.router.navigateTo(context, AppRoutes.register);
-                      Navigator.pushNamed(
-                        context,
-                        AppRoutes.register,
-                        // arguments: PromptArguments(
-                        //   'anxiety',
-                        //   1,
-                        // ),
-                      );
-              },
-          ) :  Container(),
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.register
+                );
+            }, 
+            style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.resolveWith((states) {
+                // If the button is pressed, return green, otherwise blue
+                if (states.contains(MaterialState.pressed)) {
+                  return AppThemes.lightestGreen;
+                }
+                return getAppBarColor();
+            })),
+            child: RichText(
+              textAlign: TextAlign.center,
+              text: const TextSpan(
+                text: '3 Day Trial',
+                style: TextStyle(
+                  fontFamily:  AppFontFamily.poppins,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white
+                ),
+              ),
+            ),
+          ),
            authProvider.status == Status.Authenticated ? ElevatedButton(
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith((states) {
@@ -227,6 +266,17 @@ class _DecisionScreenState extends  State<DecisionScreen> {
          ],
       ),
     );    
+  }
+
+
+  Widget leadingAppBar() {
+    return const Padding(
+      padding: EdgeInsets.fromLTRB(14,0,0,0),
+      child: PlatformAwareAssetImage(
+        asset: 'images/M4B_LOGO1_White.png',
+        width: 0, height: 0
+      ),
+    );
   }
 
   _getAnxiousCard() {
