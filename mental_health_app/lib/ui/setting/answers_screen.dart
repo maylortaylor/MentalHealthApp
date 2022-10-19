@@ -60,7 +60,7 @@ class _AnswersScreenState extends State<AnswersScreen> {
         Provider.of<FirestoreDatabase>(context, listen: false);
 
     return StreamBuilder(
-      stream: firestoreDatabase.userAnswersStream(),
+      // stream: firestoreDatabase.userAnswersStream(),
       builder: (context, snapshot)  {
         if (snapshot.hasData) {
           _userAnswers = snapshot.data as List<AnswerModel>;

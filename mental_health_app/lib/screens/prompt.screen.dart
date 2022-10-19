@@ -225,7 +225,7 @@ class _PromptScreenState extends State<PromptScreen> {
     inspect(_answerModel);
     answerList.add(_answerModel);
 
-    firestoreDatabase.setUserAnswerCat(_answerModel, _answerModel.category);
+    // firestoreDatabase.setUserAnswerCat(_answerModel, _answerModel.category);
   }
  
   Widget _buildVimeoCard(BuildContext context) {

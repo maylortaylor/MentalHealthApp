@@ -230,9 +230,9 @@ class _DecisionScreenState extends  State<DecisionScreen> {
   }
 
   _getAnxiousCard() {
-    if (currentUser == null || !currentUser!.pathsAllowed!.contains('anxiety')) {
-      return Container();
-    }
+    // if (currentUser == null || !currentUser!.pathsAllowed!.contains('anxiety')) {
+    //   return Container();
+    // }
     return buildCardWithIcon(
             null,
             context,
@@ -249,9 +249,9 @@ class _DecisionScreenState extends  State<DecisionScreen> {
   }
 
   _getDepressionCard() {
-    if (currentUser == null || !currentUser!.pathsAllowed!.contains('depression')) {
-      return Container();
-    }
+    // if (currentUser == null || !currentUser!.pathsAllowed!.contains('depression')) {
+    //   return Container();
+    // }
     return buildCardWithIcon(
             null,
             context,
@@ -268,9 +268,9 @@ class _DecisionScreenState extends  State<DecisionScreen> {
   }
 
   _getGuiltyCard() {
-    if (currentUser == null || !currentUser!.pathsAllowed!.contains('guilt')) {
-      return Container();
-    }
+    // if (currentUser == null || !currentUser!.pathsAllowed!.contains('guilt')) {
+    //   return Container();
+    // }
     return buildCardWithIcon(
             null,
             context,
@@ -287,9 +287,9 @@ class _DecisionScreenState extends  State<DecisionScreen> {
   }
 
   _getAngerCard() {
-    if (currentUser == null || !currentUser!.pathsAllowed!.contains('anger')) {
-      return Container();
-    }
+    // if (currentUser == null || !currentUser!.pathsAllowed!.contains('anger')) {
+    //   return Container();
+    // }
     return buildCardWithIcon(
             null,
             context,

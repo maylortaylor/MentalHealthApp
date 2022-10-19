@@ -20,6 +20,7 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) async {
     runApp(
@@ -39,9 +40,12 @@ Future<void> main() async {
           // ChangeNotifierProvider<LanguageProvider>(
           //   create: (context) => LanguageProvider(),
           // ),
+          Provider<FirestoreDatabase>(
+                create: (context) => FirestoreDatabase(),
+          ),
         ],
         child: AppComponent(
-          databaseBuilder: (_, uid) => FirestoreDatabase(uid: uid),
+          // databaseBuilder: (_, uid) => FirestoreDatabase(uid: uid),
           key: Key('MyApp'),
         ),
       ),

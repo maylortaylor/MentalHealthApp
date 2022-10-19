@@ -31,7 +31,7 @@ void main() {
           ),
         ],
         child: AppComponent(
-          databaseBuilder: (_, uid) => FirestoreDatabase(uid: uid),
+          // databaseBuilder: (_, uid) => FirestoreDatabase(uid: uid),
           key: Key('SimpleFinance'),
         ),
       ),

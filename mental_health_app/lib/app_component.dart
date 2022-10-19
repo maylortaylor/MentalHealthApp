@@ -25,14 +25,15 @@ import 'package:provider/provider.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
 
 class AppComponent extends StatefulWidget {
-  const AppComponent({required Key key, required this.databaseBuilder})
+  const AppComponent({required Key key})
+  // const AppComponent({required Key key, required this.databaseBuilder})
       : super(key: key);
 
 
   // Expose builders for 3rd party services at the root of the widget tree
   // This is useful when mocking services while testing
-  final FirestoreDatabase Function(BuildContext context, String uid)
-      databaseBuilder;
+  // final FirestoreDatabase Function(BuildContext context, String uid)
+  //     databaseBuilder;
 
   @override
   State<AppComponent> createState() {
@@ -53,7 +54,7 @@ class _AppComponentState extends State<AppComponent> {
     return Consumer<ThemeProvider>(
       builder: (_, themeProviderRef, __) {
             return AuthWidgetBuilder(
-              databaseBuilder: widget.databaseBuilder,
+              // databaseBuilder: widget.databaseBuilder,
               builder: (BuildContext context, AsyncSnapshot<UserModel?> userSnapshot) {
                 return MaterialApp(
                   debugShowCheckedModeBanner: false,
@@ -103,13 +104,14 @@ class _AppComponentState extends State<AppComponent> {
                   home: Consumer<AuthProvider>(
                     builder: (_, authProviderRef, __) {
                       if (userSnapshot.connectionState == ConnectionState.active) {
-                        return userSnapshot.hasData
-                            // ? Navigator(
-                            //     key: locator<NavigationService>().navigatorKey,
-                            //     onGenerateRoute: Application.router.generator,
-                            //   )
-                            ? DecisionScreen()
-                            : LoginScreen();
+                        DecisionScreen();
+                        // return userSnapshot.hasData
+                        //     // ? Navigator(
+                        //     //     key: locator<NavigationService>().navigatorKey,
+                        //     //     onGenerateRoute: Application.router.generator,
+                        //     //   )
+                        //     ? DecisionScreen()
+                        //     : LoginScreen();
                       }
                 
                       // return DecisionScreen();

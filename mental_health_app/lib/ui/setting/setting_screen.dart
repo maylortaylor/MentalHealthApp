@@ -121,7 +121,7 @@ class _SettingScreenState extends State<SettingScreen> {
       _user?.zipcode = _zipcodeController.text;
       _user?.lastModified = DateTime.now().toIso8601String();
 
-      await firestoreDatabase.setUser(_user!);
+      // await firestoreDatabase.setUser(_user!);
   }
 
   @override

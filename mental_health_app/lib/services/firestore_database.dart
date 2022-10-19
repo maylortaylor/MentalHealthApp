@@ -22,16 +22,17 @@ changed to true.
 
  */
 class FirestoreDatabase {
-  FirestoreDatabase({required this.uid}) : assert(uid != null);
-  final String uid;
+  FirestoreDatabase();
+  // FirestoreDatabase({this.uid}) : assert(uid != null);
+  // final String uid;
 
   final _firestoreService = FirestoreService.instance;
 
   // //Method to create/update todoModel
-  Future<void> setUser(UserModel user) async => await _firestoreService.set(
-        path: FirestorePath.user(uid),
-        data: user.toMap(),
-      );
+  // Future<void> setUser(UserModel user) async => await _firestoreService.set(
+  //       path: FirestorePath.user(uid),
+  //       data: user.toMap(),
+  //     );
 
   Stream<UserModel> getUser({required String uid}) =>
       _firestoreService.documentStream(
@@ -44,17 +45,17 @@ class FirestoreDatabase {
 
  
 
-  Future<void> setUserAnswer(AnswerModel answer) async => await _firestoreService.set(
-        path: FirestorePath.answers(uid),
-        data: answer.toMap(),
-      );
+  // Future<void> setUserAnswer(AnswerModel answer) async => await _firestoreService.set(
+  //       path: FirestorePath.answers(uid),
+  //       data: answer.toMap(),
+  //     );
 
-   Future<void> setUserAnswerCat(AnswerModel answer, String cat) async => await _firestoreService.setAnswer(
-        uid: uid,
-        category: cat,
-        step: answer.step,
-        data: answer.toMap(),
-      );
+  //  Future<void> setUserAnswerCat(AnswerModel answer, String cat) async => await _firestoreService.setAnswer(
+  //       uid: uid,
+  //       category: cat,
+  //       step: answer.step,
+  //       data: answer.toMap(),
+  //     );
 
   // Stream<List<AnswerModel>> userAnswersStream({required String uid, required String category}) => _firestoreService.collectionUserAnswerStream(
   //   uid: uid,
@@ -68,11 +69,11 @@ class FirestoreDatabase {
   // }
 
   //Method to retrieve Prompt object based on the given promptId
-  Stream<Prompt> promptStream({required String promptId}) =>
-      _firestoreService.documentStream(
-        path: FirestorePath.prompt(uid),
-        builder: (data, documentId) => Prompt.fromMap(data, documentId),
-      );
+  // Stream<Prompt> promptStream({required String promptId}) =>
+  //     _firestoreService.documentStream(
+  //       path: FirestorePath.prompt(uid),
+  //       builder: (data, documentId) => Prompt.fromMap(data, documentId),
+  //     );
 
   //Method to retrieve all prompts item from the same user based on uid
   // Stream<List<Prompt>> promptsStream() => _firestoreService.collectionStream(
@@ -92,11 +93,11 @@ class FirestoreDatabase {
   //   builder: (data, documentId) => AnswerModel.fromMap(data, documentId),
   // );
 
- Stream<AnswerModel> userAnswersStream() =>
-      _firestoreService.documentStream(
-        path: FirestorePath.answers(uid),
-        builder: (data, documentId) => AnswerModel.fromMap(data, documentId),
-      );
+//  Stream<AnswerModel> userAnswersStream() =>
+//       _firestoreService.documentStream(
+//         path: FirestorePath.answers(uid),
+//         builder: (data, documentId) => AnswerModel.fromMap(data, documentId),
+//       );
 
   // //Method to mark all todoModel to be complete
   // Future<void> setAllTodoComplete() async {

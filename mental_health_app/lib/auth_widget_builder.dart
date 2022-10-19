@@ -14,11 +14,12 @@ import 'package:provider/provider.dart';
  */
 class AuthWidgetBuilder extends StatelessWidget {
   const AuthWidgetBuilder(
-      {required Key key, required this.builder, required this.databaseBuilder})
+      {required Key key, required this.builder})
+      // {required Key key, required this.builder, required this.databaseBuilder})
       : super(key: key);
   final Widget Function(BuildContext, AsyncSnapshot<UserModel?>) builder;
-  final FirestoreDatabase Function(BuildContext context, String uid)
-      databaseBuilder;
+  // final FirestoreDatabase Function(BuildContext context, String uid)
+  //     databaseBuilder;
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +37,9 @@ class AuthWidgetBuilder extends StatelessWidget {
           return MultiProvider(
             providers: [
               Provider<UserModel>.value(value: user),
-              Provider<FirestoreDatabase>(
-                create: (context) => databaseBuilder(context, user.uid!),
-              ),
+            // Provider<FirestoreDatabase>(
+            //   create: (context) => databaseBuilder(context, user.uid!),
+            // ),
             ],
             child: builder(context, snapshot),
           );
