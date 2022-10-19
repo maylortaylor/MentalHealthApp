@@ -197,7 +197,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               child: RichText(
                 textAlign: TextAlign.center,
                 text: const TextSpan(
-                  text: 'How are ',
+                  text: 'What are ',
                   style: TextStyle(
                     fontFamily:  AppFontFamily.poppins,
                     fontSize: 42,
@@ -216,10 +216,10 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               childAspectRatio: (itemWidth / itemHeight),
               crossAxisCount: 2,
               children: <Widget>[
+                _getAngerCard(),
                 _getAnxiousCard(),
                 _getDepressionCard(),
                 _getGuiltyCard(),
-                _getAngerCard(),
               ],
                      ),
            ),
@@ -244,7 +244,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   // return PromptScreen(arguments: PromptArguments('anxiety', 5),);
               }));
             },
-            "Anxious",
+            "Anxiety",
           AppThemes.anxiousColor);
   }
 
@@ -262,7 +262,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   return PromptScreen(args: PromptArguments('depression'),);
               }));
             },
-            "Depressed",
+            "Depression",
             AppThemes.depressedColor
           );
   }
@@ -281,7 +281,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   return PromptScreen(args: PromptArguments('guilt'),);
               }));
             },
-            "Guilty",
+            "Guilt",
             AppThemes.guiltyColor
           );
   }
@@ -300,7 +300,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   return PromptScreen(args: PromptArguments('anger'),);
               }));
             },
-            "Angry",
+            "Anger",
           AppThemes.angryColor
           );
   }
