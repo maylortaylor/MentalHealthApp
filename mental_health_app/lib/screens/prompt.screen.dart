@@ -13,9 +13,9 @@ import 'package:mental_health_app/models/answer_model.dart';
 import 'package:mental_health_app/models/arguments/PromptArguments.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:mental_health_app/widgets/responsive.dart';
+import 'package:mental_health_app/widgets/video.dart';
 import 'package:provider/provider.dart';
 import 'package:mental_health_app/models/prompts_model.dart';
-import 'package:vimeo_video_player/vimeo_video_player.dart';
 
 
 late DatabaseReference _promptsRef;
@@ -44,6 +44,7 @@ class _PromptScreenState extends State<PromptScreen> {
   late int _currentIndex = 0;
   bool nextPageIsActive = true;
   bool prevPageIsActive = false;
+  bool hasWatchedVideo = false;
   String? _argCategory;
   int? _argStep;
   final answerAreaTextController = TextEditingController();
@@ -81,6 +82,7 @@ class _PromptScreenState extends State<PromptScreen> {
     // _currentIndex = (step! - 1);
         
     return Scaffold(
+      // resizeToAvoidBottomInset: true,
       appBar: AppBar(
         backgroundColor: _getAppBarColor(),
         title: Text(
@@ -216,7 +218,7 @@ class _PromptScreenState extends State<PromptScreen> {
       step: currentPrompt.step, 
       category: _argCategory!.toLowerCase(),
       answerText: answers, 
-      watchedVideo: false,
+      watchedVideo: hasWatchedVideo,
       dateCreated: DateTime.now().toIso8601String()
     );
 
@@ -252,18 +254,8 @@ class _PromptScreenState extends State<PromptScreen> {
               children: [
                 Expanded(
                   child: Center(
-                    // child: VimeoPlayer(id:'70591644', autoPlay: true,),
-                  child: VimeoVideoPlayer(
-                      vimeoPlayerModel: VimeoPlayerModel(
-                        // url: promptsList[_currentIndex].videoUrl!,
-                        // url: 'https://vimeo.com/362134114/5fd352ede3',
-                        url: 'https://vimeo.com/70591644',
-                        deviceOrientation: DeviceOrientation.portraitUp,
-                        systemUiOverlay: const [
-                          SystemUiOverlay.top,
-                          SystemUiOverlay.bottom,
-                          ],
-                      ),
+                    child: VideoPlayerWidget(
+                      filename: 'videos/${_argCategory!.toLowerCase()}/${currentPrompt.videoName!}.mp4',
                     )
                   ),
                 )
@@ -409,7 +401,7 @@ class _PromptScreenState extends State<PromptScreen> {
           });
         },
         controller: _swiperController,
-        loop: true,
+        loop: false,
         scrollDirection: Axis.horizontal,
         axisDirection: AxisDirection.left,
         physics: NeverScrollableScrollPhysics(),
@@ -427,7 +419,9 @@ class _PromptScreenState extends State<PromptScreen> {
       textPrompt: promptsList[index].textPrompt,
       textPrompts: promptsList[index].textPrompts,
       step: promptsList[index].step,
-      dateCreated: promptsList[index].dateCreated
+      dateCreated: promptsList[index].dateCreated,
+      videoName: promptsList[index].videoName,
+      videoUrl: promptsList[index].videoUrl
     );
 
     answerAreaTextControllers =
@@ -677,33 +671,58 @@ class _PromptScreenState extends State<PromptScreen> {
     if (promptsList[index].videoUrl!.isEmpty) {
       return Container();    
     }
+    Widget circle = Container(
+          width: 50.0,
+          height: 50.0,
+          decoration: BoxDecoration(
+            color: AppThemes.mediumGreen,
+            shape: BoxShape.circle,
+          ),
+        );
+    
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        IconButton(
-          onPressed: () {
-            // Go to video url
-            _switchCard();
-            // Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (context) {
-            //           return VideoScreen(videoUrl: promptsList[index].videoUrl!,);
-            //         },
-            //       ),
-            //     );
-          }, 
-          icon: Icon(Icons.play_arrow)
+        Stack(
+          children: [
+            circle,
+            Positioned(
+              top: 5,
+              left: 5,
+              child: IconButton(
+                onPressed: () {
+                  // Go to video url
+                  _switchCard();
+            
+                  setState(() {
+                    hasWatchedVideo = true;
+                  });
+                  // Navigator.push(
+                  //       context,
+                  //       MaterialPageRoute(
+                  //         builder: (context) {
+                  //           return VideoScreen(videoUrl: promptsList[index].videoUrl!,);
+                  //         },
+                  //       ),
+                  //     );
+                }, 
+                icon: Icon(
+                  Icons.play_arrow,
+                  color: Colors.white,
+                  )
+              ),
+            ),
+          ],
+          
         ),
-        const AutoSizeText(
-          "Play Video",
-        maxLines: 1,
-        minFontSize: 4,
-        maxFontSize: 12, 
-        style: TextStyle(
-          fontFamily: AppFontFamily.poppins,
-          color: Colors.white
-        ),)
+                     const AutoSizeText(
+              "Play Video",
+            maxLines: 1,
+            minFontSize: 4,
+            maxFontSize: 12, 
+            style: TextStyle(
+              fontFamily: AppFontFamily.poppins,
+              color: Colors.white
+            ),)
       ],
     );
   }

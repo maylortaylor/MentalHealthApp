@@ -46,8 +46,12 @@ dependencies:
   textfield_tags: ^2.0.2
   intl: ^0.17.0
   another_flushbar: ^1.12.29
-  vimeo_video_player: ^0.0.4
   responsive_ui: ^3.0.0
+  video_player: ^2.4.7
+  # video_player: ^2.4.7
+  # vimeo_video_player: ^0.0.4
+  # vimeo_player_flutter: ^0.0.3+2
+  # webview_flutter: ^3.0.4
   # vimeoplayer_mam: ^1.0.1
   # pod_player: ^0.1.0
   # vimeoplayer: ^0.1.8
