@@ -674,57 +674,49 @@ class _PromptScreenState extends State<PromptScreen> {
       return Container();    
     }
     Widget circle = Container(
-          width: 50.0,
-          height: 50.0,
-          decoration: BoxDecoration(
-            color: AppThemes.mediumGreen,
-            shape: BoxShape.circle,
-          ),
-        );
+      width: 50.0,
+      height: 50.0,
+      decoration: BoxDecoration(
+        color: AppThemes.mediumGreen,
+        shape: BoxShape.circle,
+      ),
+    );
     
     return Column(
       children: [
         Stack(
           children: [
             circle,
-            Positioned(
-              top: 5,
-              left: 5,
-              child: IconButton(
-                onPressed: () {
-                  // Go to video url
-                  _switchCard();
-            
-                  setState(() {
-                    hasWatchedVideo = true;
-                  });
-                  // Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) {
-                  //           return VideoScreen(videoUrl: promptsList[index].videoUrl!,);
-                  //         },
-                  //       ),
-                  //     );
-                }, 
-                icon: Icon(
-                  Icons.play_arrow,
-                  color: Colors.white,
-                  )
+            Positioned.fill(
+              child: Align(
+                alignment: Alignment.center,
+                child: IconButton(
+                  onPressed: () {
+                    // Go to video url
+                    _switchCard();
+                
+                    setState(() {
+                      hasWatchedVideo = true;
+                    });
+                  }, 
+                  icon: const Icon(
+                    Icons.play_arrow,
+                    color: Colors.white,
+                    )
+                ),
               ),
             ),
           ],
-          
         ),
-                     const AutoSizeText(
-              "Play Video",
-            maxLines: 1,
-            minFontSize: 4,
-            maxFontSize: 12, 
-            style: TextStyle(
-              fontFamily: AppFontFamily.poppins,
-              color: Colors.white
-            ),)
+        const AutoSizeText(
+          "Play Video",
+        maxLines: 1,
+        minFontSize: 4,
+        maxFontSize: 12, 
+        style: TextStyle(
+          fontFamily: AppFontFamily.poppins,
+          color: Colors.white
+        ),)
       ],
     );
   }

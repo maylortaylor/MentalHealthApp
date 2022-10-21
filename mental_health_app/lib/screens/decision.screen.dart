@@ -16,6 +16,7 @@ import 'package:mental_health_app/services/navigation_service.dart';
 import 'package:mental_health_app/ui/auth/register_screen.dart';
 import 'package:mental_health_app/ui/setting/setting_screen.dart';
 import 'package:mental_health_app/widgets/platform_aware_asset_image.dart';
+import 'package:mental_health_app/widgets/responsive.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/prompt.screen.dart';
@@ -82,12 +83,12 @@ class _DecisionScreenState extends  State<DecisionScreen> {
         // Center(child: Text("${currentUser?.firstName}")) : Container(),
         leading: leadingAppBar(),
         leadingWidth: 70,
-        title: const Text(
+        title: !ResponsiveWidget.isSmallScreen(context) ? const Text(
           "Try one block now for free!",
           style: TextStyle(
             fontSize: 16
           ),
-          ),
+          ) : Container(),
         actions: [
           authProvider.status == Status.Unauthenticated ? ElevatedButton(
             style: ButtonStyle(
@@ -228,8 +229,22 @@ class _DecisionScreenState extends  State<DecisionScreen> {
         ),
       ),
       backgroundColor:  getBackgroundColor(),
-      body:Column(
+      body: Column(
         children: [
+          ResponsiveWidget.isSmallScreen(context) ? Container(
+            color: AppThemes.angryColor,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Try one block now for free!",
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.black
+                  ),
+                )
+            ],),
+          ) : Container(),
           Container(
             height: MediaQuery.of(context).size.height * .20,
             child: Center(
@@ -409,10 +424,10 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   textAlign: TextAlign.center,
                   text: const TextSpan(
                     text: 'Get the ',
-                    style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 18),
+                    style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 18, color: Colors.white),
                     children:  [
-                      TextSpan(text: 'my4blocks ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 18)),
-                      TextSpan(text: 'masterclass', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 18)),
+                      TextSpan(text: 'my4blocks ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white)),
+                      TextSpan(text: 'masterclass', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 18, color: Colors.white)),
                     ],
                   ),
                               ),
