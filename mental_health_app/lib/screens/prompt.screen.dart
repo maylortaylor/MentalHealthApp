@@ -632,7 +632,7 @@ class _PromptScreenState extends State<PromptScreen> {
                      padding: const EdgeInsets.symmetric(horizontal: 15),
                      child: TextField(
                        controller: answerAreaTextControllers[promptIndex],
-                       autofocus: true,
+                       autofocus: false,
                        style: const TextStyle(
                          fontSize: 14,
                          fontFamily: AppFontFamily.poppins,

@@ -245,8 +245,9 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                 )
             ],),
           ) : Container(),
-          Container(
-            height: MediaQuery.of(context).size.height * .20,
+          Expanded(
+            flex: 2,
+            // height: MediaQuery.of(context).size.height * .20,
             child: Center(
               child: RichText(
                 textAlign: TextAlign.center,
@@ -254,19 +255,20 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   text: 'What are ',
                   style: TextStyle(
                     fontFamily:  AppFontFamily.poppins,
-                    fontSize: 42,
+                    fontSize: 32,
                     color: Colors.black
                   ),
                   children:  [
-                    TextSpan(text: 'you ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 42, color: Colors.black)),
-                    TextSpan(text: 'feeling ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 42, color: Colors.black)),
-                    TextSpan(text: 'today?', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 42, color: Colors.black)),
+                    TextSpan(text: 'you ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 32, color: Colors.black)),
+                    TextSpan(text: 'feeling ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 32, color: Colors.black)),
+                    TextSpan(text: 'today?', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 32, color: Colors.black)),
                   ],
                 ),
               ),
             ),
           ),
            Expanded(
+            flex: 8,
              child: GridView.count(
               childAspectRatio: (itemWidth / itemHeight),
               crossAxisCount: 2,
@@ -278,7 +280,10 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               ],
                      ),
            ),
-           footer()
+           Expanded(
+            flex: 1,
+            child: footer()
+          )
          ],
       ),
     );    
@@ -406,84 +411,82 @@ class _DecisionScreenState extends  State<DecisionScreen> {
   }
 
   Widget footer() {
-    return Container(
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: GestureDetector(
-              onTap:() {
-
-              },
-              child: Container(
-              height: 40,
-              color: AppThemes.lightestGreen,
-                child: Center(
-                  child: RichText(
-                  textAlign: TextAlign.center,
-                  text: const TextSpan(
-                    text: 'Get the ',
-                    style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 18, color: Colors.white),
-                    children:  [
-                      TextSpan(text: 'my4blocks ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white)),
-                      TextSpan(text: 'masterclass', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 18, color: Colors.white)),
-                    ],
-                  ),
-                              ),
-                ),
-              ),
-            ),
-          ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
         Expanded(
           child: GestureDetector(
             onTap:() {
-            
-            },
-            child:
-              Container(
-              height: 40,
-                color: AppThemes.mediumGreen,
-                child: Center(
-                  child: RichText(
-                  textAlign: TextAlign.center,
-                  text: const TextSpan(
-                    text: 'The Ultimate ',
-                    style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 16, color: Colors.white),
-                    children:  [
-                      TextSpan(text: 'Mental Health Nutitrion Guide ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 16)),
-                    ],
-                  ),
-                              ),
-                ),
-              ),
-          ),
-        ),
-        Expanded(
-          child: GestureDetector(
-            onTap: () {
 
             },
             child: Container(
-              height: 40,
-              color: AppThemes.darkGreen,
+            // height: 40,
+            color: AppThemes.lightestGreen,
               child: Center(
                 child: RichText(
                 textAlign: TextAlign.center,
                 text: const TextSpan(
-                  text: 'Try ',
-                  style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 18, color: Colors.white),
+                  text: 'Get the ',
+                  style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 12, color: Colors.white),
                   children:  [
-                    TextSpan(text: 'Personalized Coaching ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 18)),
+                    TextSpan(text: 'my4blocks ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 12, color: Colors.white)),
+                    TextSpan(text: 'masterclass', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 12, color: Colors.white)),
                   ],
                 ),
                             ),
               ),
             ),
           ),
-        )
-      ]),
-      );
+        ),
+      Expanded(
+        child: GestureDetector(
+          onTap:() {
+          
+          },
+          child:
+            Container(
+            // height: 40,
+              color: AppThemes.mediumGreen,
+              child: Center(
+                child: RichText(
+                textAlign: TextAlign.center,
+                text: const TextSpan(
+                  text: 'The Ultimate ',
+                  style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 12, color: Colors.white),
+                  children:  [
+                    TextSpan(text: 'Mental Health Nutitrion Guide ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 12)),
+                  ],
+                ),
+                            ),
+              ),
+            ),
+        ),
+      ),
+      Expanded(
+        child: GestureDetector(
+          onTap: () {
+
+          },
+          child: Container(
+            // height: 40,
+            color: AppThemes.darkGreen,
+            child: Center(
+              child: RichText(
+              textAlign: TextAlign.center,
+              text: const TextSpan(
+                text: 'Try ',
+                style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 12, color: Colors.white),
+                children:  [
+                  TextSpan(text: 'Personalized Coaching ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 12)),
+                ],
+              ),
+                          ),
+            ),
+          ),
+        ),
+      )
+    ]);
   }
 }
 
