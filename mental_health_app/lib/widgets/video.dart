@@ -25,7 +25,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     // _videoPlayerController.setLooping(false);
     // _videoPlayerController.initialize().then((_) => setState(() {}));
     // _videoPlayerController.play();
-    _videoPlayerController = VideoPlayerController.asset('assets/${widget.filename}')
+    _videoPlayerController = VideoPlayerController.asset(widget.filename)
       ..initialize().then((_) {
         // _videoPlayerController.play();
         _videoPlayerController.setLooping(true);
