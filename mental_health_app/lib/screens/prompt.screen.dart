@@ -453,8 +453,10 @@ class _PromptScreenState extends State<PromptScreen> {
              for (int i = 0; i < currentPrompt.textPrompts.length; i++)
               answerArea(index, i),
             
-              // ResponsiveWidget.isSmallScreen(context) ? Container(height: 200) : Container()
-              MediaQuery.of(context).viewInsets.bottom > 0 ? Container(height: 200) : Container()
+              //TODO: check if keyboard is visible
+              // https://stackoverflow.com/questions/48750361/flutter-detect-keyboard-open-and-close
+              ResponsiveWidget.isSmallScreen(context) ? Container(height: 100) : Container()
+              // MediaQuery.of(context).viewInsets.bottom > 0 ? Container(height: 200) : Container()
             ],
           ),
         ),

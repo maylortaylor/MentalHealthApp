@@ -255,13 +255,13 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   text: 'What are ',
                   style: TextStyle(
                     fontFamily:  AppFontFamily.poppins,
-                    fontSize: 32,
+                    fontSize: 28,
                     color: Colors.black
                   ),
                   children:  [
-                    TextSpan(text: 'you ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 32, color: Colors.black)),
-                    TextSpan(text: 'feeling ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 32, color: Colors.black)),
-                    TextSpan(text: 'today?', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 32, color: Colors.black)),
+                    TextSpan(text: 'you ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 28, color: Colors.black)),
+                    TextSpan(text: 'feeling ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 28, color: Colors.black)),
+                    TextSpan(text: 'today?', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 28, color: Colors.black)),
                   ],
                 ),
               ),
