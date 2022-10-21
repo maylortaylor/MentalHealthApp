@@ -83,8 +83,13 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
       - assets/images/
-      - assets/videos/
+      - assets/images/M4B_LOGO1_White.png
+      - assets/images/All-White/M4B_LOGO2_AllWhite-34.png
       - assets/fonts/
+      - assets/videos/anger/
+      - assets/videos/anxiety/
+      - assets/videos/depression/
+      - assets/videos/guilt/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
