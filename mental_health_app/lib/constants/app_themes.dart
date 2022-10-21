@@ -91,7 +91,7 @@ class AppThemes {
 
   //the light theme
   static final ThemeData lightTheme = ThemeData(
-    // fontFamily: AppFontFamily.poppins,
+    fontFamily: AppFontFamily.poppins,
     scaffoldBackgroundColor: _lightPrimaryVariantColor,
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       backgroundColor: _lightButtonPrimaryColor,
