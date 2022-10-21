@@ -47,13 +47,13 @@ class _PromptScreenState extends State<PromptScreen> {
   bool hasWatchedVideo = false;
   String? _argCategory;
   int? _argStep;
+  bool _showLines = true;
   final answerAreaTextController = TextEditingController();
   late List<TextEditingController> answerAreaTextControllers;
 
   Future<void> init() async {
     _swiperController = SwiperController();
     final database = FirebaseDatabase.instance;
-    // answerAreaTextController.addListener(_textAnswerListener);
     database.setLoggingEnabled(false);
   }
 
@@ -104,7 +104,7 @@ class _PromptScreenState extends State<PromptScreen> {
           _buildFlipAnimation(context),
           ResponsiveWidget.isSmallScreen(context) ?
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -149,15 +149,19 @@ class _PromptScreenState extends State<PromptScreen> {
   }
 
   void _textAnswerListener() {
-    nextPageIsActive = true;
+    // nextPageIsActive = true;
+    // setState(() {
+    //   _showLines = false;
+    // });
+
     // if (answerAreaTextControllers[0].text.isNotEmpty && answerAreaTextControllers[0].text.length >= 7) {
-    //   setState(() {
-    //     nextPageIsActive = true;
-    //   });
-    // } else {
-    //   setState(() {
-    //     nextPageIsActive = false;
-    //   });
+    // //   setState(() {
+    // //     nextPageIsActive = true;
+    // //   });
+    // // } else {
+    // //   setState(() {
+    // //     nextPageIsActive = false;
+    // //   });
     // }
 
 
@@ -429,8 +433,8 @@ class _PromptScreenState extends State<PromptScreen> {
     answerAreaTextControllers =
       List.generate(currentPrompt.textPrompts.length, (i) => TextEditingController());
 
-    for (var e in answerAreaTextControllers) {
-      e.addListener(_textAnswerListener);
+    for (var i = 0; i < answerAreaTextControllers.length; i++) {
+      answerAreaTextControllers[i].addListener(_textAnswerListener);      
     }
 
     return Padding(
@@ -633,6 +637,16 @@ class _PromptScreenState extends State<PromptScreen> {
                      child: TextField(
                        controller: answerAreaTextControllers[promptIndex],
                        autofocus: false,
+                      //  onEditingComplete: (() {
+                      //    _showLines = false;
+                      //  }),
+                      //  onChanged: (value) {
+                      //    if (value.isNotEmpty) {
+                      //     setState(() {
+                      //       _showLines = false;
+                      //     });
+                      //    }
+                      //  },
                        style: const TextStyle(
                          fontSize: 14,
                          fontFamily: AppFontFamily.poppins,
@@ -652,7 +666,7 @@ class _PromptScreenState extends State<PromptScreen> {
                  ),
                ),
               for (int i = 0; i < numberOfLines; i++)
-                answerAreaTextController.text.isEmpty ? Container(
+                _showLines ? Container(
                   width: double.infinity,
                   margin: EdgeInsets.only(
                     top: 4 + (i + 1) * cursorHeight,
