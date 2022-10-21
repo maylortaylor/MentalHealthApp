@@ -17,13 +17,13 @@ class PlatformAwareAssetImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (kIsWeb) {
-      return Image.network(
-        'assets/${package == null ? '' : 'packages/$package/'}$asset',
-        width: width,
-        height: height,
-      );
-    }
+    // if (kIsWeb) {
+    //   return Image.network(
+    //     'assets/${package == null ? '' : 'packages/$package/'}$asset',
+    //     width: width,
+    //     height: height,
+    //   );
+    // }
 
     return Image.asset(
       asset,
