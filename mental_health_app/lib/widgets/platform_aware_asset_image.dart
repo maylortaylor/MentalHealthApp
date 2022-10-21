@@ -25,9 +25,10 @@ class PlatformAwareAssetImage extends StatelessWidget {
     //   );
     // }
 
-    return Image.asset(
+    // return Image.asset(
+    return Image.network(
       'assets/$asset',
-      package: package,
+      // package: package,
       width: width,
       height: height,
     );

@@ -25,8 +25,8 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     // _videoPlayerController.setLooping(false);
     // _videoPlayerController.initialize().then((_) => setState(() {}));
     // _videoPlayerController.play();
-    // _videoPlayerController = VideoPlayerController.asset(widget.filename)
-    _videoPlayerController = VideoPlayerController.asset('assets/videos/anger/animation__how_we_create_anger,_and_how_to_manage_it_small.m4v')
+    _videoPlayerController = VideoPlayerController.asset('assets/${widget.filename}')
+    // _videoPlayerController = VideoPlayerController.asset('assets/videos/anger/animation__how_we_create_anger,_and_how_to_manage_it_small.m4v')
       ..initialize().then((_) {
         // _videoPlayerController.play();
         _videoPlayerController.setLooping(true);
