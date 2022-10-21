@@ -82,7 +82,7 @@ class _PromptScreenState extends State<PromptScreen> {
     // _currentIndex = (step! - 1);
         
     return Scaffold(
-      // resizeToAvoidBottomInset: true,
+      // resizeToAvoidBottomInset: false,
       appBar: AppBar(
         backgroundColor: _getAppBarColor(),
         title: Text(
@@ -231,38 +231,40 @@ class _PromptScreenState extends State<PromptScreen> {
   }
  
   Widget _buildVimeoCard(BuildContext context) {
-    return Card(
-      color: Theme.of(context).cardTheme.color,
-      elevation: 8,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-      child: Column(
-        children: [
-          Row(
-            children: [
-            IconButton(
-              onPressed: (){
-                _switchCard();
-              }, 
-              icon: const Icon(
-                Icons.arrow_back,
-              )
-            ),
-          ],),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-            child: Row(
+    return SingleChildScrollView(
+      child: Card(
+        color: Theme.of(context).cardTheme.color,
+        elevation: 8,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        child: Column(
+          children: [
+            Row(
               children: [
-                Expanded(
-                  child: Center(
-                    child: VideoPlayerWidget(
-                      filename: 'videos/${_argCategory!.toLowerCase()}/${currentPrompt.videoName!}.mp4',
-                    )
-                  ),
+              IconButton(
+                onPressed: (){
+                  _switchCard();
+                }, 
+                icon: const Icon(
+                  Icons.arrow_back,
                 )
-              ]
+              ),
+            ],),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Center(
+                      child: VideoPlayerWidget(
+                        filename: 'videos/${_argCategory!.toLowerCase()}/${currentPrompt.videoName!}.mp4',
+                      )
+                    ),
+                  )
+                ]
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -14,22 +14,28 @@ class VideoPlayerWidget extends StatefulWidget {
 }
 
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
-  late VideoPlayerController _controller;
+  late VideoPlayerController _videoPlayerController;
   @override
    void initState() {
      super.initState();
-    _controller = VideoPlayerController.asset(widget.filename);
-    _controller.addListener(() {
-      setState(() {});
-    });
-    _controller.setLooping(true);
-    _controller.initialize().then((_) => setState(() {}));
-    _controller.play();
+    // _videoPlayerController = VideoPlayerController.asset(widget.filename);
+    // _videoPlayerController.addListener(() {
+    //   setState(() {});
+    // });
+    // _videoPlayerController.setLooping(false);
+    // _videoPlayerController.initialize().then((_) => setState(() {}));
+    // _videoPlayerController.play();
+    _videoPlayerController = VideoPlayerController.asset('assets/${widget.filename}')
+      ..initialize().then((_) {
+        // _videoPlayerController.play();
+        _videoPlayerController.setLooping(true);
+        setState(() {});
+      });
    }
 
   @override
   void dispose() {
-    _controller.dispose();
+    _videoPlayerController.dispose();
     super.dispose();
   }
 
@@ -39,13 +45,13 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
       child: Column(
         children: <Widget>[
           AspectRatio(
-            aspectRatio: _controller.value.aspectRatio,
+            aspectRatio: _videoPlayerController.value.aspectRatio,
             child: Stack(
               alignment: Alignment.bottomCenter,
               children: <Widget>[
-                VideoPlayer(_controller),
-                _ControlsOverlay(controller: _controller),
-                VideoProgressIndicator(_controller, allowScrubbing: true),
+                VideoPlayer(_videoPlayerController),
+                _ControlsOverlay(controller: _videoPlayerController),
+                VideoProgressIndicator(_videoPlayerController, allowScrubbing: true),
               ],
             ),
           ),
