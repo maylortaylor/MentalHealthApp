@@ -27,7 +27,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     // _videoPlayerController.play();
     _videoPlayerController = VideoPlayerController.asset('assets/${widget.filename}')
       ..initialize().then((_) {
-        // _videoPlayerController.play();
+        _videoPlayerController.play();
         _videoPlayerController.setLooping(true);
         setState(() {});
       });
@@ -51,7 +51,14 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
               children: <Widget>[
                 VideoPlayer(_videoPlayerController),
                 _ControlsOverlay(controller: _videoPlayerController),
-                VideoProgressIndicator(_videoPlayerController, allowScrubbing: true),
+                SizedBox(
+                  height: 20,
+                  child: VideoProgressIndicator(_videoPlayerController, 
+                    allowScrubbing: true,
+                    colors: const VideoProgressColors(),
+                    // padding: const EdgeInsets.fromLTRB(0, 100,s 0, 0),
+                  ),
+                ),
               ],
             ),
           ),
@@ -98,7 +105,8 @@ class _ControlsOverlay extends StatelessWidget {
           duration: const Duration(milliseconds: 50),
           reverseDuration: const Duration(milliseconds: 200),
           child: controller.value.isPlaying
-              ? const SizedBox.shrink()
+              // ? const SizedBox.shrink()
+              ? Container()
               : Container(
                   color: Colors.black26,
                   child: const Center(
