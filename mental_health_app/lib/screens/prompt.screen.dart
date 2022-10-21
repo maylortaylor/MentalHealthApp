@@ -452,6 +452,9 @@ class _PromptScreenState extends State<PromptScreen> {
              bodyArea(index),
              for (int i = 0; i < currentPrompt.textPrompts.length; i++)
               answerArea(index, i),
+            
+              // ResponsiveWidget.isSmallScreen(context) ? Container(height: 200) : Container()
+              MediaQuery.of(context).viewInsets.bottom > 0 ? Container(height: 200) : Container()
             ],
           ),
         ),
