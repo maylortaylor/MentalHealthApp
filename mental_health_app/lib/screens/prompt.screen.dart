@@ -48,8 +48,11 @@ class _PromptScreenState extends State<PromptScreen> {
   String? _argCategory;
   int? _argStep;
   bool _showLines = true;
-  final answerAreaTextController = TextEditingController();
-  late List<TextEditingController> answerAreaTextControllers;
+
+  final TextEditingController answerAreaTextController = TextEditingController();
+  final TextEditingController answerSelfAreaTextController = TextEditingController();
+  final TextEditingController answerOthersAreaTextController = TextEditingController();
+  final TextEditingController answerSituationAreaTextController = TextEditingController();
 
   Future<void> init() async {
     _swiperController = SwiperController();
@@ -66,6 +69,9 @@ class _PromptScreenState extends State<PromptScreen> {
    @override
   void dispose() {
     answerAreaTextController.dispose();
+    answerSelfAreaTextController.dispose();
+    answerOthersAreaTextController.dispose();
+    answerSituationAreaTextController.dispose();
     super.dispose();
   }
 
@@ -352,6 +358,9 @@ class _PromptScreenState extends State<PromptScreen> {
   _nextPageAction() {
     _saveAnswerToDatabase();
     answerAreaTextController.clear();
+    answerSelfAreaTextController.clear();
+    answerOthersAreaTextController.clear();
+    answerSituationAreaTextController.clear();
 
     if (promptsList.length == (_currentIndex + 1)) {
       // last prompt -- finish
@@ -430,13 +439,6 @@ class _PromptScreenState extends State<PromptScreen> {
       videoUrl: promptsList[index].videoUrl
     );
 
-    answerAreaTextControllers =
-      List.generate(currentPrompt.textPrompts.length, (i) => TextEditingController());
-
-    for (var i = 0; i < answerAreaTextControllers.length; i++) {
-      answerAreaTextControllers[i].addListener(_textAnswerListener);      
-    }
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
@@ -449,14 +451,16 @@ class _PromptScreenState extends State<PromptScreen> {
               (ResponsiveWidget.isLargeScreen(context) || ResponsiveWidget.isMediumScreen(context)) ? 
                 largeScreenTopRow(index) : smallScreenTopRow(index),
               ResponsiveWidget.isSmallScreen(context) ? cardTitleArea(index) : Container(),
+
              bodyArea(index),
-             for (int i = 0; i < currentPrompt.textPrompts.length; i++)
-              answerArea(index, i),
+
+             displayAnswerArea(index),
+            //  for (int i = 0; i < currentPrompt.textPrompts.length; i++)
+            //   if (currentPrompt.textPrompts.length == 1) answerArea(index, i) else multiAnswerArea(index, i),
             
               //TODO: check if keyboard is visible
               // https://stackoverflow.com/questions/48750361/flutter-detect-keyboard-open-and-close
               ResponsiveWidget.isSmallScreen(context) ? Container(height: 100) : Container()
-              // MediaQuery.of(context).viewInsets.bottom > 0 ? Container(height: 200) : Container()
             ],
           ),
         ),
@@ -618,30 +622,57 @@ class _PromptScreenState extends State<PromptScreen> {
     );
   }
 
-  Widget answerArea(int index, int promptIndex) {
+  displayAnswerArea(int index) {
+    for (int i = 0; i < currentPrompt.textPrompts.length; i++) {
+      if (currentPrompt.textPrompts.length == 1) {
+        // single answer
+        return answerWidget(index, i, answerAreaTextController);
+      } else {
+        // multi answer - S.O.S.
+        return multiAnswerArea(index, i, answerSelfAreaTextController);
+      }
+    }
+  }
+
+  Widget multiAnswerArea(int index, int promptIndex, TextEditingController textController) {
+    textController.addListener(_textAnswerListener);
+
+    return  Container(
+      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+      child: Column(
+        children: [
+          answerWidget(index, promptIndex, answerSelfAreaTextController),
+          answerWidget(index, promptIndex+1, answerOthersAreaTextController),
+          answerWidget(index, promptIndex+2, answerSituationAreaTextController)
+        ],
+      ),
+    );
+  }
+
+  Widget answerWidget(int index, int promptIndex, TextEditingController textController) {
     const maxLines = 5;
     const numberOfLines = 5;
     const cursorHeight = 22.0;
 
-    return  Container(
+    return Container(
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
       child: Column(
         children: [
           tapToTypeText(),
           Stack(
             children: [
-               Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: AppThemes.midCardColor
-                ),
-                 child: SizedBox(
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: AppThemes.midCardColor
+                  ),
+                  child: SizedBox(
                   height: numberOfLines * (cursorHeight + 8),
-                   child: Padding(
-                     padding: const EdgeInsets.symmetric(horizontal: 15),
-                     child: TextField(
-                       controller: answerAreaTextControllers[promptIndex],
-                       autofocus: false,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: TextField(
+                        controller: textController,
+                        autofocus: false,
                       //  onEditingComplete: (() {
                       //    _showLines = false;
                       //  }),
@@ -652,24 +683,24 @@ class _PromptScreenState extends State<PromptScreen> {
                       //     });
                       //    }
                       //  },
-                       style: const TextStyle(
-                         fontSize: 14,
-                         fontFamily: AppFontFamily.poppins,
-                         color: Colors.white
-                       ),
-                       decoration: InputDecoration(
-                         border: InputBorder.none,
-                         hintText: promptsList[index].textPrompts[promptIndex],
-                         hintStyle: TextStyle(color: Colors.white),
-                         ),
-                       cursorHeight: cursorHeight,
-                       keyboardType: TextInputType.multiline,
-                       // expands: true,
-                       maxLines: maxLines,
-                     ),
-                   ),
-                 ),
-               ),
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontFamily: AppFontFamily.poppins,
+                          color: Colors.white
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: promptsList[index].textPrompts[promptIndex],
+                          hintStyle: TextStyle(color: Colors.white),
+                          ),
+                        cursorHeight: cursorHeight,
+                        keyboardType: TextInputType.multiline,
+                        // expands: true,
+                        maxLines: maxLines,
+                      ),
+                    ),
+                  ),
+                ),
               for (int i = 0; i < numberOfLines; i++)
                 _showLines ? Container(
                   width: double.infinity,
