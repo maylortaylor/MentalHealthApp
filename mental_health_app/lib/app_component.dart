@@ -91,7 +91,6 @@ class _AppComponentState extends State<AppComponent> {
                   routes: {
                         AppRoutes.home: (context) => DecisionScreen(),
                         AppRoutes.login: (context) => LoginScreen(),
-                        AppRoutes.register: (context) => RegisterScreen(),
                         AppRoutes.payment: (context) => PayWallScreen(),
                         AppRoutes.answers: (context) => AnswersScreen(),
                   },
@@ -145,8 +144,6 @@ class _AppComponentState extends State<AppComponent> {
           return DecisionScreen();
         case AppRoutes.login:
           return LoginScreen();
-        case AppRoutes.register:
-          return RegisterScreen();
         case AppRoutes.payment:
           return PayWallScreen();
         case AppRoutes.settings:

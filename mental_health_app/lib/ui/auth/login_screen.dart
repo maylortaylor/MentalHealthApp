@@ -250,10 +250,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                         ),),
                       onPressed: () {
-                        Navigator.pushNamed(
-                            context,
-                            AppRoutes.register,
-                          );
+                        // Navigator.pushNamed(
+                        //     context,
+                        //     AppRoutes.register,
+                        //   );
                       },
                     ),
                 ),
