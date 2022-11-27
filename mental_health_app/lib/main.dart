@@ -40,12 +40,12 @@ Future<void> main() async {
           // ChangeNotifierProvider<LanguageProvider>(
           //   create: (context) => LanguageProvider(),
           // ),
-          Provider<FirestoreDatabase>(
-                create: (context) => FirestoreDatabase(),
-          ),
+          // Provider<FirestoreDatabase>(
+          //       create: (context) => FirestoreDatabase(),
+          // ),
         ],
         child: AppComponent(
-          // databaseBuilder: (_, uid) => FirestoreDatabase(uid: uid),
+          databaseBuilder: (_, uid) => FirestoreDatabase(uid: uid),
           key: Key('MyApp'),
         ),
       ),

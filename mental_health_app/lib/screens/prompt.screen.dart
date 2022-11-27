@@ -629,14 +629,12 @@ class _PromptScreenState extends State<PromptScreen> {
         return answerWidget(index, i, answerAreaTextController);
       } else {
         // multi answer - S.O.S.
-        return multiAnswerArea(index, i, answerSelfAreaTextController);
+        return multiAnswerArea(index, i);
       }
     }
   }
 
-  Widget multiAnswerArea(int index, int promptIndex, TextEditingController textController) {
-    textController.addListener(_textAnswerListener);
-
+  Widget multiAnswerArea(int index, int promptIndex) {
     return  Container(
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
       child: Column(

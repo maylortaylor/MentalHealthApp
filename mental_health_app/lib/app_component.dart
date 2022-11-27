@@ -25,15 +25,15 @@ import 'package:provider/provider.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
 
 class AppComponent extends StatefulWidget {
-  const AppComponent({required Key key})
-  // const AppComponent({required Key key, required this.databaseBuilder})
+  // const AppComponent({required Key key})
+  const AppComponent({required Key key, required this.databaseBuilder})
       : super(key: key);
 
 
   // Expose builders for 3rd party services at the root of the widget tree
   // This is useful when mocking services while testing
-  // final FirestoreDatabase Function(BuildContext context, String uid)
-  //     databaseBuilder;
+  final FirestoreDatabase Function(BuildContext context, String uid)
+      databaseBuilder;
 
   @override
   State<AppComponent> createState() {

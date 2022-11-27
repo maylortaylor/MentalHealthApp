@@ -22,9 +22,9 @@ changed to true.
 
  */
 class FirestoreDatabase {
-  FirestoreDatabase();
-  // FirestoreDatabase({this.uid}) : assert(uid != null);
-  // final String uid;
+  // FirestoreDatabase();
+  FirestoreDatabase({required this.uid}) : assert(uid != null);
+  final String uid;
 
   final _firestoreService = FirestoreService.instance;
 
@@ -50,12 +50,12 @@ class FirestoreDatabase {
   //       data: answer.toMap(),
   //     );
 
-  //  Future<void> setUserAnswerCat(AnswerModel answer, String cat) async => await _firestoreService.setAnswer(
-  //       uid: uid,
-  //       category: cat,
-  //       step: answer.step,
-  //       data: answer.toMap(),
-  //     );
+   Future<void> setUserAnswerCat(AnswerModel answer, String cat) async => await _firestoreService.setAnswer(
+        uid: uid,
+        category: cat,
+        step: answer.step,
+        data: answer.toMap(),
+      );
 
   // Stream<List<AnswerModel>> userAnswersStream({required String uid, required String category}) => _firestoreService.collectionUserAnswerStream(
   //   uid: uid,
