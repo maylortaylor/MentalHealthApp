@@ -23,9 +23,6 @@ void main() {
           ChangeNotifierProvider<ThemeProvider>(
             create: (context) => ThemeProvider(),
           ),
-          ChangeNotifierProvider<AuthProvider>(
-            create: (context) => AuthProvider(),
-          ),
           ChangeNotifierProvider<LanguageProvider>(
             create: (context) => LanguageProvider(),
           ),

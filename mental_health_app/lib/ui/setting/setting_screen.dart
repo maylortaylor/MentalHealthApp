@@ -89,24 +89,22 @@ class _SettingScreenState extends State<SettingScreen> {
   }
   
   _getUserModel() async {
-    final firestoreDatabase = Provider.of<FirestoreDatabase>(context, listen: false);
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
-    String currentUserId = await authProvider.getCurrentUID();
+    // final firestoreDatabase = Provider.of<FirestoreDatabase>(context, listen: false);
     
-    firestoreDatabase.getUserModel(uid: currentUserId).then((value)  {
-      _user = value;
+    // firestoreDatabase.getUserModel(uid: currentUserId).then((value)  {
+    //   _user = value;
       
-      setState(() {
-        _emailAddressController.text = _user!.email!;
-        _firstNameController.text = _user!.firstName!;
-        _lastNameController.text = _user!.lastName!;
-        _phoneNumberController.text = _user!.phoneNumber!;
-        _zipcodeController.text = _user!.zipcode!;
-        for (var opt in _user!.pathsAllowed!) {
-          _tagsController.addTag = opt;
-        }
-      });
-    });
+    //   setState(() {
+    //     _emailAddressController.text = _user!.email!;
+    //     _firstNameController.text = _user!.firstName!;
+    //     _lastNameController.text = _user!.lastName!;
+    //     _phoneNumberController.text = _user!.phoneNumber!;
+    //     _zipcodeController.text = _user!.zipcode!;
+    //     for (var opt in _user!.pathsAllowed!) {
+    //       _tagsController.addTag = opt;
+    //     }
+    //   });
+    // });
   }
   
   saveSettings() async {

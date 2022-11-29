@@ -51,27 +51,17 @@ class _DecisionScreenState extends  State<DecisionScreen> {
     var size = MediaQuery.of(context).size;
     final double itemHeight = (size.height - kToolbarHeight - 24) / 5;
     final double itemWidth = size.width / 4;
-    final authProvider = Provider.of<AuthProvider>(context, listen: false);
 
     setState(() {
-      currentUser = authProvider.currentUserModel;
-      print("${currentUser?.firstName} : ${currentUser?.pathsAllowed}");
+      // print("CURRENT USER: ${currentUser?.firstName} : ${currentUser?.pathsAllowed}");
     });
    
 
     Color getAppBarColor() {
-      if (authProvider.status == Status.Authenticated) {
-        return AppThemes.anxiousColor;
-      }
       return AppThemes.depressedColor;
     }
 
     Color getBackgroundColor() {
-      if (authProvider.status == Status.Authenticated) {
-        print("DecisionScreen Status Check: Status.Authenticated");
-        return AppThemes.whiteColor;
-      }
-      print("DecisionScreen Status Check: Status.Unauthenticated");
       return AppThemes.greyColor;
     }
 
@@ -90,7 +80,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
           ),
           ) : Container(),
         actions: [
-          authProvider.status == Status.Unauthenticated ? ElevatedButton(
+          ElevatedButton(
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith((states) {
               // If the button is pressed, return green, otherwise blue
@@ -116,34 +106,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                         // ),
                       );
               },
-          ) : Container(),
-          // (authProvider.status == Status.Unauthenticated) ? ElevatedButton(
-          //   style: ButtonStyle(
-          //     backgroundColor: MaterialStateProperty.resolveWith((states) {
-          //     // If the button is pressed, return green, otherwise blue
-          //     if (states.contains(MaterialState.pressed)) {
-          //       return AppThemes.lightestGreen;
-          //     }
-          //     return getAppBarColor();
-          //   })
-          //   ),
-          //   child: Text(
-          //     "Register",
-          //     style: TextStyle(color: AppThemes.whiteColor),
-          //   ),
-          //   onPressed: () {
-          //     print("login icon pressed");
-          //       // Application.router.navigateTo(context, AppRoutes.register);
-          //             Navigator.pushNamed(
-          //               context,
-          //               AppRoutes.register,
-          //               // arguments: PromptArguments(
-          //               //   'anxiety',
-          //               //   1,
-          //               // ),
-          //             );
-          //     },
-          // ) :  Container(),
+          ),
           ElevatedButton(
             onPressed: () {
                 // Application.router.navigateTo(context, AppRoutes.register);
@@ -173,7 +136,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               ),
             ),
           ),
-           authProvider.status == Status.Authenticated ? ElevatedButton(
+           ElevatedButton(
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.resolveWith((states) {
               // If the button is pressed, return green, otherwise blue
@@ -189,21 +152,16 @@ class _DecisionScreenState extends  State<DecisionScreen> {
             ),
             onPressed: () {
                 print("logout icon pressed");
-                if (authProvider.status == Status.Authenticated) {
-                  Flushbar(
-                    title:  "Logout Successful",
-                    message:  "User logout successful",
-                    backgroundColor: AppThemes.notifBlue,
-                    flushbarPosition: FlushbarPosition.TOP,
-                    duration:  Duration(seconds: 3),
-                  ).show(context);
-                  authProvider.signOut();
-                }
+                Flushbar(
+                  title:  "Logout Successful",
+                  message:  "User logout successful",
+                  backgroundColor: AppThemes.notifBlue,
+                  flushbarPosition: FlushbarPosition.TOP,
+                  duration:  Duration(seconds: 3),
+                ).show(context);
               }
-          ) : Container(),
-
-
-          authProvider.status == Status.Authenticated ? IconButton(
+          ),
+          IconButton(
             tooltip: 'Settings',
             icon: Icon(Icons.settings), 
             color: AppThemes.whiteColor,
@@ -218,7 +176,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                         //   1,
                         // ),
                       );
-            },) : Container(),
+            },),
         ],
         iconTheme: const IconThemeData(
           color: Colors.white, //change your color here
