@@ -9,9 +9,12 @@ import 'package:flutter/services.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
 import 'package:mental_health_app/constants/app_routes.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
+import 'package:mental_health_app/main.dart';
 import 'package:mental_health_app/models/answer_model.dart';
 import 'package:mental_health_app/models/arguments/PromptArguments.dart';
+import 'package:mental_health_app/services/answers_repo.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
+import 'package:mental_health_app/services/prompts_repo.dart';
 import 'package:mental_health_app/widgets/responsive.dart';
 import 'package:mental_health_app/widgets/video.dart';
 import 'package:provider/provider.dart';
@@ -215,13 +218,20 @@ class _PromptScreenState extends State<PromptScreen> {
   }
 
   void _saveAnswerToDatabase() {
-    final firestoreDatabase =
-        Provider.of<FirestoreDatabase>(context, listen: false);
+    final AnswerRepository answerRepo = getIt();
 
     List<String> answers = []; 
-
-    for (var ans in promptsList[_currentIndex].textPrompts) {
-      answers.add(ans!);
+    if (answerAreaTextController.text.isNotEmpty) {
+      answers.add(answerAreaTextController.text);
+    }
+    if (answerSelfAreaTextController.text.isNotEmpty) {
+      answers.add(answerSelfAreaTextController.text);
+    }
+    if (answerOthersAreaTextController.text.isNotEmpty) {
+      answers.add(answerOthersAreaTextController.text);
+    }
+    if (answerSituationAreaTextController.text.isNotEmpty) {
+      answers.add(answerSituationAreaTextController.text);
     }
 
     _answerModel = AnswerModel(
@@ -237,7 +247,7 @@ class _PromptScreenState extends State<PromptScreen> {
     inspect(_answerModel);
     answerList.add(_answerModel);
 
-    // firestoreDatabase.setUserAnswerCat(_answerModel, _answerModel.category);
+    answerRepo.setAnswer(answer: _answerModel, category: _answerModel.category);
   }
  
   Widget _buildVimeoCard(BuildContext context) {
@@ -374,11 +384,10 @@ class _PromptScreenState extends State<PromptScreen> {
   }
 
   Widget _buildBodySection(BuildContext context, String category) {
-    final firestoreDatabase =
-        Provider.of<FirestoreDatabase>(context, listen: false);
+      final PromptsRepository promptsRepo = getIt();
 
     return StreamBuilder(
-        stream: firestoreDatabase.promptsCategoryStream(category: category),
+        stream: promptsRepo.getPrompts(category: category),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             promptsList = snapshot.data as List<Prompt>;

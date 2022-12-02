@@ -1,17 +1,20 @@
+// ignore_for_file: depend_on_referenced_packages
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:get_it/get_it.dart';
 import 'package:mental_health_app/flavor.dart';
 import 'package:mental_health_app/locator.dart';
 import 'package:mental_health_app/app_component.dart';
-import 'package:mental_health_app/providers/auth_provider.dart';
-import 'package:mental_health_app/providers/language_provider.dart';
 import 'package:mental_health_app/providers/theme_provider.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'firebase_options.dart';
+
+
+final getIt = GetIt.instance;
 
 Future<void> main() async {
   setupLocator();

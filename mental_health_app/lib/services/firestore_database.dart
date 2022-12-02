@@ -34,14 +34,14 @@ class FirestoreDatabase {
   //       data: user.toMap(),
   //     );
 
-  Stream<UserModel> getUser({required String uid}) =>
-      _firestoreService.documentStream(
-        path: FirestorePath.user(uid),
-        builder: (data, documentId) => UserModel.fromMap(data, uid),
-      );
+  // Stream<UserModel> getUser({required String uid}) =>
+  //     _firestoreService.documentStream(
+  //       path: FirestorePath.user(uid),
+  //       builder: (data, documentId) => UserModel.fromMap(data, uid),
+  //     );
 
-  Future<UserModel?> getUserModel({required String uid}) =>
-      _firestoreService.getUserModel(uid);
+  // Future<UserModel?> getUserModel({required String uid}) =>
+  //     _firestoreService.getUserModel(uid);
 
  
 
@@ -84,7 +84,7 @@ class FirestoreDatabase {
   Stream<List<Prompt>> promptsCategoryStream({required String category}) => _firestoreService.collectionCategoryStream(
     category: category,
     path: FirestorePath.prompts(),
-    builder: (data, documentId) => Prompt.fromMap(data, documentId),
+    builder: (data, documentId) => Prompt.fromMap(data),
   );
 
   //   Stream<List<AnswerModel>> userAnswersStream() => _firestoreService.collectionUserAnswerStream(
