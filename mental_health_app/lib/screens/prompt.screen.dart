@@ -9,9 +9,12 @@ import 'package:flutter/services.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
 import 'package:mental_health_app/constants/app_routes.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
+import 'package:mental_health_app/main.dart';
 import 'package:mental_health_app/models/answer_model.dart';
 import 'package:mental_health_app/models/arguments/PromptArguments.dart';
+import 'package:mental_health_app/services/answers_repo.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
+import 'package:mental_health_app/services/prompts_repo.dart';
 import 'package:mental_health_app/widgets/responsive.dart';
 import 'package:mental_health_app/widgets/video.dart';
 import 'package:provider/provider.dart';
@@ -48,8 +51,11 @@ class _PromptScreenState extends State<PromptScreen> {
   String? _argCategory;
   int? _argStep;
   bool _showLines = true;
-  final answerAreaTextController = TextEditingController();
-  late List<TextEditingController> answerAreaTextControllers;
+
+  final TextEditingController answerAreaTextController = TextEditingController();
+  final TextEditingController answerSelfAreaTextController = TextEditingController();
+  final TextEditingController answerOthersAreaTextController = TextEditingController();
+  final TextEditingController answerSituationAreaTextController = TextEditingController();
 
   Future<void> init() async {
     _swiperController = SwiperController();
@@ -66,6 +72,9 @@ class _PromptScreenState extends State<PromptScreen> {
    @override
   void dispose() {
     answerAreaTextController.dispose();
+    answerSelfAreaTextController.dispose();
+    answerOthersAreaTextController.dispose();
+    answerSituationAreaTextController.dispose();
     super.dispose();
   }
 
@@ -209,13 +218,20 @@ class _PromptScreenState extends State<PromptScreen> {
   }
 
   void _saveAnswerToDatabase() {
-    final firestoreDatabase =
-        Provider.of<FirestoreDatabase>(context, listen: false);
+    final AnswerRepository answerRepo = getIt();
 
     List<String> answers = []; 
-
-    for (var ans in promptsList[_currentIndex].textPrompts) {
-      answers.add(ans!);
+    if (answerAreaTextController.text.isNotEmpty) {
+      answers.add(answerAreaTextController.text);
+    }
+    if (answerSelfAreaTextController.text.isNotEmpty) {
+      answers.add(answerSelfAreaTextController.text);
+    }
+    if (answerOthersAreaTextController.text.isNotEmpty) {
+      answers.add(answerOthersAreaTextController.text);
+    }
+    if (answerSituationAreaTextController.text.isNotEmpty) {
+      answers.add(answerSituationAreaTextController.text);
     }
 
     _answerModel = AnswerModel(
@@ -231,7 +247,7 @@ class _PromptScreenState extends State<PromptScreen> {
     inspect(_answerModel);
     answerList.add(_answerModel);
 
-    // firestoreDatabase.setUserAnswerCat(_answerModel, _answerModel.category);
+    answerRepo.setAnswer(answer: _answerModel, category: _answerModel.category);
   }
  
   Widget _buildVimeoCard(BuildContext context) {
@@ -352,6 +368,9 @@ class _PromptScreenState extends State<PromptScreen> {
   _nextPageAction() {
     _saveAnswerToDatabase();
     answerAreaTextController.clear();
+    answerSelfAreaTextController.clear();
+    answerOthersAreaTextController.clear();
+    answerSituationAreaTextController.clear();
 
     if (promptsList.length == (_currentIndex + 1)) {
       // last prompt -- finish
@@ -365,11 +384,10 @@ class _PromptScreenState extends State<PromptScreen> {
   }
 
   Widget _buildBodySection(BuildContext context, String category) {
-    final firestoreDatabase =
-        Provider.of<FirestoreDatabase>(context, listen: false);
+      final PromptsRepository promptsRepo = getIt();
 
     return StreamBuilder(
-        stream: firestoreDatabase.promptsCategoryStream(category: category),
+        stream: promptsRepo.getPrompts(category: category),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             promptsList = snapshot.data as List<Prompt>;
@@ -430,13 +448,6 @@ class _PromptScreenState extends State<PromptScreen> {
       videoUrl: promptsList[index].videoUrl
     );
 
-    answerAreaTextControllers =
-      List.generate(currentPrompt.textPrompts.length, (i) => TextEditingController());
-
-    for (var i = 0; i < answerAreaTextControllers.length; i++) {
-      answerAreaTextControllers[i].addListener(_textAnswerListener);      
-    }
-
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
@@ -449,14 +460,16 @@ class _PromptScreenState extends State<PromptScreen> {
               (ResponsiveWidget.isLargeScreen(context) || ResponsiveWidget.isMediumScreen(context)) ? 
                 largeScreenTopRow(index) : smallScreenTopRow(index),
               ResponsiveWidget.isSmallScreen(context) ? cardTitleArea(index) : Container(),
+
              bodyArea(index),
-             for (int i = 0; i < currentPrompt.textPrompts.length; i++)
-              answerArea(index, i),
+
+             displayAnswerArea(index),
+            //  for (int i = 0; i < currentPrompt.textPrompts.length; i++)
+            //   if (currentPrompt.textPrompts.length == 1) answerArea(index, i) else multiAnswerArea(index, i),
             
               //TODO: check if keyboard is visible
               // https://stackoverflow.com/questions/48750361/flutter-detect-keyboard-open-and-close
               ResponsiveWidget.isSmallScreen(context) ? Container(height: 100) : Container()
-              // MediaQuery.of(context).viewInsets.bottom > 0 ? Container(height: 200) : Container()
             ],
           ),
         ),
@@ -618,30 +631,55 @@ class _PromptScreenState extends State<PromptScreen> {
     );
   }
 
-  Widget answerArea(int index, int promptIndex) {
+  displayAnswerArea(int index) {
+    for (int i = 0; i < currentPrompt.textPrompts.length; i++) {
+      if (currentPrompt.textPrompts.length == 1) {
+        // single answer
+        return answerWidget(index, i, answerAreaTextController);
+      } else {
+        // multi answer - S.O.S.
+        return multiAnswerArea(index, i);
+      }
+    }
+  }
+
+  Widget multiAnswerArea(int index, int promptIndex) {
+    return  Container(
+      padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
+      child: Column(
+        children: [
+          answerWidget(index, promptIndex, answerSelfAreaTextController),
+          answerWidget(index, promptIndex+1, answerOthersAreaTextController),
+          answerWidget(index, promptIndex+2, answerSituationAreaTextController)
+        ],
+      ),
+    );
+  }
+
+  Widget answerWidget(int index, int promptIndex, TextEditingController textController) {
     const maxLines = 5;
     const numberOfLines = 5;
     const cursorHeight = 22.0;
 
-    return  Container(
+    return Container(
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
       child: Column(
         children: [
           tapToTypeText(),
           Stack(
             children: [
-               Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: AppThemes.midCardColor
-                ),
-                 child: SizedBox(
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: AppThemes.midCardColor
+                  ),
+                  child: SizedBox(
                   height: numberOfLines * (cursorHeight + 8),
-                   child: Padding(
-                     padding: const EdgeInsets.symmetric(horizontal: 15),
-                     child: TextField(
-                       controller: answerAreaTextControllers[promptIndex],
-                       autofocus: false,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
+                      child: TextField(
+                        controller: textController,
+                        autofocus: false,
                       //  onEditingComplete: (() {
                       //    _showLines = false;
                       //  }),
@@ -652,24 +690,24 @@ class _PromptScreenState extends State<PromptScreen> {
                       //     });
                       //    }
                       //  },
-                       style: const TextStyle(
-                         fontSize: 14,
-                         fontFamily: AppFontFamily.poppins,
-                         color: Colors.white
-                       ),
-                       decoration: InputDecoration(
-                         border: InputBorder.none,
-                         hintText: promptsList[index].textPrompts[promptIndex],
-                         hintStyle: TextStyle(color: Colors.white),
-                         ),
-                       cursorHeight: cursorHeight,
-                       keyboardType: TextInputType.multiline,
-                       // expands: true,
-                       maxLines: maxLines,
-                     ),
-                   ),
-                 ),
-               ),
+                        style: const TextStyle(
+                          fontSize: 14,
+                          fontFamily: AppFontFamily.poppins,
+                          color: Colors.white
+                        ),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: promptsList[index].textPrompts[promptIndex],
+                          hintStyle: TextStyle(color: Colors.white),
+                          ),
+                        cursorHeight: cursorHeight,
+                        keyboardType: TextInputType.multiline,
+                        // expands: true,
+                        maxLines: maxLines,
+                      ),
+                    ),
+                  ),
+                ),
               for (int i = 0; i < numberOfLines; i++)
                 _showLines ? Container(
                   width: double.infinity,

@@ -27,7 +27,7 @@ class Prompt {
     this.pdfUrl,
   });
 
-  static Prompt fromMap(Map<String, dynamic> data, String documentId) {
+  static Prompt fromMap(Map<String, dynamic> data) {
     String id = data['id'];
     String dateCreated = data['dateCreated'];
     String step = data['step'];
@@ -41,7 +41,7 @@ class Prompt {
     String pdfUrl = data['pdfUrl'] ?? '';
 
     return  Prompt(
-      id: documentId, 
+      id: id, 
       title: title,
       body: body,
       textPrompt: textPrompt,

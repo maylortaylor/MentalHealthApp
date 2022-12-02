@@ -138,20 +138,13 @@ class _LoginScreenState extends State<LoginScreen> {
   }
 
   Widget _buildForm(BuildContext context) {
-    final authProvider = Provider.of<AuthProvider>(context);
 
     return Form(
         key: _formKey,
         child: SingleChildScrollView(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(50, 20, 50, 0),
-            child: authProvider.status == Status.Registering
-                ? Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(50),
-                      child: CircularProgressIndicator(),
-                    ),
-                  ) : Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
                 Padding(
@@ -207,32 +200,32 @@ class _LoginScreenState extends State<LoginScreen> {
                             FocusScope.of(context)
                                 .unfocus(); //to hide the keyboard - if any
 
-                            UserModel? userModel =
-                                await authProvider.signInWithEmailAndPassword(
-                                    _emailController.text,
-                                    _passwordController.text);
+                            // UserModel? userModel =
+                            //     await authProvider.signInWithEmailAndPassword(
+                            //         _emailController.text,
+                            //         _passwordController.text);
 
-                            if (userModel == null) {
-                              Flushbar(
-                                title:  "Error During Login",
-                                message:  "User Info Incorrect",
-                                backgroundColor: AppThemes.notifRed,
-                                flushbarPosition: FlushbarPosition.TOP,
-                                duration:  Duration(seconds: 3),
-                              ).show(context);
-                            } else {
-                              Flushbar(
-                                title:  "Login Successful",
-                                message:  "User login successful",
-                                backgroundColor: AppThemes.notifBlue,
-                                flushbarPosition: FlushbarPosition.TOP,
-                                duration:  Duration(seconds: 3),
-                              ).show(context);
-                                Navigator.pushNamed(
-                                    context,
-                                    AppRoutes.root,
-                               );                              
-                            }
+                            // if (userModel == null) {
+                            //   Flushbar(
+                            //     title:  "Error During Login",
+                            //     message:  "User Info Incorrect",
+                            //     backgroundColor: AppThemes.notifRed,
+                            //     flushbarPosition: FlushbarPosition.TOP,
+                            //     duration:  Duration(seconds: 3),
+                            //   ).show(context);
+                            // } else {
+                            //   Flushbar(
+                            //     title:  "Login Successful",
+                            //     message:  "User login successful",
+                            //     backgroundColor: AppThemes.notifBlue,
+                            //     flushbarPosition: FlushbarPosition.TOP,
+                            //     duration:  Duration(seconds: 3),
+                            //   ).show(context);
+                            //     Navigator.pushNamed(
+                            //         context,
+                            //         AppRoutes.root,
+                            //    );                              
+                            // }
                           }
                         }),
                       ),
@@ -250,10 +243,10 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                         ),),
                       onPressed: () {
-                        Navigator.pushNamed(
-                            context,
-                            AppRoutes.register,
-                          );
+                        // Navigator.pushNamed(
+                        //     context,
+                        //     AppRoutes.register,
+                        //   );
                       },
                     ),
                 ),

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/app_localizations.dart';
-import 'package:mental_health_app/auth_widget_builder.dart';
 import 'package:mental_health_app/constants/app_routes.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
 import 'package:mental_health_app/flavor.dart';
@@ -8,6 +7,7 @@ import 'package:mental_health_app/locator.dart';
 import 'package:mental_health_app/models/arguments/PromptArguments.dart';
 import 'package:mental_health_app/models/user_model.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
+import 'package:mental_health_app/providers/firebase_provider.dart';
 import 'package:mental_health_app/providers/language_provider.dart';
 import 'package:mental_health_app/providers/theme_provider.dart';
 import 'package:mental_health_app/routes.dart';
@@ -18,22 +18,21 @@ import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:mental_health_app/services/navigation_service.dart';
 import 'package:mental_health_app/ui/auth/register_screen.dart';
 import 'package:mental_health_app/ui/auth/login_screen.dart';
-import 'package:mental_health_app/ui/payment/pay_wall.screen.dart';
 import 'package:mental_health_app/ui/setting/answers_screen.dart';
 import 'package:mental_health_app/ui/setting/setting_screen.dart';
 import 'package:provider/provider.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
 
 class AppComponent extends StatefulWidget {
-  const AppComponent({required Key key})
-  // const AppComponent({required Key key, required this.databaseBuilder})
+  // const AppComponent({required Key key})
+  const AppComponent({required Key key, required this.databaseBuilder})
       : super(key: key);
 
 
   // Expose builders for 3rd party services at the root of the widget tree
   // This is useful when mocking services while testing
-  // final FirestoreDatabase Function(BuildContext context, String uid)
-  //     databaseBuilder;
+  final FirestoreDatabase Function(BuildContext context, String uid)
+      databaseBuilder;
 
   @override
   State<AppComponent> createState() {
@@ -53,10 +52,7 @@ class _AppComponentState extends State<AppComponent> {
   Widget build(BuildContext context) {
     return Consumer<ThemeProvider>(
       builder: (_, themeProviderRef, __) {
-            return AuthWidgetBuilder(
-              // databaseBuilder: widget.databaseBuilder,
-              builder: (BuildContext context, AsyncSnapshot<UserModel?> userSnapshot) {
-                return MaterialApp(
+            return MaterialApp(
                   debugShowCheckedModeBanner: false,
                   // // locale: languageProviderRef.appLocale,
                   // //List of all supported locales
@@ -91,8 +87,6 @@ class _AppComponentState extends State<AppComponent> {
                   routes: {
                         AppRoutes.home: (context) => DecisionScreen(),
                         AppRoutes.login: (context) => LoginScreen(),
-                        AppRoutes.register: (context) => RegisterScreen(),
-                        AppRoutes.payment: (context) => PayWallScreen(),
                         AppRoutes.answers: (context) => AnswersScreen(),
                   },
                   onGenerateRoute: generateRoute,
@@ -101,30 +95,17 @@ class _AppComponentState extends State<AppComponent> {
                   // themeMode: themeProviderRef.isDarkModeOn
                   //     ? ThemeMode.light
                   //     : ThemeMode.light,
-                  home: Consumer<AuthProvider>(
-                    builder: (_, authProviderRef, __) {
-                      if (userSnapshot.connectionState == ConnectionState.active) {
-                        DecisionScreen();
-                        // return userSnapshot.hasData
-                        //     // ? Navigator(
-                        //     //     key: locator<NavigationService>().navigatorKey,
-                        //     //     onGenerateRoute: Application.router.generator,
-                        //     //   )
-                        //     ? DecisionScreen()
-                        //     : LoginScreen();
-                      }
-                
-                      // return DecisionScreen();
-                      return Navigator(
+                  home: Navigator(
                         key: locator<NavigationService>().navigatorKey,
                         onGenerateRoute: generateRoute,
-                      );
-                    },
-                  ),
+                  )
+                  // home: Consumer<FirebaseProvider>(builder:(context, value, child) {
+                  //   return Navigator(
+                  //       key: locator<NavigationService>().navigatorKey,
+                  //       onGenerateRoute: generateRoute,
+                  // );
+                  // },)
                 );
-              },
-              key: Key('AuthWidget'),
-            );
       },
     );
   }
@@ -145,10 +126,6 @@ class _AppComponentState extends State<AppComponent> {
           return DecisionScreen();
         case AppRoutes.login:
           return LoginScreen();
-        case AppRoutes.register:
-          return RegisterScreen();
-        case AppRoutes.payment:
-          return PayWallScreen();
         case AppRoutes.settings:
           return SettingScreen();
         case AppRoutes.answers:
