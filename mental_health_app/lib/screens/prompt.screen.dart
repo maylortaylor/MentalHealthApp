@@ -157,35 +157,6 @@ class _PromptScreenState extends State<PromptScreen> {
     });
   }
 
-  void _textAnswerListener() {
-    // nextPageIsActive = true;
-    // setState(() {
-    //   _showLines = false;
-    // });
-
-    // if (answerAreaTextControllers[0].text.isNotEmpty && answerAreaTextControllers[0].text.length >= 7) {
-    // //   setState(() {
-    // //     nextPageIsActive = true;
-    // //   });
-    // // } else {
-    // //   setState(() {
-    // //     nextPageIsActive = false;
-    // //   });
-    // }
-
-
-
-    // if (answerAreaTextController.text.isNotEmpty && answerAreaTextController.text.length >= 7) {
-    //   setState(() {
-    //     nextPageIsActive = true;
-    //   });
-    // } else {
-    //   setState(() {
-    //     nextPageIsActive = false;
-    //   });
-    // }
-  }
-
   Color _getAppBarColor() {
     switch (_argCategory) {
       case "Angry":
@@ -220,7 +191,8 @@ class _PromptScreenState extends State<PromptScreen> {
   void _saveAnswerToDatabase() {
     final AnswerRepository answerRepo = getIt();
 
-    List<String> answers = []; 
+    List<String> answers = [];
+    
     if (answerAreaTextController.text.isNotEmpty) {
       answers.add(answerAreaTextController.text);
     }
@@ -234,6 +206,11 @@ class _PromptScreenState extends State<PromptScreen> {
       answers.add(answerSituationAreaTextController.text);
     }
 
+    // dont save if answers is empty 
+    if (answers.isEmpty) {
+      return;
+    }
+
     _answerModel = AnswerModel(
       step: currentPrompt.step, 
       category: _argCategory!.toLowerCase(),
@@ -241,7 +218,6 @@ class _PromptScreenState extends State<PromptScreen> {
       watchedVideo: hasWatchedVideo,
       dateCreated: DateTime.now().toIso8601String()
     );
-
 
     print("SAVING ANSWER");
     inspect(_answerModel);
