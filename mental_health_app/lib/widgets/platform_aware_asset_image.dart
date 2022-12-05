@@ -8,12 +8,14 @@ class PlatformAwareAssetImage extends StatelessWidget {
     this.package,
     required this.width,
     required this.height,
+    this.fit
   }) : super();
 
   final String asset;
   final String? package;
   final double width;
   final double height;
+  final BoxFit? fit;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class PlatformAwareAssetImage extends StatelessWidget {
       // package: package,
       width: width,
       height: height,
+      fit: fit,
     );
   }
 }

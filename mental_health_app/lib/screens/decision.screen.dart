@@ -110,10 +110,10 @@ class _DecisionScreenState extends  State<DecisionScreen> {
           ElevatedButton(
             onPressed: () {
                 // Application.router.navigateTo(context, AppRoutes.register);
-                // Navigator.pushNamed(
-                //   context,
-                //   AppRoutes.register
-                // );
+                Navigator.pushNamed(
+                  context,
+                  AppRoutes.trial
+                );
             }, 
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.resolveWith((states) {

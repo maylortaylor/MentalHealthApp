@@ -14,6 +14,7 @@ import 'package:mental_health_app/routes.dart';
 import 'package:mental_health_app/screens/decision.screen.dart';
 import 'package:mental_health_app/screens/error.screen.dart';
 import 'package:mental_health_app/screens/prompt.screen.dart';
+import 'package:mental_health_app/screens/trial.screen.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:mental_health_app/services/navigation_service.dart';
 import 'package:mental_health_app/ui/auth/register_screen.dart';
@@ -88,6 +89,7 @@ class _AppComponentState extends State<AppComponent> {
                         AppRoutes.home: (context) => DecisionScreen(),
                         AppRoutes.login: (context) => LoginScreen(),
                         AppRoutes.answers: (context) => AnswersScreen(),
+                        AppRoutes.trial: (context) => TrialScreen()
                   },
                   onGenerateRoute: generateRoute,
                   theme: AppThemes.lightTheme,
@@ -128,6 +130,8 @@ class _AppComponentState extends State<AppComponent> {
           return LoginScreen();
         case AppRoutes.settings:
           return SettingScreen();
+        case AppRoutes.trial:
+          return TrialScreen();
         case AppRoutes.answers:
           return AnswersScreen();
         case AppRoutes.anger:

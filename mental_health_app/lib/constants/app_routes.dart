@@ -3,6 +3,7 @@ class AppRoutes {
   static const String home = '/home';
   static const String login = '/login';
   static const String settings = '/settings';
+  static const String trial = '/trial';
   static const String answers = '/answers';
   static const String payment = '/pay';
   static const String prompt = '/prompt';
