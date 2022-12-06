@@ -88,66 +88,74 @@ class _PromptScreenState extends State<PromptScreen> {
     print('Step: ${_argStep}');
     int? step = widget.args?.step;
 
-    // _currentIndex = (step! - 1);
-        
-    return Scaffold(
-      // resizeToAvoidBottomInset: false,
-      appBar: AppBar(
-        backgroundColor: _getAppBarColor(),
-        title: Text(
-          'How to manage ${_argCategory}',
-          style: const TextStyle(
-            fontFamily: AppFontFamily.poppins,
-            fontSize: 22
-          ),),
-        iconTheme: const IconThemeData(
-          color: Colors.white, //change your color here
-        ),
-        titleTextStyle: const TextStyle(
-          fontFamily: AppFontFamily.poppins,
-          color: Colors.white
-        ),
-      ),
-      body: Column(
-        children:[
-          _buildFlipAnimation(context),
-          ResponsiveWidget.isSmallScreen(context) ?
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+    return Container(
+      color: Color.fromRGBO(46, 72, 94,1),
+      child: Scaffold(
+          // resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.transparent,
+          appBar: AppBar(
+            backgroundColor: _getAppBarColor(),
+            title: Text(
+              'How to manage ${_argCategory}',
+              style: const TextStyle(
+                fontFamily: AppFontFamily.poppins,
+                fontSize: 22
+              ),),
+            iconTheme: const IconThemeData(
+              color: Colors.white,
+            ),
+            titleTextStyle: const TextStyle(
+              fontFamily: AppFontFamily.poppins,
+              color: Colors.white
+            ),
+          ),
+          body: Column(
+            children:[
+              _buildFlipAnimation(context),
+              ResponsiveWidget.isSmallScreen(context) ?
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 0, 20, 0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      IconButton(
-                        onPressed: prevPageIsActive ? _previousCard : () {},
-                        icon: Icon(
-                          Icons.arrow_back,
-                          color: prevPageIsActive ? null : Colors.grey,
-                        )
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            onPressed: prevPageIsActive ? _previousCard : () {},
+                            icon: Icon(
+                              Icons.arrow_back,
+                              color: prevPageIsActive ? Color.fromRGBO(176,107,149,1) : Color.fromRGBO(176,107,149,1),
+                            )
+                          ),
+                          const Text("Back", 
+                            style: TextStyle(
+                                fontSize: 28,
+                                color: Colors.white))
+                      ]),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            onPressed: nextPageIsActive ? _nextPageAction : () { }, 
+                            icon: Icon(
+                              Icons.arrow_forward,
+                              color: nextPageIsActive ? Color.fromRGBO(176,107,149,1) : Color.fromRGBO(176,107,149,1)
+                            )
+                          ),
+                          Text(_nextButtonText, 
+                            style: const TextStyle(
+                              fontSize: 28,
+                              color: Colors.white),)
+                        ]
                       ),
-                      const Text("Back")
-                  ]),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      IconButton(
-                        onPressed: nextPageIsActive ? _nextPageAction : () { }, 
-                        icon: Icon(
-                          Icons.arrow_forward,
-                          color: nextPageIsActive ? null : Colors.grey
-                        )
-                      ),
-                      Text(_nextButtonText)
-                    ]
+                    ],
                   ),
-                ],
-              ),
-            )
-           : Container()
-        ]
-      )
+                )
+               : Container()
+            ]
+          )
+        ),
     );
   }
 
@@ -183,8 +191,8 @@ class _PromptScreenState extends State<PromptScreen> {
     _swiperController.next(animation: true);
 
     setState(() {
-      // nextPageIsActive = false;
       prevPageIsActive = true;
+      _showLines = true;
     });
   }
 
@@ -308,13 +316,17 @@ class _PromptScreenState extends State<PromptScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
+                iconSize: 42,
                 onPressed: prevPageIsActive ? _previousCard : () {},
                 icon: Icon(
                   Icons.arrow_back,
-                  color: prevPageIsActive ? null : Colors.grey,
+                  color: prevPageIsActive ? Color.fromRGBO(176,107,149,1) : Color.fromRGBO(176,107,149,1),
                 )
               ),
-              const Text("Back")
+              const Text("Back",
+                style: TextStyle(
+                              fontSize: 28,
+                              color: Colors.white))
           ]),
         ) : Container(),
         Container(
@@ -326,15 +338,19 @@ class _PromptScreenState extends State<PromptScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               IconButton(
+                iconSize: 42,
                 onPressed: nextPageIsActive ? _nextPageAction : () {
                   
                 }, 
                 icon: Icon(
                   Icons.arrow_forward,
-                  color: nextPageIsActive ? null : Colors.grey
+                  color: nextPageIsActive ? Color.fromRGBO(176,107,149,1) : Color.fromRGBO(176,107,149,1)
                 )
               ),
-              Text(_nextButtonText)
+              Text(_nextButtonText,
+                style: const TextStyle(
+                                fontSize: 28,
+                                color: Colors.white))
             ]
             ),) : Container()
       ],
@@ -427,7 +443,7 @@ class _PromptScreenState extends State<PromptScreen> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
-        color: Theme.of(context).cardTheme.color,
+        color: Color.fromRGBO(28,35,41,1),
         elevation: 8,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: SingleChildScrollView(
@@ -437,12 +453,9 @@ class _PromptScreenState extends State<PromptScreen> {
                 largeScreenTopRow(index) : smallScreenTopRow(index),
               ResponsiveWidget.isSmallScreen(context) ? cardTitleArea(index) : Container(),
 
-             bodyArea(index),
+              bodyArea(index),
 
-             displayAnswerArea(index),
-            //  for (int i = 0; i < currentPrompt.textPrompts.length; i++)
-            //   if (currentPrompt.textPrompts.length == 1) answerArea(index, i) else multiAnswerArea(index, i),
-            
+              displayAnswerArea(index),
               //TODO: check if keyboard is visible
               // https://stackoverflow.com/questions/48750361/flutter-detect-keyboard-open-and-close
               ResponsiveWidget.isSmallScreen(context) ? Container(height: 100) : Container()
@@ -504,26 +517,25 @@ class _PromptScreenState extends State<PromptScreen> {
           'Step',
         maxLines: 1,
         minFontSize: 8,
-        maxFontSize: 12, 
+        maxFontSize: 24, 
         style: TextStyle(
             fontFamily: AppFontFamily.poppins,
-            // fontSize: 22,
+            fontSize: 26,
             color: Colors.white,
             fontWeight: FontWeight.bold,
         )
           ),
         Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-          // padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 8.0),
           child: Container(
                 child: AutoSizeText(
                   '# ${promptsList[index].step}',
                 maxLines: 1,
                 minFontSize: 8,
-                maxFontSize: 12,  
+                maxFontSize: 24,  
                 style: const TextStyle(
                   fontFamily: AppFontFamily.poppins,
-                  // fontSize: 28,
+                  fontSize: 26,
                   color: Colors.white,
                   fontWeight: FontWeight.bold,
               )
@@ -539,12 +551,12 @@ class _PromptScreenState extends State<PromptScreen> {
       padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
       child: AutoSizeText(
         '${promptsList[index].title}', 
-      maxLines: 1,
+      maxLines: 2,
       minFontSize: 20,
       maxFontSize: 36,
       style: const TextStyle(
           fontFamily: AppFontFamily.poppins,
-          // fontSize: 36,
+          fontSize: 36,
           color: Colors.white,
           fontWeight: FontWeight.bold,
         )
@@ -590,13 +602,13 @@ class _PromptScreenState extends State<PromptScreen> {
             child: AutoSizeText(
               '${promptsList[index].body}', 
             maxLines: 20,
-            minFontSize: 4,
-            maxFontSize: 24,
+            minFontSize: 10,
+            maxFontSize: 20,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
             style: const TextStyle(
                   fontFamily: AppFontFamily.poppins,
-                  // fontSize: 18,
+                  fontSize: 20,
                   color: Colors.white,
                   fontStyle: FontStyle.italic
               ),
@@ -635,7 +647,7 @@ class _PromptScreenState extends State<PromptScreen> {
   Widget answerWidget(int index, int promptIndex, TextEditingController textController) {
     const maxLines = 5;
     const numberOfLines = 5;
-    const cursorHeight = 22.0;
+    const cursorHeight = 30.0;
 
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
@@ -647,6 +659,7 @@ class _PromptScreenState extends State<PromptScreen> {
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
+                    border: Border.all(color: Colors.white),
                     color: AppThemes.midCardColor
                   ),
                   child: SizedBox(
@@ -666,8 +679,13 @@ class _PromptScreenState extends State<PromptScreen> {
                       //     });
                       //    }
                       //  },
+                      onTap: (() {
+                        setState(() {
+                          _showLines = false;
+                        });
+                      }),
                         style: const TextStyle(
-                          fontSize: 14,
+                          fontSize: 20,
                           fontFamily: AppFontFamily.poppins,
                           color: Colors.white
                         ),
@@ -709,9 +727,16 @@ class _PromptScreenState extends State<PromptScreen> {
     Widget circle = Container(
       width: 50.0,
       height: 50.0,
-      decoration: BoxDecoration(
-        color: AppThemes.mediumGreen,
+      decoration: const BoxDecoration(
         shape: BoxShape.circle,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [
+            Color.fromRGBO(114, 76, 203, 1),
+            Color.fromRGBO(224, 131, 107, 1),
+          ],
+        ),
       ),
     );
     
@@ -724,6 +749,7 @@ class _PromptScreenState extends State<PromptScreen> {
               child: Align(
                 alignment: Alignment.center,
                 child: IconButton(
+                  iconSize: 38,
                   onPressed: () {
                     // Go to video url
                     _switchCard();
@@ -745,8 +771,9 @@ class _PromptScreenState extends State<PromptScreen> {
           "Play Video",
         maxLines: 1,
         minFontSize: 4,
-        maxFontSize: 12, 
+        maxFontSize: 18, 
         style: TextStyle(
+          fontSize: 18,
           fontFamily: AppFontFamily.poppins,
           color: Colors.white
         ),)

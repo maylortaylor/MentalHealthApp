@@ -11,8 +11,8 @@ class AppThemes {
   static Color depressedColor = const Color.fromRGBO(28,63,78,1);
   static Color guiltyColor = const Color.fromRGBO(197,153,91,1);
   static Color darkCardColor = const Color.fromRGBO(15,10,51,1);
-  static const Color midCardColor = const Color.fromRGBO(103,98,132,1);
-  static Color promptCardColor = const Color.fromRGBO(24,183,137,1);
+  static const Color midCardColor = const Color.fromRGBO(110,121,130,1);
+  static Color promptCardColor = const Color.fromRGBO(110,121,130,1);
   static Color lightCardColor = const Color.fromRGBO(140,138,150,1);
   static Color lightestGreen = const Color.fromRGBO(162,201,186,1);
   static Color mediumGreen = const Color.fromRGBO(95,176,144,1);

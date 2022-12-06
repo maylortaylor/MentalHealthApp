@@ -186,7 +186,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
           color: Colors.white
         ),
       ),
-      backgroundColor:  getBackgroundColor(),
+      backgroundColor:  Color.fromRGBO(110, 121, 130,1),
       body: Column(
         children: [
           ResponsiveWidget.isSmallScreen(context) ? Container(
@@ -213,13 +213,13 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                   text: 'What are ',
                   style: TextStyle(
                     fontFamily:  AppFontFamily.poppins,
-                    fontSize: 28,
-                    color: Colors.black
+                    fontSize: 42,
+                    color: Colors.white
                   ),
                   children:  [
-                    TextSpan(text: 'you ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 28, color: Colors.black)),
-                    TextSpan(text: 'feeling ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 28, color: Colors.black)),
-                    TextSpan(text: 'today?', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 28, color: Colors.black)),
+                    TextSpan(text: 'you ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 42, color: Colors.white)),
+                    TextSpan(text: 'feeling ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 42, color: Colors.white)),
+                    TextSpan(text: 'today?', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 42, color: Colors.white)),
                   ],
                 ),
               ),
