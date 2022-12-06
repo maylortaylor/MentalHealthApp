@@ -17,6 +17,9 @@ class AppThemes {
   static Color lightestGreen = const Color.fromRGBO(162,201,186,1);
   static Color mediumGreen = const Color.fromRGBO(95,176,144,1);
   static Color darkGreen = const Color.fromRGBO(51,117,90,1);
+  static Color lightestGrey = const Color.fromRGBO(113,124,133,1);
+  static Color mediumGrey = const Color.fromRGBO(83,90,95,1);
+  static Color darkGrey = const Color.fromRGBO(28,35,41,1);
   
   static Color notifRed = const Color.fromRGBO(255,78,0,1);
   static Color notifYellow = const Color.fromRGBO(255,209,102,1);

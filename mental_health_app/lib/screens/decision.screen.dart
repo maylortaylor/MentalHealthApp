@@ -49,8 +49,14 @@ class _DecisionScreenState extends  State<DecisionScreen> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    final double itemHeight = (size.height - kToolbarHeight - 24) / 5;
-    final double itemWidth = size.width / 4;
+    final double itemHeight = (size.height - kToolbarHeight - 24) / 2.5;
+    final double itemWidth = size.width / 2;
+
+    // double screenWidth = MediaQuery.of(context).size.width;
+    // double _crossAxisSpacing = 8, _mainAxisSpacing = 12, _aspectRatio = 2;
+    // int _crossAxisCount = 2;
+    // var width = (screenWidth - ((_crossAxisCount - 1) * _crossAxisSpacing)) / _crossAxisCount;
+    // var height = width / _aspectRatio;
 
     setState(() {
       // print("CURRENT USER: ${currentUser?.firstName} : ${currentUser?.pathsAllowed}");
@@ -203,40 +209,58 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                 )
             ],),
           ) : Container(),
-          Expanded(
+          const Expanded(
             flex: 2,
             // height: MediaQuery.of(context).size.height * .20,
             child: Center(
-              child: RichText(
-                textAlign: TextAlign.center,
-                text: const TextSpan(
-                  text: 'What are ',
-                  style: TextStyle(
-                    fontFamily:  AppFontFamily.poppins,
-                    fontSize: 42,
-                    color: Colors.white
-                  ),
-                  children:  [
-                    TextSpan(text: 'you ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 42, color: Colors.white)),
-                    TextSpan(text: 'feeling ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 42, color: Colors.white)),
-                    TextSpan(text: 'today?', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 42, color: Colors.white)),
-                  ],
-                ),
-              ),
+              // child: RichText(
+              //   textAlign: TextAlign.center,
+              //   text: const TextSpan(
+              //     text: 'What are ',
+              //     style: TextStyle(
+              //       fontFamily:  AppFontFamily.poppins,
+              //       fontSize: 42,
+              //       color: Colors.white
+              //     ),
+              //     children:  [
+              //       TextSpan(text: 'you ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 42, color: Colors.white)),
+              //       TextSpan(text: 'feeling ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 42, color: Colors.white)),
+              //       TextSpan(text: 'today?', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 42, color: Colors.white)),
+              //     ],
+              //   ),
+              // ),
+              child: AutoSizeText(
+                'What are you feeling today?',
+              maxLines: 1,
+              minFontSize: 12,
+              maxFontSize: 42, 
+              style: TextStyle(
+                  fontFamily: AppFontFamily.poppins,
+                  fontSize: 42,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+              )
+                )
             ),
           ),
            Expanded(
-            flex: 8,
-             child: GridView.count(
-              childAspectRatio: (itemWidth / itemHeight),
-              crossAxisCount: 2,
-              children: <Widget>[
-                _getAngerCard(),
-                _getAnxiousCard(),
-                _getDepressionCard(),
-                _getGuiltyCard(),
-              ],
-                     ),
+            flex: 12,
+             child: Padding(
+               padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
+               child: GridView.count(
+                childAspectRatio: (itemWidth / itemHeight),
+                // childAspectRatio: (width / height),
+                crossAxisSpacing: 40,
+                mainAxisSpacing: 40,
+                crossAxisCount: 2,
+                children: <Widget>[
+                  _getAngerCard(),
+                  _getAnxiousCard(),
+                  _getDepressionCard(),
+                  _getGuiltyCard(),
+                ],
+                       ),
+             ),
            ),
            Expanded(
             flex: 1,
@@ -346,6 +370,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
           shadowColor: color,
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12.0),
+              side: const BorderSide(color: Colors.white, width: 1)
           ),
           // shape:  OutlineInputBorder(
           //     borderRadius: BorderRadius.circular(12),
@@ -380,7 +405,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
             },
             child: Container(
             // height: 40,
-            color: AppThemes.lightestGreen,
+            color: AppThemes.lightestGrey,
               child: Center(
                 child: RichText(
                 textAlign: TextAlign.center,
@@ -405,7 +430,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
           child:
             Container(
             // height: 40,
-              color: AppThemes.mediumGreen,
+              color: AppThemes.mediumGrey,
               child: Center(
                 child: RichText(
                 textAlign: TextAlign.center,
@@ -428,7 +453,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
           },
           child: Container(
             // height: 40,
-            color: AppThemes.darkGreen,
+            color: AppThemes.darkGrey,
             child: Center(
               child: RichText(
               textAlign: TextAlign.center,
