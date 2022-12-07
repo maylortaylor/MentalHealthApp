@@ -189,7 +189,8 @@ class _PromptScreenState extends State<PromptScreen> {
   
   void _nextCard() {
     _swiperController.next(animation: true);
-
+    // remove focus of text input
+    FocusScope.of(context).requestFocus(FocusNode());
     setState(() {
       prevPageIsActive = true;
       _showLines = true;
@@ -629,6 +630,8 @@ class _PromptScreenState extends State<PromptScreen> {
         return multiAnswerArea(index, i);
       }
     }
+    
+    return Container(); 
   }
 
   Widget multiAnswerArea(int index, int promptIndex) {
@@ -645,9 +648,8 @@ class _PromptScreenState extends State<PromptScreen> {
   }
 
   Widget answerWidget(int index, int promptIndex, TextEditingController textController) {
-    const maxLines = 5;
-    const numberOfLines = 5;
-    const cursorHeight = 30.0;
+    const numberOfLines = 8;
+    const cursorHeight = 22.0;
 
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
@@ -663,7 +665,7 @@ class _PromptScreenState extends State<PromptScreen> {
                     color: AppThemes.lightGrey
                   ),
                   child: SizedBox(
-                  height: numberOfLines * (cursorHeight + 8),
+                  height: numberOfLines * (cursorHeight + 4),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 15),
                       child: TextField(
@@ -679,11 +681,11 @@ class _PromptScreenState extends State<PromptScreen> {
                       //     });
                       //    }
                       //  },
-                      onTap: (() {
-                        setState(() {
-                          _showLines = false;
-                        });
-                      }),
+                        onTap: (() {
+                          setState(() {
+                            _showLines = false;
+                          });
+                        }),
                         style: const TextStyle(
                           fontSize: 20,
                           fontFamily: AppFontFamily.poppins,
@@ -692,12 +694,15 @@ class _PromptScreenState extends State<PromptScreen> {
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: promptsList[index].textPrompts[promptIndex],
-                          hintStyle: TextStyle(color: Colors.white),
+                          hintStyle: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            ),
                           ),
                         cursorHeight: cursorHeight,
                         keyboardType: TextInputType.multiline,
                         // expands: true,
-                        maxLines: maxLines,
+                        maxLines: 10,
                       ),
                     ),
                   ),
@@ -706,7 +711,7 @@ class _PromptScreenState extends State<PromptScreen> {
                 _showLines ? Container(
                   width: double.infinity,
                   margin: EdgeInsets.only(
-                    top: 4 + (i + 1) * cursorHeight,
+                    top: 10 + (i + 1) * cursorHeight,
                     left: 15,
                     right: 15,
                   ),

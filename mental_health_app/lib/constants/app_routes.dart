@@ -7,6 +7,7 @@ class AppRoutes {
   static const String answers = '/answers';
   static const String payment = '/pay';
   static const String prompt = '/prompt';
+  static const String abcs = '/ABCs';
   static const String anger = '/anger';
   static const String anxiety= '/anxiety';
   static const String depression = '/depression';

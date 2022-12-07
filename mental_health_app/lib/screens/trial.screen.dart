@@ -5,9 +5,11 @@ import 'package:mental_health_app/app_localizations.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
 import 'package:mental_health_app/constants/app_routes.dart';
 import 'package:mental_health_app/constants/app_themes.dart';
+import 'package:mental_health_app/models/arguments/PromptArguments.dart';
 import 'package:mental_health_app/models/user_model.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/routes.dart';
+import 'package:mental_health_app/screens/prompt.screen.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:mental_health_app/ui/auth/login_screen.dart';
 import 'package:mental_health_app/widgets/platform_aware_asset_image.dart';
@@ -35,7 +37,7 @@ class _TrialScreenState extends State<TrialScreen> {
       key: _scaffoldKey,
       backgroundColor: AppThemes.lightGrey,
       appBar: AppBar(
-        backgroundColor: AppThemes.lightGrey,
+        backgroundColor: AppThemes.darkGrey,
         title: const Text(
           'Trial Offer',
           style: TextStyle(
@@ -174,7 +176,11 @@ class _TrialScreenState extends State<TrialScreen> {
   Widget startTrialButton() {
     return ElevatedButton(
       onPressed: () => {
-
+        Navigator.push(context, MaterialPageRoute(
+              settings: RouteSettings(name: AppRoutes.abcs, arguments: PromptArguments('ABCs')),
+              builder: (context) {
+                return PromptScreen(args: PromptArguments('ABCs'),);
+            }))
       },
       style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) {
           if (states.contains(MaterialState.pressed)) {
