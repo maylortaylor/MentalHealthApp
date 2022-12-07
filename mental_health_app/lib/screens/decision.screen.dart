@@ -30,6 +30,7 @@ class DecisionScreen extends StatefulWidget {
 }
 
 class _DecisionScreenState extends  State<DecisionScreen> {
+  bool isDarkMode = true;
   var rng = Random();
   final NavigationService _navigationService = locator<NavigationService>();
   late UserModel? currentUser;
@@ -167,21 +168,31 @@ class _DecisionScreenState extends  State<DecisionScreen> {
                 ).show(context);
               }
           ),
+          // IconButton(
+          //   tooltip: 'Settings',
+          //   icon: Icon(Icons.settings), 
+          //   color: AppThemes.whiteColor,
+          //   onPressed: () {
+          //     print("settings icon pressed");
+          //     // Application.router.navigateTo(context, AppRoutes.settings);
+          //           Navigator.pushNamed(
+          //               context,
+          //               AppRoutes.settings,
+          //               // arguments: PromptArguments(
+          //               //   'anxiety',
+          //               //   1,
+          //               // ),
+          //             );
+          //   },),
           IconButton(
-            tooltip: 'Settings',
-            icon: Icon(Icons.settings), 
+            tooltip: 'Change Theme',
+            icon: isDarkMode == true ? const Icon(Icons.dark_mode) : const Icon(Icons.light_mode), 
             color: AppThemes.whiteColor,
             onPressed: () {
-              print("settings icon pressed");
-              // Application.router.navigateTo(context, AppRoutes.settings);
-                    Navigator.pushNamed(
-                        context,
-                        AppRoutes.settings,
-                        // arguments: PromptArguments(
-                        //   'anxiety',
-                        //   1,
-                        // ),
-                      );
+              print("change theme icon pressed");
+              setState(() {
+                isDarkMode = !isDarkMode;
+              });
             },),
         ],
         iconTheme: const IconThemeData(
@@ -231,9 +242,10 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               // ),
               child: AutoSizeText(
                 'What are you feeling today?',
-              maxLines: 1,
+              maxLines: 2,
               minFontSize: 12,
-              maxFontSize: 42, 
+              maxFontSize: 42,
+              textAlign: TextAlign.center,
               style: TextStyle(
                   fontFamily: AppFontFamily.poppins,
                   fontSize: 42,

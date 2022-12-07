@@ -649,7 +649,7 @@ class _PromptScreenState extends State<PromptScreen> {
 
   Widget answerWidget(int index, int promptIndex, TextEditingController textController) {
     const numberOfLines = 8;
-    const cursorHeight = 22.0;
+    const cursorHeight = 25.0;
 
     return Container(
       padding: const EdgeInsets.fromLTRB(24, 24, 24, 0),
