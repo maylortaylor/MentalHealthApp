@@ -503,7 +503,7 @@ class _SettingScreenState extends State<SettingScreen> {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: CheckboxListTile(
-        tileColor: AppThemes.promptCardColor,
+        tileColor: AppThemes.lightGrey,
         title: Text("Is Subscribed?"),
         value: _user?.isSubscribed,
         onChanged: _onIfSubscribedChanged,

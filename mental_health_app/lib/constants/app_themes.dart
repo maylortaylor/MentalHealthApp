@@ -5,19 +5,18 @@ class AppThemes {
   AppThemes._();
 
   static Color whiteColor = const Color.fromRGBO(242,242,242,1);
-  static Color greyColor = Color.fromARGB(95, 103, 99, 99);
+  static Color greyColor = const Color.fromARGB(95, 103, 99, 99);
   static Color angryColor = const Color.fromRGBO(225,103,79,1);
   static Color anxiousColor = const Color.fromRGBO(51,117,90,1);
   static Color depressedColor = const Color.fromRGBO(28,63,78,1);
   static Color guiltyColor = const Color.fromRGBO(197,153,91,1);
   static Color darkCardColor = const Color.fromRGBO(15,10,51,1);
-  static const Color midCardColor = const Color.fromRGBO(110,121,130,1);
-  static Color promptCardColor = const Color.fromRGBO(110,121,130,1);
   static Color lightCardColor = const Color.fromRGBO(140,138,150,1);
   static Color lightestGreen = const Color.fromRGBO(162,201,186,1);
   static Color mediumGreen = const Color.fromRGBO(95,176,144,1);
   static Color darkGreen = const Color.fromRGBO(51,117,90,1);
-  static Color lightestGrey = const Color.fromRGBO(113,124,133,1);
+  static Color lightestGrey = const Color.fromRGBO(110,121,130,1);
+  static Color lightGrey = const Color.fromRGBO(113,124,133,1);
   static Color mediumGrey = const Color.fromRGBO(83,90,95,1);
   static Color darkGrey = const Color.fromRGBO(28,35,41,1);
   

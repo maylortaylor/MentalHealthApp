@@ -192,14 +192,14 @@ class _DecisionScreenState extends  State<DecisionScreen> {
           color: Colors.white
         ),
       ),
-      backgroundColor:  Color.fromRGBO(110, 121, 130,1),
+      backgroundColor:  AppThemes.lightGrey,
       body: Column(
         children: [
           ResponsiveWidget.isSmallScreen(context) ? Container(
             color: AppThemes.angryColor,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+              children: const [
                 Text(
                   "Try one block now for free!",
                   style: TextStyle(
@@ -246,12 +246,12 @@ class _DecisionScreenState extends  State<DecisionScreen> {
            Expanded(
             flex: 12,
              child: Padding(
-               padding: const EdgeInsets.fromLTRB(50, 0, 50, 0),
+               padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                child: GridView.count(
                 childAspectRatio: (itemWidth / itemHeight),
                 // childAspectRatio: (width / height),
-                crossAxisSpacing: 40,
-                mainAxisSpacing: 40,
+                crossAxisSpacing: 0,
+                mainAxisSpacing: 0,
                 crossAxisCount: 2,
                 children: <Widget>[
                   _getAngerCard(),
@@ -405,7 +405,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
             },
             child: Container(
             // height: 40,
-            color: AppThemes.lightestGrey,
+            color: AppThemes.lightGrey,
               child: Center(
                 child: RichText(
                 textAlign: TextAlign.center,

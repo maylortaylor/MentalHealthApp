@@ -46,7 +46,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: AppThemes.midCardColor,
+      backgroundColor: AppThemes.lightGrey,
       appBar: AppBar(
         backgroundColor: AppThemes.anxiousColor,
         title: const Text(

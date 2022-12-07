@@ -33,9 +33,9 @@ class _TrialScreenState extends State<TrialScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: AppThemes.promptCardColor,
+      backgroundColor: AppThemes.lightGrey,
       appBar: AppBar(
-        backgroundColor: AppThemes.midCardColor,
+        backgroundColor: AppThemes.lightGrey,
         title: const Text(
           'Trial Offer',
           style: TextStyle(

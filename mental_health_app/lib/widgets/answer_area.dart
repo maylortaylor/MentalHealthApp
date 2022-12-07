@@ -51,7 +51,7 @@ class _AnswerAreaState extends State<AnswerArea> {
                Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: AppThemes.midCardColor
+                  color: AppThemes.lightGrey
                 ),
                  child: SizedBox(
                   height: numberOfLines * (cursorHeight + 8),

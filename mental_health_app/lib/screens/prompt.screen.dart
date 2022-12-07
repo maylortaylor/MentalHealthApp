@@ -590,7 +590,7 @@ class _PromptScreenState extends State<PromptScreen> {
           ? MediaQuery.of(context).size.width * .85 :  MediaQuery.of(context).size.width * .60,
         height: MediaQuery.of(context).size.height * .25,
         decoration: BoxDecoration(
-          color: AppThemes.promptCardColor,
+          color: AppThemes.lightGrey,
           border: Border.all(
             color: Colors.white
           ),
@@ -660,7 +660,7 @@ class _PromptScreenState extends State<PromptScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.white),
-                    color: AppThemes.midCardColor
+                    color: AppThemes.lightGrey
                   ),
                   child: SizedBox(
                   height: numberOfLines * (cursorHeight + 8),
