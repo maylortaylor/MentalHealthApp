@@ -1,7 +1,7 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/constants/app_routes.dart';
-import 'package:mental_health_app/constants/app_themes.dart';
+import 'package:mental_health_app/constants/app_colors.dart';
 import 'package:mental_health_app/models/user_model.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
@@ -69,7 +69,7 @@ class _SettingScreenState extends State<SettingScreen> {
             IconButton(
             tooltip: 'Answers',
             icon: Icon(Icons.question_answer), 
-            color: AppThemes.whiteColor,
+            color: AppColors.whiteColor,
             onPressed: () {
               print("user answers icon pressed");
               // Application.router.navigateTo(context, AppRoutes.settings);
@@ -137,7 +137,7 @@ class _SettingScreenState extends State<SettingScreen> {
     Flushbar(
       title:  "User Updated",
       message:  "User info was saved successfully",
-      backgroundColor: AppThemes.notifGreen,
+      backgroundColor: AppColors.notifGreen,
       flushbarPosition: FlushbarPosition.TOP,
       duration:  Duration(seconds: 3),
     ).show(context);
@@ -503,7 +503,7 @@ class _SettingScreenState extends State<SettingScreen> {
     return Padding(
       padding: const EdgeInsets.all(12.0),
       child: CheckboxListTile(
-        tileColor: AppThemes.lightGrey,
+        tileColor: AppColors.lightGrey,
         title: Text("Is Subscribed?"),
         value: _user?.isSubscribed,
         onChanged: _onIfSubscribedChanged,
@@ -561,7 +561,7 @@ class _SettingScreenState extends State<SettingScreen> {
       padding: const EdgeInsets.all(12.0),
       child: ElevatedButton(
         style: ButtonStyle(
-          backgroundColor: MaterialStateProperty.all<Color>(AppThemes.angryColor),
+          backgroundColor: MaterialStateProperty.all<Color>(AppColors.angryColor),
         ),
         onPressed: () {
           if (_formKey.currentState!.validate()) {

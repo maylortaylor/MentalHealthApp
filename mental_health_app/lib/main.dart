@@ -6,7 +6,6 @@ import 'package:get_it/get_it.dart';
 import 'package:mental_health_app/flavor.dart';
 import 'package:mental_health_app/locator.dart';
 import 'package:mental_health_app/app_component.dart';
-import 'package:mental_health_app/providers/theme_provider.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -34,9 +33,6 @@ Future<void> main() async {
       MultiProvider(
         providers: [
           Provider<Flavor>.value(value: Flavor.dev),
-          ChangeNotifierProvider<ThemeProvider>(
-            create: (context) => ThemeProvider(),
-          ),
           // ChangeNotifierProvider<LanguageProvider>(
           //   create: (context) => LanguageProvider(),
           // ),
@@ -46,7 +42,7 @@ Future<void> main() async {
         ],
         child: AppComponent(
           databaseBuilder: (_, uid) => FirestoreDatabase(uid: uid),
-          key: Key('MyApp'),
+          key: Key('MentalHealthApp'),
         ),
       ),
     );

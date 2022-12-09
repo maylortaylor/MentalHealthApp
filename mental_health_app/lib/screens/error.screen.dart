@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
-import 'package:mental_health_app/constants/app_themes.dart';
+import 'package:mental_health_app/constants/app_colors.dart';
 
 class ErrorScreen extends StatefulWidget {
   ErrorScreen({Key? key}) : super(key: key);
@@ -21,7 +21,7 @@ class _ErrorScreenState extends State<ErrorScreen> {
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
-        backgroundColor: AppThemes.angryColor,
+        backgroundColor: AppColors.angryColor,
         title: Text(
           'Uh oh...',
           style: const TextStyle(

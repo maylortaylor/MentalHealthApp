@@ -9,28 +9,28 @@ class SettingLanguageActions extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     LanguageProvider languageProvider = Provider.of(context);
-    Locale _appCurrentLocale = languageProvider.appLocale;
+    // Locale _appCurrentLocale = languageProvider.appLocale;
 
     return PopupMenuButton<LanguagesActions>(
       icon: Icon(Icons.language),
       onSelected: (LanguagesActions result) {
         switch (result) {
           case LanguagesActions.english:
-            languageProvider.updateLanguage("en");
+            // languageProvider.updateLanguage("en");
             break;
           case LanguagesActions.chinese:
-            languageProvider.updateLanguage("zh");
+            // languageProvider.updateLanguage("zh");
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuEntry<LanguagesActions>>[
         PopupMenuItem<LanguagesActions>(
           value: LanguagesActions.english,
-          enabled: _appCurrentLocale == Locale("en") ? false : true,
+          // enabled: _appCurrentLocale == Locale("en") ? false : true,
           child: Text("settingPopUpToggleEnglish"),
         ),
         PopupMenuItem<LanguagesActions>(
           value: LanguagesActions.chinese,
-          enabled: _appCurrentLocale == Locale("zh") ? false : true,
+          // enabled: _appCurrentLocale == Locale("zh") ? false : true,
           child: Text("settingPopUpToggleChinese"),
         ),
       ],

@@ -5,19 +5,16 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/services.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
 import 'package:mental_health_app/constants/app_routes.dart';
-import 'package:mental_health_app/constants/app_themes.dart';
+import 'package:mental_health_app/constants/app_colors.dart';
 import 'package:mental_health_app/main.dart';
 import 'package:mental_health_app/models/answer_model.dart';
 import 'package:mental_health_app/models/arguments/PromptArguments.dart';
 import 'package:mental_health_app/services/answers_repo.dart';
-import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:mental_health_app/services/prompts_repo.dart';
 import 'package:mental_health_app/widgets/responsive.dart';
 import 'package:mental_health_app/widgets/video.dart';
-import 'package:provider/provider.dart';
 import 'package:mental_health_app/models/prompts_model.dart';
 
 
@@ -84,19 +81,19 @@ class _PromptScreenState extends State<PromptScreen> {
     _argCategory = widget.args?.category;
     _argStep = widget.args?.step;
     
-    print('Category: ${_argCategory}');
-    print('Step: ${_argStep}');
+    print('Category: $_argCategory');
+    print('Step: $_argStep');
     int? step = widget.args?.step;
 
     return Container(
-      color: Color.fromRGBO(46, 72, 94,1),
+      color: Theme.of(context).backgroundColor,
       child: Scaffold(
           // resizeToAvoidBottomInset: false,
-          backgroundColor: Colors.transparent,
+          backgroundColor: Theme.of(context).canvasColor,
           appBar: AppBar(
             backgroundColor: _getAppBarColor(),
             title: Text(
-              'How to manage ${_argCategory}',
+              'How to manage $_argCategory',
               style: const TextStyle(
                 fontFamily: AppFontFamily.poppins,
                 fontSize: 22
@@ -125,13 +122,11 @@ class _PromptScreenState extends State<PromptScreen> {
                             onPressed: prevPageIsActive ? _previousCard : () {},
                             icon: Icon(
                               Icons.arrow_back,
-                              color: prevPageIsActive ? Color.fromRGBO(176,107,149,1) : Color.fromRGBO(176,107,149,1),
+                              color: prevPageIsActive ? Theme.of(context).indicatorColor : Theme.of(context).indicatorColor,
                             )
                           ),
-                          const Text("Back", 
-                            style: TextStyle(
-                                fontSize: 28,
-                                color: Colors.white))
+                          Text("Back", 
+                            style: Theme.of(context).textTheme.displaySmall)
                       ]),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -140,13 +135,11 @@ class _PromptScreenState extends State<PromptScreen> {
                             onPressed: nextPageIsActive ? _nextPageAction : () { }, 
                             icon: Icon(
                               Icons.arrow_forward,
-                              color: nextPageIsActive ? Color.fromRGBO(176,107,149,1) : Color.fromRGBO(176,107,149,1)
+                              color: nextPageIsActive ? Theme.of(context).indicatorColor : Theme.of(context).indicatorColor
                             )
                           ),
                           Text(_nextButtonText, 
-                            style: const TextStyle(
-                              fontSize: 28,
-                              color: Colors.white),)
+                            style: Theme.of(context).textTheme.displaySmall,)
                         ]
                       ),
                     ],
@@ -168,15 +161,15 @@ class _PromptScreenState extends State<PromptScreen> {
   Color _getAppBarColor() {
     switch (_argCategory) {
       case "Angry":
-        return AppThemes.angryColor;
+        return AppColors.angryColor;
       case "Anxiety":
-        return AppThemes.anxiousColor;
+        return AppColors.anxiousColor;
       case "Depression":
-        return AppThemes.depressedColor;
+        return AppColors.depressedColor;
       case "Guilt":
-        return AppThemes.guiltyColor;
+        return AppColors.guiltyColor;
       default:
-        return AppThemes.angryColor;
+        return AppColors.angryColor;
     }
   }
   
@@ -324,10 +317,8 @@ class _PromptScreenState extends State<PromptScreen> {
                   color: prevPageIsActive ? Color.fromRGBO(176,107,149,1) : Color.fromRGBO(176,107,149,1),
                 )
               ),
-              const Text("Back",
-                style: TextStyle(
-                              fontSize: 28,
-                              color: Colors.white))
+              Text("Back",
+                style: Theme.of(context).textTheme.displaySmall)
           ]),
         ) : Container(),
         Container(
@@ -349,9 +340,7 @@ class _PromptScreenState extends State<PromptScreen> {
                 )
               ),
               Text(_nextButtonText,
-                style: const TextStyle(
-                                fontSize: 28,
-                                color: Colors.white))
+                style: Theme.of(context).textTheme.displaySmall)
             ]
             ),) : Container()
       ],
@@ -444,7 +433,7 @@ class _PromptScreenState extends State<PromptScreen> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
-        color: Color.fromRGBO(28,35,41,1),
+        color: Theme.of(context).cardColor,
         elevation: 8,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         child: SingleChildScrollView(
@@ -514,17 +503,18 @@ class _PromptScreenState extends State<PromptScreen> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const AutoSizeText(
+        AutoSizeText(
           'Step',
         maxLines: 1,
         minFontSize: 8,
         maxFontSize: 24, 
-        style: TextStyle(
-            fontFamily: AppFontFamily.poppins,
-            fontSize: 26,
-            color: Colors.white,
-            fontWeight: FontWeight.bold,
-        )
+        style: Theme.of(context).textTheme.titleLarge,
+        // style: TextStyle(
+        //     fontFamily: AppFontFamily.poppins,
+        //     fontSize: 26,
+        //     color: Colors.white,
+        //     fontWeight: FontWeight.bold,
+        // )
           ),
         Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -555,12 +545,13 @@ class _PromptScreenState extends State<PromptScreen> {
       maxLines: 2,
       minFontSize: 20,
       maxFontSize: 36,
-      style: const TextStyle(
-          fontFamily: AppFontFamily.poppins,
-          fontSize: 36,
-          color: Colors.white,
-          fontWeight: FontWeight.bold,
-        )
+      style: Theme.of(context).textTheme.titleLarge
+      // style: const TextStyle(
+      //     fontFamily: AppFontFamily.poppins,
+      //     fontSize: 36,
+      //     color: Colors.white,
+      //     fontWeight: FontWeight.bold,
+      //   )
       ),
     );
   }
@@ -570,14 +561,15 @@ class _PromptScreenState extends State<PromptScreen> {
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.85,
-        child: const Text(
+        child: Text(
           'Tap to Type', 
-        style: TextStyle(
-            fontFamily: AppFontFamily.poppins,
-            // fontSize: 20,
-            color: Colors.white,
-            fontWeight: FontWeight.w300,
-          )
+        style: Theme.of(context).textTheme.bodySmall,
+        // style: TextStyle(
+        //     fontFamily: AppFontFamily.poppins,
+        //     // fontSize: 20,
+        //     color: Colors.white,
+        //     fontWeight: FontWeight.w300,
+        //   )
         )
       ),
     );
@@ -591,9 +583,9 @@ class _PromptScreenState extends State<PromptScreen> {
           ? MediaQuery.of(context).size.width * .85 :  MediaQuery.of(context).size.width * .60,
         height: MediaQuery.of(context).size.height * .25,
         decoration: BoxDecoration(
-          color: AppThemes.lightGrey,
+          color: Theme.of(context).primaryColorDark,
           border: Border.all(
-            color: Colors.white
+            color: AppColors.whiteColor
           ),
         borderRadius: BorderRadius.circular(20)
         ),
@@ -607,12 +599,13 @@ class _PromptScreenState extends State<PromptScreen> {
             maxFontSize: 20,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
-            style: const TextStyle(
-                  fontFamily: AppFontFamily.poppins,
-                  fontSize: 20,
-                  color: Colors.white,
-                  fontStyle: FontStyle.italic
-              ),
+            style: Theme.of(context).textTheme.bodyLarge,
+            // style: const TextStyle(
+            //       fontFamily: AppFontFamily.poppins,
+            //       fontSize: 20,
+            //       color: Colors.white,
+            //       fontStyle: FontStyle.italic
+            //   ),
             ),
           ),
         )
@@ -662,7 +655,7 @@ class _PromptScreenState extends State<PromptScreen> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     border: Border.all(color: Colors.white),
-                    color: AppThemes.lightGrey
+                    color: Theme.of(context).primaryColorDark
                   ),
                   child: SizedBox(
                   height: numberOfLines * (cursorHeight + 4),
@@ -686,18 +679,20 @@ class _PromptScreenState extends State<PromptScreen> {
                             _showLines = false;
                           });
                         }),
-                        style: const TextStyle(
-                          fontSize: 20,
-                          fontFamily: AppFontFamily.poppins,
-                          color: Colors.white
-                        ),
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        // style: const TextStyle(
+                        //   fontSize: 20,
+                        //   fontFamily: AppFontFamily.poppins,
+                        //   color: Colors.white
+                        // ),
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: promptsList[index].textPrompts[promptIndex],
-                          hintStyle: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 14,
-                            ),
+                          hintStyle: Theme.of(context).textTheme.bodyLarge
+                          // hintStyle: const TextStyle(
+                          //   color: Colors.white,
+                          //   fontSize: 14,
+                          //   ),
                           ),
                         cursorHeight: cursorHeight,
                         keyboardType: TextInputType.multiline,

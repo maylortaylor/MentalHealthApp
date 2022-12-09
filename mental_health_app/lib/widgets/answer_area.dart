@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
-import 'package:mental_health_app/constants/app_themes.dart';
+import 'package:mental_health_app/constants/app_colors.dart';
 
 class AnswerArea extends StatefulWidget {
   AnswerArea({Key? key, required this.textPrompt, required this.nextPageStatus}) : super(key: key);
@@ -51,7 +51,7 @@ class _AnswerAreaState extends State<AnswerArea> {
                Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: AppThemes.lightGrey
+                  color: AppColors.lightGrey
                 ),
                  child: SizedBox(
                   height: numberOfLines * (cursorHeight + 8),

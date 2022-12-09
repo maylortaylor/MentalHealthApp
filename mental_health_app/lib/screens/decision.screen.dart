@@ -6,20 +6,17 @@ import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
 import 'package:mental_health_app/constants/app_routes.dart';
-import 'package:mental_health_app/constants/app_themes.dart';
+import 'package:mental_health_app/constants/app_colors.dart';
 import 'package:mental_health_app/locator.dart';
 import 'package:mental_health_app/models/arguments/PromptArguments.dart';
 import 'package:mental_health_app/models/user_model.dart';
-import 'package:mental_health_app/providers/auth_provider.dart';
-import 'package:mental_health_app/routes.dart';
 import 'package:mental_health_app/services/navigation_service.dart';
-import 'package:mental_health_app/ui/auth/register_screen.dart';
-import 'package:mental_health_app/ui/setting/setting_screen.dart';
 import 'package:mental_health_app/widgets/platform_aware_asset_image.dart';
 import 'package:mental_health_app/widgets/responsive.dart';
 import 'package:provider/provider.dart';
 
 import '../screens/prompt.screen.dart';
+import 'package:mental_health_app/theme/config.dart';
 
 
   late DatabaseReference _promptsRef;
@@ -59,228 +56,212 @@ class _DecisionScreenState extends  State<DecisionScreen> {
     // var width = (screenWidth - ((_crossAxisCount - 1) * _crossAxisSpacing)) / _crossAxisCount;
     // var height = width / _aspectRatio;
 
-    setState(() {
-      // print("CURRENT USER: ${currentUser?.firstName} : ${currentUser?.pathsAllowed}");
-    });
-   
-
-    Color getAppBarColor() {
-      return AppThemes.depressedColor;
-    }
-
-    Color getBackgroundColor() {
-      return AppThemes.greyColor;
-    }
-
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 70,
-        backgroundColor: getAppBarColor(),
-        // leading: authProvider.status == Status.Authenticated ? 
-        // Center(child: Text("${currentUser?.firstName}")) : Container(),
-        leading: leadingAppBar(),
-        leadingWidth: 70,
-        title: !ResponsiveWidget.isSmallScreen(context) ? const Text(
-          "Try one block now for free!",
-          style: TextStyle(
-            fontSize: 16
-          ),
-          ) : Container(),
-        actions: [
-          ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.resolveWith((states) {
-              // If the button is pressed, return green, otherwise blue
-              if (states.contains(MaterialState.pressed)) {
-                return AppThemes.lightestGreen;
-              }
-              return getAppBarColor();
-            })
-            ),
-            child: Text(
-              "Login",
-              style: TextStyle(color: AppThemes.whiteColor),
-            ),
-            onPressed: () {
-              print("login icon pressed");
-                // Application.router.navigateTo(context, AppRoutes.login);
-                      Navigator.pushNamed(
-                        context,
-                        AppRoutes.login,
-                        // arguments: PromptArguments(
-                        //   'anxiety',
-                        //   1,
-                        // ),
-                      );
-              },
-          ),
-          ElevatedButton(
-            onPressed: () {
-                // Application.router.navigateTo(context, AppRoutes.register);
-                Navigator.pushNamed(
-                  context,
-                  AppRoutes.trial
-                );
-            }, 
-            style: ButtonStyle(
+        backgroundColor: Theme.of(context).backgroundColor,
+        appBar: AppBar(
+          toolbarHeight: 70,
+          backgroundColor: Theme.of(context).primaryColor,
+          // leading: authProvider.status == Status.Authenticated ? 
+          // Center(child: Text("${currentUser?.firstName}")) : Container(),
+          leading: leadingAppBar(),
+          leadingWidth: 70,
+          title: !ResponsiveWidget.isSmallScreen(context) ? Text(
+            "Try one block now for free!",
+            style: Theme.of(context).textTheme.titleMedium,
+            ) : Container(),
+          actions: [
+            ElevatedButton(
+              style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.resolveWith((states) {
                 // If the button is pressed, return green, otherwise blue
                 if (states.contains(MaterialState.pressed)) {
-                  return AppThemes.lightestGreen;
+                  return AppColors.indicatorColor;
                 }
-                return getAppBarColor();
-            })),
-            child: RichText(
-              textAlign: TextAlign.center,
-              text: const TextSpan(
-                text: '3 Day Trial',
-                style: TextStyle(
-                  fontFamily:  AppFontFamily.poppins,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white
+                return Theme.of(context).primaryColor;
+              })
+              ),
+              child: Text(
+                "Login",
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              onPressed: () {
+                  // Application.router.navigateTo(context, AppRoutes.login);
+                        Navigator.pushNamed(
+                          context,
+                          AppRoutes.login,
+                          // arguments: PromptArguments(
+                          //   'anxiety',
+                          //   1,
+                          // ),
+                        );
+                },
+            ),
+            ElevatedButton(
+              onPressed: () {
+                  // Application.router.navigateTo(context, AppRoutes.register);
+                  Navigator.pushNamed(
+                    context,
+                    AppRoutes.trial
+                  );
+              }, 
+              style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.resolveWith((states) {
+                  // If the button is pressed, return green, otherwise blue
+                  if (states.contains(MaterialState.pressed)) {
+                    return AppColors.indicatorColor;
+                  }
+                  return Theme.of(context).primaryColor;
+              })),
+              child: RichText(
+                textAlign: TextAlign.center,
+                text: TextSpan(
+                  text: '3 Day Trial',
+                  style: Theme.of(context).textTheme.titleMedium,
+                  // style: TextStyle(
+                  //   fontFamily:  AppFontFamily.poppins,
+                  //   fontSize: 18,
+                  //   fontWeight: FontWeight.bold,
+                  //   color: Colors.white
+                  // ),
                 ),
               ),
             ),
-          ),
-           ElevatedButton(
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.resolveWith((states) {
-              // If the button is pressed, return green, otherwise blue
-              if (states.contains(MaterialState.pressed)) {
-                return AppThemes.lightestGreen;
-              }
-              return getAppBarColor();
-            })
+             ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor: MaterialStateProperty.resolveWith((states) {
+                // If the button is pressed, return green, otherwise blue
+                if (states.contains(MaterialState.pressed)) {
+                  return AppColors.indicatorColor;
+                }
+                return Theme.of(context).primaryColor;
+              })
+              ),
+              child: Text(
+                "Logout",
+                style: Theme.of(context).textTheme.titleMedium,
+              ),
+              onPressed: () {
+                  print("logout icon pressed");
+                  Flushbar(
+                    title:  "Logout Successful",
+                    message:  "User logout successful",
+                    backgroundColor: AppColors.notifBlue,
+                    flushbarPosition: FlushbarPosition.TOP,
+                    duration:  Duration(seconds: 3),
+                  ).show(context);
+                }
             ),
-            child: Text(
-              "Logout",
-              style: TextStyle(color: AppThemes.whiteColor),
-            ),
-            onPressed: () {
-                print("logout icon pressed");
-                Flushbar(
-                  title:  "Logout Successful",
-                  message:  "User logout successful",
-                  backgroundColor: AppThemes.notifBlue,
-                  flushbarPosition: FlushbarPosition.TOP,
-                  duration:  Duration(seconds: 3),
-                ).show(context);
-              }
+            // IconButton(
+            //   tooltip: 'Settings',
+            //   icon: Icon(Icons.settings), 
+            //   color: AppColors.whiteColor,
+            //   onPressed: () {
+            //     print("settings icon pressed");
+            //     // Application.router.navigateTo(context, AppRoutes.settings);
+            //           Navigator.pushNamed(
+            //               context,
+            //               AppRoutes.settings,
+            //               // arguments: PromptArguments(
+            //               //   'anxiety',
+            //               //   1,
+            //               // ),
+            //             );
+            //   },),
+            IconButton(
+              tooltip: 'Change Theme',
+              icon: isDarkMode == true ? const Icon(Icons.dark_mode) : const Icon(Icons.light_mode), 
+              color: AppColors.whiteColor,
+              onPressed: () {
+                setState(() {
+                  currentTheme.toggleTheme();
+                  isDarkMode = !isDarkMode;
+                });
+                print("change theme icon pressed -- DarkMode: $isDarkMode");
+              },),
+          ],
+          iconTheme: const IconThemeData(
+            color: Colors.white, //change your color here
           ),
-          // IconButton(
-          //   tooltip: 'Settings',
-          //   icon: Icon(Icons.settings), 
-          //   color: AppThemes.whiteColor,
-          //   onPressed: () {
-          //     print("settings icon pressed");
-          //     // Application.router.navigateTo(context, AppRoutes.settings);
-          //           Navigator.pushNamed(
-          //               context,
-          //               AppRoutes.settings,
-          //               // arguments: PromptArguments(
-          //               //   'anxiety',
-          //               //   1,
-          //               // ),
-          //             );
-          //   },),
-          IconButton(
-            tooltip: 'Change Theme',
-            icon: isDarkMode == true ? const Icon(Icons.dark_mode) : const Icon(Icons.light_mode), 
-            color: AppThemes.whiteColor,
-            onPressed: () {
-              print("change theme icon pressed");
-              setState(() {
-                isDarkMode = !isDarkMode;
-              });
-            },),
-        ],
-        iconTheme: const IconThemeData(
-          color: Colors.white, //change your color here
+          titleTextStyle: Theme.of(context).textTheme.displayLarge
         ),
-        titleTextStyle: const TextStyle(
-          fontFamily: AppFontFamily.poppins,
-          color: Colors.white
-        ),
-      ),
-      backgroundColor:  AppThemes.lightGrey,
-      body: Column(
-        children: [
-          ResponsiveWidget.isSmallScreen(context) ? Container(
-            color: AppThemes.angryColor,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: const [
-                Text(
-                  "Try one block now for free!",
-                  style: TextStyle(
-                    fontSize: 18,
-                    color: Colors.black
-                  ),
-                )
-            ],),
-          ) : Container(),
-          const Expanded(
-            flex: 2,
-            // height: MediaQuery.of(context).size.height * .20,
-            child: Center(
-              // child: RichText(
-              //   textAlign: TextAlign.center,
-              //   text: const TextSpan(
-              //     text: 'What are ',
-              //     style: TextStyle(
-              //       fontFamily:  AppFontFamily.poppins,
-              //       fontSize: 42,
-              //       color: Colors.white
-              //     ),
-              //     children:  [
-              //       TextSpan(text: 'you ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 42, color: Colors.white)),
-              //       TextSpan(text: 'feeling ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 42, color: Colors.white)),
-              //       TextSpan(text: 'today?', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 42, color: Colors.white)),
-              //     ],
-              //   ),
-              // ),
-              child: AutoSizeText(
-                'What are you feeling today?',
-              maxLines: 2,
-              minFontSize: 12,
-              maxFontSize: 42,
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                  fontFamily: AppFontFamily.poppins,
-                  fontSize: 42,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+        body: Container(
+          color: Theme.of(context).canvasColor,
+          child: Column(
+            children: [
+              ResponsiveWidget.isSmallScreen(context) ? Container(
+                color: AppColors.indicatorColor,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Try one block now for free!",
+                      style: Theme.of(context).textTheme.titleMedium
+                    )
+                ],),
+              ) : Container(),
+              Expanded(
+                flex: 2,
+                // height: MediaQuery.of(context).size.height * .20,
+                child: Center(
+                  // child: RichText(
+                  //   textAlign: TextAlign.center,
+                  //   text: const TextSpan(
+                  //     text: 'What are ',
+                  //     style: TextStyle(
+                  //       fontFamily:  AppFontFamily.poppins,
+                  //       fontSize: 42,
+                  //       color: Colors.white
+                  //     ),
+                  //     children:  [
+                  //       TextSpan(text: 'you ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontWeight: FontWeight.bold, fontSize: 42, color: Colors.white)),
+                  //       TextSpan(text: 'feeling ', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontSize: 42, color: Colors.white)),
+                  //       TextSpan(text: 'today?', style: TextStyle(fontFamily:  AppFontFamily.poppins, fontStyle: FontStyle.italic, fontSize: 42, color: Colors.white)),
+                  //     ],
+                  //   ),
+                  // ),
+                  child: AutoSizeText(
+                    'What are you feeling today?',
+                  maxLines: 2,
+                  minFontSize: 12,
+                  maxFontSize: 42,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineLarge,
+                  // style: TextStyle(
+                  //     fontFamily: AppFontFamily.poppins,
+                  //     fontSize: 42,
+                  //     color: Colors.white,
+                  //     fontWeight: FontWeight.bold,
+                  // )
+                    )
+                ),
+              ),
+               Expanded(
+                flex: 12,
+                 child: Padding(
+                   padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
+                   child: GridView.count(
+                    childAspectRatio: (itemWidth / itemHeight),
+                    // childAspectRatio: (width / height),
+                    crossAxisSpacing: 0,
+                    mainAxisSpacing: 0,
+                    crossAxisCount: 2,
+                    children: <Widget>[
+                      _getAngerCard(),
+                      _getAnxiousCard(),
+                      _getDepressionCard(),
+                      _getGuiltyCard(),
+                    ],
+                           ),
+                 ),
+               ),
+               Expanded(
+                flex: 1,
+                child: footer()
               )
-                )
-            ),
+             ],
           ),
-           Expanded(
-            flex: 12,
-             child: Padding(
-               padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
-               child: GridView.count(
-                childAspectRatio: (itemWidth / itemHeight),
-                // childAspectRatio: (width / height),
-                crossAxisSpacing: 0,
-                mainAxisSpacing: 0,
-                crossAxisCount: 2,
-                children: <Widget>[
-                  _getAngerCard(),
-                  _getAnxiousCard(),
-                  _getDepressionCard(),
-                  _getGuiltyCard(),
-                ],
-                       ),
-             ),
-           ),
-           Expanded(
-            flex: 1,
-            child: footer()
-          )
-         ],
-      ),
-    );    
+        ),
+    );  
   }
 
 
@@ -310,7 +291,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               }));
             },
             "Anxiety",
-          AppThemes.anxiousColor);
+          AppColors.anxiousColor);
   }
 
   _getDepressionCard() {
@@ -328,7 +309,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               }));
             },
             "Depression",
-            AppThemes.depressedColor
+            AppColors.depressedColor
           );
   }
 
@@ -347,7 +328,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               }));
             },
             "Guilt",
-            AppThemes.guiltyColor
+            AppColors.guiltyColor
           );
   }
 
@@ -366,7 +347,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               }));
             },
             "Anger",
-          AppThemes.angryColor
+          AppColors.angryColor
           );
   }
 
@@ -384,20 +365,18 @@ class _DecisionScreenState extends  State<DecisionScreen> {
               borderRadius: BorderRadius.circular(12.0),
               side: const BorderSide(color: Colors.white, width: 1)
           ),
-          // shape:  OutlineInputBorder(
-          //     borderRadius: BorderRadius.circular(12),
-          //     borderSide: BorderSide(color: Colors.white, width: 1)
-          // ),
           child: FittedBox(
             fit: BoxFit.contain,
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
                 '${pageName}',
-                style: const TextStyle(
-                  fontFamily: AppFontFamily.poppins,
-                  color: Colors.white,
-                ),),
+                style: Theme.of(context).textTheme.titleLarge
+                // style: const TextStyle(
+                //   fontFamily: AppFontFamily.poppins,
+                //   color: Colors.white,
+                // ),),
+              ,)
             ),
           ),
         ),
@@ -417,7 +396,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
             },
             child: Container(
             // height: 40,
-            color: AppThemes.lightGrey,
+            color: AppColors.lightGrey,
               child: Center(
                 child: RichText(
                 textAlign: TextAlign.center,
@@ -442,7 +421,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
           child:
             Container(
             // height: 40,
-              color: AppThemes.mediumGrey,
+              color: AppColors.mediumGrey,
               child: Center(
                 child: RichText(
                 textAlign: TextAlign.center,
@@ -465,7 +444,7 @@ class _DecisionScreenState extends  State<DecisionScreen> {
           },
           child: Container(
             // height: 40,
-            color: AppThemes.darkGrey,
+            color: AppColors.darkGrey,
             child: Center(
               child: RichText(
               textAlign: TextAlign.center,

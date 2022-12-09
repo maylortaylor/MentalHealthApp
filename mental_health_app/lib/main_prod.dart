@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mental_health_app/app_component.dart';
 import 'package:mental_health_app/flavor.dart';
-import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/providers/language_provider.dart';
-import 'package:mental_health_app/providers/theme_provider.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:provider/provider.dart';
 
@@ -20,16 +18,13 @@ void main() {
       MultiProvider(
         providers: [
           Provider<Flavor>.value(value: Flavor.prod),
-          ChangeNotifierProvider<ThemeProvider>(
-            create: (context) => ThemeProvider(),
-          ),
           ChangeNotifierProvider<LanguageProvider>(
             create: (context) => LanguageProvider(),
           ),
         ],
         child: AppComponent(
           databaseBuilder: (_, uid) => FirestoreDatabase(uid: uid),
-          key: Key('SimpleFinance'),
+          key: Key('MentalHealthApp'),
         ),
       ),
     );

@@ -1,37 +1,27 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPreferenceHelper {
-  Future<SharedPreferences>? _sharedPreference;
-  static const String is_dark_mode = "is_dark_mode";
-  static const String language_code = "language_code";
-
-  SharedPreferenceHelper() {
-    _sharedPreference = SharedPreferences.getInstance();
+  static void saveData(String key, dynamic value) async {
+    final prefs = await SharedPreferences.getInstance();
+    if (value is int) {
+      prefs.setInt(key, value);
+    } else if (value is String) {
+      prefs.setString(key, value);
+    } else if (value is bool) {
+      prefs.setBool(key, value);
+    } else {
+      print("Invalid Type");
+    }
   }
 
-  //Theme module
-  Future<void> changeTheme(bool value) {
-    return _sharedPreference!.then((prefs) {
-      return prefs.setBool(is_dark_mode, value);
-    });
+  static Future<dynamic> readData(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    dynamic obj = prefs.get(key);
+    return obj;
   }
 
-  Future<bool> get isDarkMode {
-    return _sharedPreference!.then((prefs) {
-      return prefs.getBool(is_dark_mode) ?? false;
-    });
-  }
-
-  //Locale module
-  Future<String>? get appLocale {
-    return _sharedPreference?.then((prefs) {
-      return prefs.getString(language_code) ?? 'en';
-    });
-  }
-
-  Future<void> changeLanguage(String value) {
-    return _sharedPreference!.then((prefs) {
-      return prefs.setString(language_code, value);
-    });
+  static Future<bool> deleteData(String key) async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.remove(key);
   }
 }

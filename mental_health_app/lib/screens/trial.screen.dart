@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mental_health_app/app_localizations.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
 import 'package:mental_health_app/constants/app_routes.dart';
-import 'package:mental_health_app/constants/app_themes.dart';
+import 'package:mental_health_app/constants/app_colors.dart';
 import 'package:mental_health_app/models/arguments/PromptArguments.dart';
 import 'package:mental_health_app/models/user_model.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
@@ -35,21 +35,15 @@ class _TrialScreenState extends State<TrialScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: AppThemes.lightGrey,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        backgroundColor: AppThemes.darkGrey,
-        title: const Text(
+        backgroundColor: Theme.of(context).primaryColor,
+        title: Text(
           'Trial Offer',
-          style: TextStyle(
-            fontFamily: AppFontFamily.poppins,
-            fontSize: 22
-          ),),
-        iconTheme: const IconThemeData(
-          color: Colors.white, //change your color here
-        ),
-        titleTextStyle: const TextStyle(
-          fontFamily: AppFontFamily.poppins,
-          color: Colors.white
+          style: Theme.of(context).textTheme.titleLarge
+          ,),
+        iconTheme: IconThemeData(
+          color: AppColors.whiteColor, //change your color here
         ),
       ),
       body: SingleChildScrollView(
@@ -108,60 +102,44 @@ class _TrialScreenState extends State<TrialScreen> {
       children: [
       Flexible(
         child: Column(children: [
-        const Align(
+        Align(
           alignment: Alignment.center,
           child: AutoSizeText(
             "Welcome to Dr. Parr's",
             maxLines: 1,
             minFontSize: 18,
             maxFontSize: 32, 
-            style: TextStyle(
-              fontFamily: AppFontFamily.poppins,
-              fontStyle: FontStyle.normal,
-              color: Colors.white,
-              fontSize: 32)
+            style: Theme.of(context).textTheme.headlineLarge,
           ),
         ),
-        const Align(
+        Align(
           alignment: Alignment.center,
           child: AutoSizeText(
             "'4 Blocks Emotional Calculator'",
             maxLines: 1,
             minFontSize: 18,
             maxFontSize: 32,
-            style: TextStyle(
-              fontFamily: AppFontFamily.poppins,
-              fontStyle: FontStyle.italic,
-              color: Colors.white,
-              fontSize: 32),
+            style: Theme.of(context).textTheme.headlineLarge,
           ),
         ),
-        const Align(
+        Align(
           alignment: Alignment.center,
           child: AutoSizeText(
             "Before you jump in to managing",
             maxLines: 1,
             minFontSize: 12,
             maxFontSize: 26,
-            style: TextStyle(
-              fontFamily: AppFontFamily.poppins,
-              fontStyle: FontStyle.normal,
-              color: Colors.black,
-              fontSize: 32),
+            style: Theme.of(context).textTheme.displayLarge,
           ),
         ),
-        const Align(
+        Align(
           alignment: Alignment.center,
           child: AutoSizeText(
             "Anger, Anxiety, Depression & Guilt...",
             maxLines: 1,
             minFontSize: 12,
             maxFontSize: 26, 
-            style: TextStyle(
-              fontFamily: AppFontFamily.poppins,
-              fontStyle: FontStyle.normal,
-              color: Colors.black,
-              fontSize: 32)
+            style: Theme.of(context).textTheme.displayLarge,
           ),
         ),
         Padding(
@@ -184,22 +162,17 @@ class _TrialScreenState extends State<TrialScreen> {
       },
       style: ButtonStyle(backgroundColor: MaterialStateProperty.resolveWith((states) {
           if (states.contains(MaterialState.pressed)) {
-            return AppThemes.lightestGreen;
+            return AppColors.indicatorColor;
           }
-          return Colors.black;
+          return AppColors.blackColor;
       } )),
       child: Padding(
         padding: const EdgeInsets.all(14.0),
         child: RichText(
         textAlign: TextAlign.center,
-        text: const TextSpan(
+        text: TextSpan(
           text: 'You must first learn your ABC\'s! \n CLICK HERE TO BEGIN!',
-          style: TextStyle(
-            fontFamily:  AppFontFamily.poppins,
-            fontSize: 18,
-            fontWeight: FontWeight.normal,
-            color: Colors.white
-          ),
+          style: Theme.of(context).textTheme.titleMedium
         ),
     ),
       ));

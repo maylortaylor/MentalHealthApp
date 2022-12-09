@@ -1,7 +1,7 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:mental_health_app/constants/app_routes.dart';
-import 'package:mental_health_app/constants/app_themes.dart';
+import 'package:mental_health_app/constants/app_colors.dart';
 import 'package:mental_health_app/models/answer_model.dart';
 import 'package:mental_health_app/models/user_model.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
@@ -38,7 +38,7 @@ class _AnswersScreenState extends State<AnswersScreen> {
             IconButton(
             tooltip: 'Settings',
             icon: Icon(Icons.settings), 
-            color: AppThemes.whiteColor,
+            color: AppColors.whiteColor,
             onPressed: () {
               Navigator.pushNamed(
                   context,

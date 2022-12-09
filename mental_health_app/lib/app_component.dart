@@ -1,27 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:mental_health_app/app_localizations.dart';
 import 'package:mental_health_app/constants/app_routes.dart';
-import 'package:mental_health_app/constants/app_themes.dart';
-import 'package:mental_health_app/flavor.dart';
 import 'package:mental_health_app/locator.dart';
 import 'package:mental_health_app/models/arguments/PromptArguments.dart';
-import 'package:mental_health_app/models/user_model.dart';
-import 'package:mental_health_app/providers/auth_provider.dart';
-import 'package:mental_health_app/providers/firebase_provider.dart';
-import 'package:mental_health_app/providers/language_provider.dart';
-import 'package:mental_health_app/providers/theme_provider.dart';
-import 'package:mental_health_app/routes.dart';
 import 'package:mental_health_app/screens/decision.screen.dart';
 import 'package:mental_health_app/screens/error.screen.dart';
 import 'package:mental_health_app/screens/prompt.screen.dart';
 import 'package:mental_health_app/screens/trial.screen.dart';
 import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:mental_health_app/services/navigation_service.dart';
-import 'package:mental_health_app/ui/auth/register_screen.dart';
+import 'package:mental_health_app/theme/custom_theme.dart';
+import 'package:mental_health_app/theme/config.dart';
 import 'package:mental_health_app/ui/auth/login_screen.dart';
 import 'package:mental_health_app/ui/setting/answers_screen.dart';
 import 'package:mental_health_app/ui/setting/setting_screen.dart';
-import 'package:provider/provider.dart';
 // import 'package:flutter_localizations/flutter_localizations.dart';
 
 class AppComponent extends StatefulWidget {
@@ -47,69 +38,71 @@ class _AppComponentState extends State<AppComponent> {
     // AppRoutes.configureRoutes(router);
     // Application.router = router;
   }
+  @override
+  void initState() {
+    super.initState();
+    currentTheme.addListener(() {
+      setState(() {});
+    });
+  }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return Consumer<ThemeProvider>(
-      builder: (_, themeProviderRef, __) {
-            return MaterialApp(
-                  debugShowCheckedModeBanner: false,
-                  // // locale: languageProviderRef.appLocale,
-                  // //List of all supported locales
-                  // supportedLocales: [
-                  //   Locale('en', 'US'),
-                  //   // Locale('zh', 'CN'),
-                  // ],
-                  // //These delegates make sure that the localization data for the proper language is loaded
-                  // localizationsDelegates: [
-                  //   //A class which loads the translations from JSON files
-                  //   AppLocalizations.delegate,
-                  //   // //Built-in localization of basic text for Material widgets (means those default Material widget such as alert dialog icon text)
-                  //   // GlobalMaterialLocalizations.delegate,
-                  //   // //Built-in localization for text direction LTR/RTL
-                  //   // GlobalWidgetsLocalizations.delegate,
-                  // ],
-                  // //return a locale which will be used by the app
-                  // localeResolutionCallback: (locale, supportedLocales) {
-                  //   //check if the current device locale is supported or not
-                  //   for (var supportedLocale in supportedLocales) {
-                  //     if (supportedLocale.languageCode ==
-                  //             locale?.languageCode ||
-                  //         supportedLocale.countryCode == locale?.countryCode) {
-                  //       return supportedLocale;
-                  //     }
-                  //   }
-                  //   //if the locale from the mobile device is not supported yet,
-                  //   //user the first one from the list (in our case, that will be English)
-                  //   return supportedLocales.first;
-                  // },
-                  // title: Provider.of<Flavor>(context).toString(),
-                  routes: {
-                        AppRoutes.home: (context) => DecisionScreen(),
-                        AppRoutes.login: (context) => LoginScreen(),
-                        AppRoutes.answers: (context) => AnswersScreen(),
-                        AppRoutes.trial: (context) => TrialScreen()
-                  },
-                  onGenerateRoute: generateRoute,
-                  theme: AppThemes.lightTheme,
-                  // darkTheme: AppThemes.darkTheme,
-                  // themeMode: themeProviderRef.isDarkModeOn
-                  //     ? ThemeMode.light
-                  //     : ThemeMode.light,
-                  home: Navigator(
-                        key: locator<NavigationService>().navigatorKey,
-                        onGenerateRoute: generateRoute,
-                  )
-                  // home: Consumer<FirebaseProvider>(builder:(context, value, child) {
-                  //   return Navigator(
-                  //       key: locator<NavigationService>().navigatorKey,
-                  //       onGenerateRoute: generateRoute,
-                  // );
-                  // },)
-                );
-      },
-    );
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        // // locale: languageProviderRef.appLocale,
+        // //List of all supported locales
+        // supportedLocales: [
+        //   Locale('en', 'US'),
+        //   // Locale('zh', 'CN'),
+        // ],
+        // //These delegates make sure that the localization data for the proper language is loaded
+        // localizationsDelegates: [
+        //   //A class which loads the translations from JSON files
+        //   AppLocalizations.delegate,
+        //   // //Built-in localization of basic text for Material widgets (means those default Material widget such as alert dialog icon text)
+        //   // GlobalMaterialLocalizations.delegate,
+        //   // //Built-in localization for text direction LTR/RTL
+        //   // GlobalWidgetsLocalizations.delegate,
+        // ],
+        // //return a locale which will be used by the app
+        // localeResolutionCallback: (locale, supportedLocales) {
+        //   //check if the current device locale is supported or not
+        //   for (var supportedLocale in supportedLocales) {
+        //     if (supportedLocale.languageCode ==
+        //             locale?.languageCode ||
+        //         supportedLocale.countryCode == locale?.countryCode) {
+        //       return supportedLocale;
+        //     }
+        //   }
+        //   //if the locale from the mobile device is not supported yet,
+        //   //user the first one from the list (in our case, that will be English)
+        //   return supportedLocales.first;
+        // },
+        // title: Provider.of<Flavor>(context).toString(),
+        // routes: {
+        //       AppRoutes.home: (context) => DecisionScreen(),
+        //       AppRoutes.login: (context) => LoginScreen(),
+        //       AppRoutes.answers: (context) => AnswersScreen(),
+        //       AppRoutes.trial: (context) => TrialScreen()
+        // },
+        onGenerateRoute: generateRoute,
+        theme: CustomTheme.appLightTheme,
+        darkTheme: CustomTheme.appDarkTheme,
+        themeMode: currentTheme.currentTheme,
+        home: Navigator(
+              key: locator<NavigationService>().navigatorKey,
+              onGenerateRoute: generateRoute,
+        )
+        // home: Consumer<FirebaseProvider>(builder:(context, value, child) {
+        //   return Navigator(
+        //       key: locator<NavigationService>().navigatorKey,
+        //       onGenerateRoute: generateRoute,
+        // );
+        // },)
+      );
+    }
   }
 
   Route<dynamic> generateRoute(RouteSettings settings) {
@@ -147,5 +140,4 @@ class _AppComponentState extends State<AppComponent> {
     settings: (RouteSettings(
       name: settings.name
     )));
-}
-}
+  }

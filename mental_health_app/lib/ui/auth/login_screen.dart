@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mental_health_app/app_localizations.dart';
 import 'package:mental_health_app/constants/app_font_family.dart';
 import 'package:mental_health_app/constants/app_routes.dart';
-import 'package:mental_health_app/constants/app_themes.dart';
+import 'package:mental_health_app/constants/app_colors.dart';
 import 'package:mental_health_app/models/user_model.dart';
 import 'package:mental_health_app/providers/auth_provider.dart';
 import 'package:mental_health_app/routes.dart';
@@ -46,15 +46,13 @@ class _LoginScreenState extends State<LoginScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: AppThemes.lightGrey,
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        backgroundColor: AppThemes.anxiousColor,
-        title: const Text(
+        backgroundColor: Theme.of(context).primaryColor,
+        title: Text(
           'Login',
-          style: TextStyle(
-            fontFamily: AppFontFamily.poppins,
-            fontSize: 22
-          ),),
+          style: Theme.of(context).textTheme.titleLarge
+          ,),
         iconTheme: const IconThemeData(
           color: Colors.white, //change your color here
         ),
@@ -96,9 +94,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       maxFontSize: 26, 
                       style: Theme.of(context).textTheme.displayLarge
                     ),
-                    Center(
+                    const Center(
                       child: Padding(
-                        padding: const EdgeInsets.all(20),
+                        padding: EdgeInsets.all(20),
                         child: PlatformAwareAssetImage(
                           asset: 'images/All-White/M4B_LOGO2_AllWhite-34.png',
                           width:400, height:150
@@ -116,7 +114,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 colL: 5
               ),
               child: Card(
-                color: AppThemes.whiteColor,
+                color: Theme.of(context).cardColor,
                 child: Align(
                   alignment: Alignment.center,
                   child: _buildForm(context),
@@ -151,14 +149,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: _emailController,
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    style: Theme.of(context).textTheme.labelLarge,
                     validator: validateEmail,
                     decoration: InputDecoration(
                         prefixIcon: Icon(
                           Icons.email,
-                          color: Theme.of(context).iconTheme.color,
+                          color: Theme.of(context).indicatorColor,
                         ),
                         labelText: "Email*",
+                        labelStyle: Theme.of(context).textTheme.labelLarge,
                         border: OutlineInputBorder()),
                   ),
                 ),
@@ -168,22 +167,24 @@ class _LoginScreenState extends State<LoginScreen> {
                     obscureText: _obscureText,
                     maxLength: 12,
                     controller: _passwordController,
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    style: Theme.of(context).textTheme.labelLarge,
                     validator: (value) => value!.length < 6
                         ? "Error in Password"
                         : null,
                     decoration: InputDecoration(
+                      prefixIcon: Icon(
+                        Icons.lock,
+                        color: Theme.of(context).indicatorColor,
+                      ),
                       suffix: IconButton(
                         icon: Icon(_obscureText ? Icons.visibility : Icons.visibility_off),
-                        color: Theme.of(context).iconTheme.color,
+                        color: Theme.of(context).indicatorColor,
                         onPressed: _toggleObscureText,
                       ),
-                        prefixIcon: Icon(
-                          Icons.lock,
-                          color: Theme.of(context).iconTheme.color,
-                        ),
-                        labelText: "Password*",
-                        border: OutlineInputBorder()),
+                      labelText: "Password*",
+                      labelStyle: Theme.of(context).textTheme.labelLarge,
+                      helperStyle: Theme.of(context).textTheme.labelSmall,
+                      border: OutlineInputBorder()),
                   ),
                 ),
                 Padding(
@@ -191,49 +192,60 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: SizedBox(
                     height: 50,
                     child: ElevatedButton(
-                        child: Text(
-                          "Sign In",
-                          style: Theme.of(context).textTheme.button,
-                        ),
-                        onPressed: () async {
-                          if (_formKey.currentState!.validate()) {
-                            FocusScope.of(context)
-                                .unfocus(); //to hide the keyboard - if any
-
-                            // UserModel? userModel =
-                            //     await authProvider.signInWithEmailAndPassword(
-                            //         _emailController.text,
-                            //         _passwordController.text);
-
-                            // if (userModel == null) {
-                            //   Flushbar(
-                            //     title:  "Error During Login",
-                            //     message:  "User Info Incorrect",
-                            //     backgroundColor: AppThemes.notifRed,
-                            //     flushbarPosition: FlushbarPosition.TOP,
-                            //     duration:  Duration(seconds: 3),
-                            //   ).show(context);
-                            // } else {
-                            //   Flushbar(
-                            //     title:  "Login Successful",
-                            //     message:  "User login successful",
-                            //     backgroundColor: AppThemes.notifBlue,
-                            //     flushbarPosition: FlushbarPosition.TOP,
-                            //     duration:  Duration(seconds: 3),
-                            //   ).show(context);
-                            //     Navigator.pushNamed(
-                            //         context,
-                            //         AppRoutes.root,
-                            //    );                              
-                            // }
-                          }
-                        }),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.primaryColor
+                        // textStyle: Theme.of(context).textTheme.displayLarge
                       ),
+                      // style: ButtonStyle(
+                      //     backgroundColor: MaterialStateProperty.resolveWith((states) {
+                      //     // If the button is pressed, return green, otherwise blue
+                      //     if (states.contains(MaterialState.pressed)) {
+                      //       return AppColors.indicatorColor;
+                      //     }
+                      //     return Theme.of(context).;
+                      // })),
+                      child: Text(
+                        "Sign In",
+                        style: Theme.of(context).textTheme.button,
+                      ),
+                      onPressed: () async {
+                        if (_formKey.currentState!.validate()) {
+                          FocusScope.of(context)
+                              .unfocus(); //to hide the keyboard - if any
+
+                          // UserModel? userModel =
+                          //     await authProvider.signInWithEmailAndPassword(
+                          //         _emailController.text,
+                          //         _passwordController.text);
+
+                          // if (userModel == null) {
+                          //   Flushbar(
+                          //     title:  "Error During Login",
+                          //     message:  "User Info Incorrect",
+                          //     backgroundColor: AppColors.notifRed,
+                          //     flushbarPosition: FlushbarPosition.TOP,
+                          //     duration:  Duration(seconds: 3),
+                          //   ).show(context);
+                          // } else {
+                          //   Flushbar(
+                          //     title:  "Login Successful",
+                          //     message:  "User login successful",
+                          //     backgroundColor: AppColors.notifBlue,
+                          //     flushbarPosition: FlushbarPosition.TOP,
+                          //     duration:  Duration(seconds: 3),
+                          //   ).show(context);
+                          //     Navigator.pushNamed(
+                          //         context,
+                          //         AppRoutes.root,
+                          //    );                              
+                          // }
+                        }
+                      }),
+                    ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(20),
                   child: TextButton(
-                      child: Text("Don't Have An Account?"),
                       style: ButtonStyle(
                         textStyle: MaterialStateProperty.resolveWith<TextStyle?>(
                           (Set<MaterialState> states) {
@@ -248,6 +260,10 @@ class _LoginScreenState extends State<LoginScreen> {
                         //     AppRoutes.register,
                         //   );
                       },
+                      child: Text(
+                        "Don't Have An Account?",
+                        style: Theme.of(context).textTheme.labelMedium,
+                      ),
                     ),
                 ),
               ],
