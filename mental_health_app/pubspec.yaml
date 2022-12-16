@@ -49,6 +49,7 @@ dependencies:
   responsive_ui: ^3.0.0
   video_player: ^2.4.7
   video_player_web: ^2.0.12
+  mysql1: ^0.20.0
   # video_player: ^2.4.7
   # vimeo_video_player: ^0.0.4
   # vimeo_player_flutter: ^0.0.3+2

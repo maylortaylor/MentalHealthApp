@@ -1,20 +1,11 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:mental_health_app/app_localizations.dart';
-import 'package:mental_health_app/constants/app_font_family.dart';
 import 'package:mental_health_app/constants/app_routes.dart';
 import 'package:mental_health_app/constants/app_colors.dart';
 import 'package:mental_health_app/models/arguments/PromptArguments.dart';
-import 'package:mental_health_app/models/user_model.dart';
-import 'package:mental_health_app/providers/auth_provider.dart';
-import 'package:mental_health_app/routes.dart';
 import 'package:mental_health_app/screens/prompt.screen.dart';
-import 'package:mental_health_app/services/firestore_database.dart';
-import 'package:mental_health_app/ui/auth/login_screen.dart';
 import 'package:mental_health_app/widgets/platform_aware_asset_image.dart';
 import 'package:mental_health_app/widgets/responsive.dart';
-import 'package:provider/provider.dart';
 import 'package:responsive_ui/responsive_ui.dart';
 
 class TrialScreen extends StatefulWidget {
@@ -40,7 +31,7 @@ class _TrialScreenState extends State<TrialScreen> {
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(
           'Trial Offer',
-          style: Theme.of(context).textTheme.titleLarge
+          style: Theme.of(context).textTheme.displaySmall
           ,),
         iconTheme: IconThemeData(
           color: AppColors.whiteColor, //change your color here

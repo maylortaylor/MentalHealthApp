@@ -7,10 +7,14 @@ class AppColors {
   static Color offWhiteColor = const Color.fromRGBO(255,250,250, 1);
   static Color blackColor = const Color.fromRGBO(53,56,57, 1);
 
+  static Color lightModeBackground = const Color.fromRGBO(28,35,41,1);
+  static Color lightModeBackground2 = const Color.fromRGBO(46,72,94,1);
+
   static Color darkCardColor = const Color.fromRGBO(15,10,51,1);
   static Color lightCardColor = const Color.fromRGBO(140,138,150,1);
   static Color lightestGreen = const Color.fromRGBO(162,201,186,1);
-  static Color green = const Color.fromRGBO(42,212,163,1);
+  static Color green = const Color.fromRGBO(26,203,151,1);
+  static Color darkGreen = const Color.fromRGBO(49,175,138,1);
   
   static Color lightestGrey = const Color.fromRGBO(110,121,130,1);
   static Color lightGrey = const Color.fromRGBO(113,124,133,1);

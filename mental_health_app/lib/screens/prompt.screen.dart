@@ -42,7 +42,7 @@ class _PromptScreenState extends State<PromptScreen> {
   bool _showFrontSide = true;
   bool _flipXAxis = true;
   late int _currentIndex = 0;
-  bool nextPageIsActive = true;
+  bool nextPageIsActive = false;
   bool prevPageIsActive = false;
   bool hasWatchedVideo = false;
   String? _argCategory;
@@ -122,7 +122,7 @@ class _PromptScreenState extends State<PromptScreen> {
                             onPressed: prevPageIsActive ? _previousCard : () {},
                             icon: Icon(
                               Icons.arrow_back,
-                              color: prevPageIsActive ? Theme.of(context).indicatorColor : Theme.of(context).indicatorColor,
+                              color: prevPageIsActive ? Theme.of(context).indicatorColor : AppColors.lightGrey,
                             )
                           ),
                           Text("Back", 
@@ -135,7 +135,7 @@ class _PromptScreenState extends State<PromptScreen> {
                             onPressed: nextPageIsActive ? _nextPageAction : () { }, 
                             icon: Icon(
                               Icons.arrow_forward,
-                              color: nextPageIsActive ? Theme.of(context).indicatorColor : Theme.of(context).indicatorColor
+                              color: nextPageIsActive ? Theme.of(context).indicatorColor : AppColors.lightGrey
                             )
                           ),
                           Text(_nextButtonText, 
@@ -175,9 +175,9 @@ class _PromptScreenState extends State<PromptScreen> {
   
   void _previousCard() {
     _swiperController.previous(animation: true);
-    if (!answerList.asMap().containsKey(_currentIndex - 2)) {
-      prevPageIsActive = false;
-    }
+    // if (!answerList.asMap().containsKey(_currentIndex - 2)) {
+    //   prevPageIsActive = false;
+    // }
   }
   
   void _nextCard() {
@@ -186,6 +186,7 @@ class _PromptScreenState extends State<PromptScreen> {
     FocusScope.of(context).requestFocus(FocusNode());
     setState(() {
       prevPageIsActive = true;
+      nextPageIsActive = false;
       _showLines = true;
     });
   }
@@ -314,7 +315,7 @@ class _PromptScreenState extends State<PromptScreen> {
                 onPressed: prevPageIsActive ? _previousCard : () {},
                 icon: Icon(
                   Icons.arrow_back,
-                  color: prevPageIsActive ? Color.fromRGBO(176,107,149,1) : Color.fromRGBO(176,107,149,1),
+                  color: prevPageIsActive ? Theme.of(context).indicatorColor : AppColors.lightGrey,
                 )
               ),
               Text("Back",
@@ -336,7 +337,7 @@ class _PromptScreenState extends State<PromptScreen> {
                 }, 
                 icon: Icon(
                   Icons.arrow_forward,
-                  color: nextPageIsActive ? Color.fromRGBO(176,107,149,1) : Color.fromRGBO(176,107,149,1)
+                  color: nextPageIsActive ? Theme.of(context).indicatorColor : AppColors.lightGrey
                 )
               ),
               Text(_nextButtonText,
@@ -433,24 +434,61 @@ class _PromptScreenState extends State<PromptScreen> {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Card(
-        color: Theme.of(context).cardColor,
+        color: Theme.of(context).cardColor, // card color
         elevation: 8,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              (ResponsiveWidget.isLargeScreen(context) || ResponsiveWidget.isMediumScreen(context)) ? 
-                largeScreenTopRow(index) : smallScreenTopRow(index),
-              ResponsiveWidget.isSmallScreen(context) ? cardTitleArea(index) : Container(),
-
-              bodyArea(index),
-
-              displayAnswerArea(index),
-              //TODO: check if keyboard is visible
-              // https://stackoverflow.com/questions/48750361/flutter-detect-keyboard-open-and-close
-              ResponsiveWidget.isSmallScreen(context) ? Container(height: 100) : Container()
-            ],
+        child: Container(
+        decoration: BoxDecoration(
+            gradient: LinearGradient(
+              colors: [
+                Theme.of(context).cardColor,
+                Theme.of(context).secondaryHeaderColor,
+              ],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              // stops: const [0.6, 0.8]
+            ),
           ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                (ResponsiveWidget.isLargeScreen(context) || ResponsiveWidget.isMediumScreen(context)) ? 
+                  largeScreenTopRow(index) : smallScreenTopRow(index),
+                  
+                ResponsiveWidget.isSmallScreen(context) ? cardTitleArea(index) : Container(),
+        
+                videoArea(),
+        
+                bodyArea(index),
+        
+                displayAnswerArea(index),
+                //TODO: check if keyboard is visible
+                // https://stackoverflow.com/questions/48750361/flutter-detect-keyboard-open-and-close
+                ResponsiveWidget.isSmallScreen(context) ? Container(height: 100) : Container()
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget videoArea() {
+    return SizedBox(
+      // height: 400,
+      width: 500,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+        child: Row(
+          children: [
+            Expanded(
+              child: Center(
+                child: VideoPlayerWidget(
+                  filename: 'videos/${_argCategory!.toLowerCase()}/${currentPrompt.videoName!}.mp4',
+                )
+              ),
+            )
+          ]
         ),
       ),
     );
@@ -458,24 +496,26 @@ class _PromptScreenState extends State<PromptScreen> {
 
   Widget largeScreenTopRow(index) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
+      child: Column(
         children: [
-          Container(
-            padding: EdgeInsets.all(10),
-            child: cardStepArea(index)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Container(
+                padding: EdgeInsets.all(10),
+                child: cardStepArea(index)
+              ),
+              Flexible(
+                child: cardTitleArea(index)
+              )
+            ]
           ),
-          Flexible(
-            flex: 10,
-            fit: FlexFit.loose,
-            child: cardTitleArea(index)
-          ),
-          Container(
-            padding: EdgeInsets.all(10),
-            child: displayPlayButton(index)
-          )
-        ]
+              // Container(
+              //   padding: EdgeInsets.all(10),
+              //   child: displayPlayButton(index)
+              // )
+        ],
       ),
     );
   }
@@ -504,34 +544,27 @@ class _PromptScreenState extends State<PromptScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         AutoSizeText(
-          'Step',
+          'step',
         maxLines: 1,
         minFontSize: 8,
-        maxFontSize: 24, 
-        style: Theme.of(context).textTheme.titleLarge,
-        // style: TextStyle(
-        //     fontFamily: AppFontFamily.poppins,
-        //     fontSize: 26,
-        //     color: Colors.white,
-        //     fontWeight: FontWeight.bold,
-        // )
+        maxFontSize: 18, 
+        style: Theme.of(context).textTheme.labelMedium,
           ),
         Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-          child: Container(
-                child: AutoSizeText(
-                  '# ${promptsList[index].step}',
-                maxLines: 1,
-                minFontSize: 8,
-                maxFontSize: 24,  
-                style: const TextStyle(
-                  fontFamily: AppFontFamily.poppins,
-                  fontSize: 26,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-              )
-            )
-          ),
+          child: AutoSizeText(
+            '#${promptsList[index].step}',
+          maxLines: 1,
+          minFontSize: 8,
+          maxFontSize: 18,  
+          style: Theme.of(context).textTheme.labelMedium,
+              //   style: const TextStyle(
+              //     fontFamily: AppFontFamily.poppins,
+              //     fontSize: 26,
+              //     color: Colors.black,
+              //     fontWeight: FontWeight.bold,
+              // )
+            ),
         ),
       ],
     );
@@ -539,23 +572,30 @@ class _PromptScreenState extends State<PromptScreen> {
   
   Widget cardTitleArea(int index) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 0, 0, 0),
-      child: AutoSizeText(
+      padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+      child: Text(
         '${promptsList[index].title}', 
       maxLines: 2,
-      minFontSize: 20,
-      maxFontSize: 36,
-      style: Theme.of(context).textTheme.titleLarge
-      // style: const TextStyle(
-      //     fontFamily: AppFontFamily.poppins,
-      //     fontSize: 36,
-      //     color: Colors.white,
-      //     fontWeight: FontWeight.bold,
-      //   )
+      // minFontSize: 20,
+      // maxFontSize: 36,
+      style: Theme.of(context).textTheme.labelLarge
       ),
     );
   }
   
+  Widget scrollDownToContinueText() {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(20, 0, 0, 12),
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width * 0.85,
+        child: Text(
+          'Scroll Down To Continue', 
+        style: Theme.of(context).textTheme.bodyMedium,
+        )
+      ),
+    );
+  }
+
   Widget tapToTypeText() {
     return Container(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 12),
@@ -563,52 +603,51 @@ class _PromptScreenState extends State<PromptScreen> {
         width: MediaQuery.of(context).size.width * 0.85,
         child: Text(
           'Tap to Type', 
-        style: Theme.of(context).textTheme.bodySmall,
-        // style: TextStyle(
-        //     fontFamily: AppFontFamily.poppins,
-        //     // fontSize: 20,
-        //     color: Colors.white,
-        //     fontWeight: FontWeight.w300,
-        //   )
+        style: Theme.of(context).textTheme.bodyMedium,
         )
       ),
     );
   }
   
   Widget bodyArea(int index) {
-    return  Padding(
+    return Padding(
       padding: const EdgeInsets.fromLTRB(8, 32, 8, 0),
-      child: Container(
-        width: ResponsiveWidget.isSmallScreen(context) 
-          ? MediaQuery.of(context).size.width * .85 :  MediaQuery.of(context).size.width * .60,
-        height: MediaQuery.of(context).size.height * .25,
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColorDark,
-          border: Border.all(
-            color: AppColors.whiteColor
-          ),
-        borderRadius: BorderRadius.circular(20)
-        ),
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.all(10),
-            child: AutoSizeText(
-              '${promptsList[index].body}', 
-            maxLines: 20,
-            minFontSize: 10,
-            maxFontSize: 20,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.bodyLarge,
-            // style: const TextStyle(
-            //       fontFamily: AppFontFamily.poppins,
-            //       fontSize: 20,
-            //       color: Colors.white,
-            //       fontStyle: FontStyle.italic
-            //   ),
+      child: Column(
+        children: [
+          scrollDownToContinueText(),
+          Container(
+            width: ResponsiveWidget.isSmallScreen(context) 
+              ? MediaQuery.of(context).size.width * .85 :  MediaQuery.of(context).size.width * .60,
+            height: MediaQuery.of(context).size.height * .25,
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColorDark,
+              border: Border.all(
+                color: AppColors.whiteColor
+              ),
+            borderRadius: BorderRadius.circular(20)
             ),
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(10),
+                child: SingleChildScrollView(
+                  child: Text(
+                    '${promptsList[index].body}',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                ),
+                // child: AutoSizeText(
+                //   '${promptsList[index].body}', 
+                // maxLines: 20,
+                // minFontSize: 10,
+                // maxFontSize: 20,
+                // overflow: TextOverflow.ellipsis,
+                // textAlign: TextAlign.center,
+                // style: Theme.of(context).textTheme.bodyLarge,
+                // ),
+              ),
+            )
           ),
-        )
+        ],
       ),
     );
   }
@@ -667,13 +706,17 @@ class _PromptScreenState extends State<PromptScreen> {
                       //  onEditingComplete: (() {
                       //    _showLines = false;
                       //  }),
-                      //  onChanged: (value) {
-                      //    if (value.isNotEmpty) {
-                      //     setState(() {
-                      //       _showLines = false;
-                      //     });
-                      //    }
-                      //  },
+                       onChanged: (value) {
+                         if (value.isNotEmpty && value.length >=20) {
+                          setState(() {
+                            nextPageIsActive = true;
+                          });
+                         } else {
+                          setState(() {
+                            nextPageIsActive = false;
+                          });
+                         }
+                       },
                         onTap: (() {
                           setState(() {
                             _showLines = false;
@@ -711,7 +754,7 @@ class _PromptScreenState extends State<PromptScreen> {
                     right: 15,
                   ),
                   height: 1,
-                  color: Colors.white,
+                  color: Theme.of(context).secondaryHeaderColor,
                 ) : Container(),
             ],
           ),
@@ -759,7 +802,7 @@ class _PromptScreenState extends State<PromptScreen> {
                     });
                   }, 
                   icon: const Icon(
-                    Icons.play_arrow,
+                    Icons.arrow_forward,
                     color: Colors.white,
                     )
                 ),
@@ -768,7 +811,7 @@ class _PromptScreenState extends State<PromptScreen> {
           ],
         ),
         const AutoSizeText(
-          "Play Video",
+          "Additional Reading",
         maxLines: 1,
         minFontSize: 4,
         maxFontSize: 18, 

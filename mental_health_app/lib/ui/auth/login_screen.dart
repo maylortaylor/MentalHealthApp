@@ -12,6 +12,7 @@ import 'package:mental_health_app/services/firestore_database.dart';
 import 'package:mental_health_app/ui/auth/login_screen.dart';
 import 'package:mental_health_app/widgets/platform_aware_asset_image.dart';
 import 'package:mental_health_app/widgets/responsive.dart';
+import 'package:mysql1/mysql1.dart';
 import 'package:provider/provider.dart';
 import 'package:responsive_ui/responsive_ui.dart';
 
@@ -51,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(
           'Login',
-          style: Theme.of(context).textTheme.titleLarge
+          style: Theme.of(context).textTheme.displaySmall
           ,),
         iconTheme: const IconThemeData(
           color: Colors.white, //change your color here
@@ -149,7 +150,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextFormField(
                     controller: _emailController,
-                    style: Theme.of(context).textTheme.labelLarge,
+                    style: Theme.of(context).textTheme.labelMedium,
                     validator: validateEmail,
                     decoration: InputDecoration(
                         prefixIcon: Icon(
@@ -157,8 +158,9 @@ class _LoginScreenState extends State<LoginScreen> {
                           color: Theme.of(context).indicatorColor,
                         ),
                         labelText: "Email*",
-                        labelStyle: Theme.of(context).textTheme.labelLarge,
-                        border: OutlineInputBorder()),
+                        labelStyle: Theme.of(context).textTheme.labelMedium,
+                        border: OutlineInputBorder(
+                        )),
                   ),
                 ),
                 Padding(
@@ -167,7 +169,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     obscureText: _obscureText,
                     maxLength: 12,
                     controller: _passwordController,
-                    style: Theme.of(context).textTheme.labelLarge,
+                    style: Theme.of(context).textTheme.labelMedium,
                     validator: (value) => value!.length < 6
                         ? "Error in Password"
                         : null,
@@ -182,7 +184,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         onPressed: _toggleObscureText,
                       ),
                       labelText: "Password*",
-                      labelStyle: Theme.of(context).textTheme.labelLarge,
+                      labelStyle: Theme.of(context).textTheme.labelMedium,
                       helperStyle: Theme.of(context).textTheme.labelSmall,
                       border: OutlineInputBorder()),
                   ),
@@ -206,13 +208,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       // })),
                       child: Text(
                         "Sign In",
-                        style: Theme.of(context).textTheme.button,
+                        style: Theme.of(context).textTheme.labelMedium,
                       ),
                       onPressed: () async {
                         if (_formKey.currentState!.validate()) {
                           FocusScope.of(context)
                               .unfocus(); //to hide the keyboard - if any
-
+                          // signInUser();
                           // UserModel? userModel =
                           //     await authProvider.signInWithEmailAndPassword(
                           //         _emailController.text,
@@ -284,4 +286,18 @@ class _LoginScreenState extends State<LoginScreen> {
       return 'Please enter valid email address';
     }
     return null;
+  }
+
+  signInUser() async {
+    var settings = ConnectionSettings(
+      host: 'u92444630500443.db.44630500.352.hostedresource.net', 
+      port: 3309,
+      user: 'u92444630500443',
+      password: 'HQeP98.{B(+ei',
+      db: 'mydb'
+    );
+    var conn = await MySqlConnection.connect(settings);
+
+    var userId = 1;
+    var results = await conn.query('select name, email from users where id = ?', [userId]);
   }

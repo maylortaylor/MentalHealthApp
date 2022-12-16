@@ -27,7 +27,8 @@ class CustomTheme with ChangeNotifier {
         scaffoldBackgroundColor: AppColors.whiteColor,
         backgroundColor: AppColors.offWhiteColor,
         canvasColor: AppColors.offWhiteColor,
-        cardColor: AppColors.green,
+        cardColor: AppColors.lightModeBackground,
+        secondaryHeaderColor: AppColors.lightModeBackground2,
         indicatorColor: AppColors.indicatorColor,
         primaryColorDark: AppColors.whiteColor,
         buttonTheme: ButtonThemeData(
@@ -40,11 +41,11 @@ class CustomTheme with ChangeNotifier {
             color: Colors.black,
             fontSize: 18
           ),
-        bodyMedium: TextStyle(
-          fontFamily: AppFontFamily.poppins,
-          color: Colors.black,
-          fontSize: 14
-        ),
+          bodyMedium: TextStyle(
+            fontFamily: AppFontFamily.poppins,
+            color: Colors.white,
+            fontSize: 14
+          ),
           bodySmall: TextStyle(
             fontFamily: AppFontFamily.poppins,
             color: Colors.white,
@@ -62,7 +63,7 @@ class CustomTheme with ChangeNotifier {
           ),
           displaySmall: TextStyle(
             fontFamily: AppFontFamily.poppins,
-            color: Colors.black,
+            color: Colors.white,
             fontSize: 22
           ),
           headlineLarge: TextStyle(
@@ -72,12 +73,12 @@ class CustomTheme with ChangeNotifier {
           ),
           labelLarge: TextStyle(
             fontFamily: AppFontFamily.poppins,
-            color: Colors.black,
-            fontSize: 18
+            color: Colors.white,
+            fontSize: 32
           ),
           labelMedium: TextStyle(
             fontFamily: AppFontFamily.poppins,
-            color: Colors.black,
+            color: Colors.white,
             fontSize: 16
           ),
           labelSmall: TextStyle(
@@ -106,6 +107,7 @@ class CustomTheme with ChangeNotifier {
       backgroundColor: AppColors.darkBlue,
       canvasColor: AppColors.darkBlue,
       cardColor: AppColors.darkGrey,
+      secondaryHeaderColor: AppColors.darkGrey,
       primaryColorDark: AppColors.lightGrey,
       indicatorColor: AppColors.indicatorColor,
       buttonTheme: ButtonThemeData(
@@ -115,12 +117,12 @@ class CustomTheme with ChangeNotifier {
       textTheme: const TextTheme(
         bodyLarge: TextStyle(
           fontFamily: AppFontFamily.poppins,
-          color: Colors.black,
+          color: Colors.white,
           fontSize: 18
         ),
         bodyMedium: TextStyle(
           fontFamily: AppFontFamily.poppins,
-          color: Colors.black,
+          color: Colors.white,
           fontSize: 14
         ),
         bodySmall: TextStyle(
@@ -151,7 +153,7 @@ class CustomTheme with ChangeNotifier {
         labelLarge: TextStyle(
           fontFamily: AppFontFamily.poppins,
           color: Colors.white,
-          fontSize: 18
+          fontSize: 36
         ),
         labelMedium: TextStyle(
           fontFamily: AppFontFamily.poppins,

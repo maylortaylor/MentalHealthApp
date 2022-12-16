@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:video_player/video_player.dart';
 // import 'package:vimeo_video_player/vimeo_video_player.dart';
 
@@ -27,7 +26,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     // _videoPlayerController.play();
     _videoPlayerController = VideoPlayerController.asset('assets/${widget.filename}')
       ..initialize().then((_) {
-        _videoPlayerController.play();
+        // _videoPlayerController.play();
         _videoPlayerController.setLooping(true);
         setState(() {});
       });
