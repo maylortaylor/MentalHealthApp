@@ -126,7 +126,7 @@ class _PromptScreenState extends State<PromptScreen> {
                             )
                           ),
                           Text("Back", 
-                            style: Theme.of(context).textTheme.displaySmall)
+                            style: Theme.of(context).textTheme.displayMedium)
                       ]),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -139,7 +139,7 @@ class _PromptScreenState extends State<PromptScreen> {
                             )
                           ),
                           Text(_nextButtonText, 
-                            style: Theme.of(context).textTheme.displaySmall,)
+                            style: Theme.of(context).textTheme.displayMedium,)
                         ]
                       ),
                     ],
@@ -319,7 +319,7 @@ class _PromptScreenState extends State<PromptScreen> {
                 )
               ),
               Text("Back",
-                style: Theme.of(context).textTheme.displaySmall)
+                style: Theme.of(context).textTheme.displayMedium)
           ]),
         ) : Container(),
         Container(
@@ -341,7 +341,7 @@ class _PromptScreenState extends State<PromptScreen> {
                 )
               ),
               Text(_nextButtonText,
-                style: Theme.of(context).textTheme.displaySmall)
+                style: Theme.of(context).textTheme.displayMedium)
             ]
             ),) : Container()
       ],

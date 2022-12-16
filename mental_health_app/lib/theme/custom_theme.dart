@@ -58,7 +58,7 @@ class CustomTheme with ChangeNotifier {
           ),
           displayMedium: TextStyle(
             fontFamily: AppFontFamily.poppins,
-            color: Colors.white,
+            color: Colors.black,
             fontSize: 32
           ),
           displaySmall: TextStyle(
@@ -83,7 +83,7 @@ class CustomTheme with ChangeNotifier {
           ),
           labelSmall: TextStyle(
             fontFamily: AppFontFamily.poppins,
-            color: Colors.black,
+            color: Colors.white,
             fontSize: 10
           ),
           titleLarge: TextStyle(
@@ -137,7 +137,7 @@ class CustomTheme with ChangeNotifier {
         ),
         displayMedium: TextStyle(
           fontFamily: AppFontFamily.poppins,
-          color: Colors.black,
+          color: Colors.white,
           fontSize: 32
         ),
         displaySmall: TextStyle(
