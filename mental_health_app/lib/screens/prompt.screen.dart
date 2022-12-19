@@ -456,8 +456,6 @@ class _PromptScreenState extends State<PromptScreen> {
                 (ResponsiveWidget.isLargeScreen(context) || ResponsiveWidget.isMediumScreen(context)) ? 
                   largeScreenTopRow(index) : smallScreenTopRow(index),
                   
-                ResponsiveWidget.isSmallScreen(context) ? cardTitleArea(index) : Container(),
-        
                 videoArea(),
         
                 bodyArea(index),
@@ -485,22 +483,9 @@ class _PromptScreenState extends State<PromptScreen> {
           children: [
             Expanded(
               child: Center(
-                child: GestureDetector(
-                  onTap: () {
-                    // setState(() {
-                    //   isPlaying = !isPlaying;
-                    // });
-                    // VideoPlayerWidget(
-                    //   filename: 'videos/${_argCategory!.toLowerCase()}/${currentPrompt.videoName!}.mp4',
-                    // );
-                  },
-                  child: VideoPlayerWidget(
+                child: VideoPlayerWidget(
                       filename: 'videos/${_argCategory!.toLowerCase()}/${currentPrompt.videoName!}.mp4',
                     )
-                  )
-                // child: VideoPlayerWidget(
-                //   filename: 'videos/${_argCategory!.toLowerCase()}/${currentPrompt.videoName!}.mp4',
-                // )
               ),
             )
           ]
@@ -512,46 +497,65 @@ class _PromptScreenState extends State<PromptScreen> {
   Widget largeScreenTopRow(index) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
-      child: Column(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                padding: EdgeInsets.all(10),
+      child: ListTile(
+        leading: Wrap(
+          spacing: 12,
+          children: [
+            Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
                 child: cardStepArea(index)
               ),
               Flexible(
                 child: cardTitleArea(index)
-              )
-            ]
-          ),
-              // Container(
-              //   padding: EdgeInsets.all(10),
-              //   child: displayPlayButton(index)
-              // )
-        ],
-      ),
-    );
+              ),
+          ]
+        ),
+        trailing: Container(
+          // padding: EdgeInsets.fromLTRB(100, 0, 0, 0),
+          child: displayPlayButton(index)
+        ),
+        ),
+      );
   }
 
   Widget smallScreenTopRow(index) {
+    // return Padding(
+    //   padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+    //   child: Row(
+    //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    //     children: [
+    //       Container(
+    //         padding: EdgeInsets.all(10),
+    //         child: cardStepArea(index)
+    //       ),
+    //       Container(
+    //         padding: EdgeInsets.all(10),
+    //         child: displayPlayButton(index)
+    //       )
+    //     ]
+    //   ),
+    // );
     return Padding(
-      padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-            padding: EdgeInsets.all(10),
-            child: cardStepArea(index)
-          ),
-          Container(
-            padding: EdgeInsets.all(10),
-            child: displayPlayButton(index)
-          )
-        ]
-      ),
-    );
+      padding: const EdgeInsets.fromLTRB(8, 0, 8, 20),
+      child: ListTile(
+        leading: Wrap(
+          spacing: 12,
+          children: [
+            Container(
+                padding: EdgeInsets.fromLTRB(0, 0, 10, 0),
+                child: cardStepArea(index)
+              ),
+              Flexible(
+                child: cardTitleArea(index)
+              ),
+          ]
+        ),
+        trailing: Container(
+          // padding: EdgeInsets.fromLTRB(100, 0, 0, 0),
+          child: displayPlayButton(index)
+        ),
+        ),
+      );
   }
 
   Widget cardStepArea(int index) {
@@ -588,13 +592,20 @@ class _PromptScreenState extends State<PromptScreen> {
   Widget cardTitleArea(int index) {
     return Padding(
       padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-      child: Text(
-        '${promptsList[index].title}', 
-      maxLines: 2,
-      // minFontSize: 20,
-      // maxFontSize: 36,
-      style: Theme.of(context).textTheme.labelLarge
-      ),
+      child: AutoSizeText(
+        '${promptsList[index].title}',
+        maxLines: 1,
+        minFontSize: 18,
+        maxFontSize: 32,
+        style: Theme.of(context).textTheme.labelLarge
+      )
+      // child: Text(
+      //   '${promptsList[index].title}', 
+      // maxLines: 2,
+      // // minFontSize: 20,
+      // // maxFontSize: 36,
+      // style: Theme.of(context).textTheme.labelLarge
+      // ),
     );
   }
   
@@ -783,8 +794,8 @@ class _PromptScreenState extends State<PromptScreen> {
       return Container();    
     }
     Widget circle = Container(
-      width: 50.0,
-      height: 50.0,
+      width: 27.0,
+      height: 27.0,
       decoration: const BoxDecoration(
         shape: BoxShape.circle,
         gradient: LinearGradient(
@@ -807,7 +818,7 @@ class _PromptScreenState extends State<PromptScreen> {
               child: Align(
                 alignment: Alignment.center,
                 child: IconButton(
-                  iconSize: 38,
+                  iconSize: 15,
                   onPressed: () {
                     // Go to video url
                     _switchCard();
@@ -829,9 +840,9 @@ class _PromptScreenState extends State<PromptScreen> {
           "Additional Reading",
         maxLines: 1,
         minFontSize: 4,
-        maxFontSize: 18, 
+        maxFontSize: 14, 
         style: TextStyle(
-          fontSize: 18,
+          fontSize: 14,
           fontFamily: AppFontFamily.poppins,
           color: Colors.white
         ),)

@@ -58,7 +58,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
               alignment: Alignment.center,
               children: const [
                 PlatformAwareAssetImage(asset: 'images/dr_face.png',
-                                width:500, height:300, fit: BoxFit.contain,),
+                                width:400, height:300, fit: BoxFit.contain,),
                 Icon(
                   Icons.play_arrow,
                   color: Colors.white,
