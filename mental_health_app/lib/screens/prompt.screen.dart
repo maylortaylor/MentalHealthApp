@@ -13,6 +13,7 @@ import 'package:mental_health_app/models/answer_model.dart';
 import 'package:mental_health_app/models/arguments/PromptArguments.dart';
 import 'package:mental_health_app/services/answers_repo.dart';
 import 'package:mental_health_app/services/prompts_repo.dart';
+import 'package:mental_health_app/widgets/platform_aware_asset_image.dart';
 import 'package:mental_health_app/widgets/responsive.dart';
 import 'package:mental_health_app/widgets/video.dart';
 import 'package:mental_health_app/models/prompts_model.dart';
@@ -126,7 +127,7 @@ class _PromptScreenState extends State<PromptScreen> {
                             )
                           ),
                           Text("Back", 
-                            style: Theme.of(context).textTheme.displayMedium)
+                            style: Theme.of(context).textTheme.displayLarge)
                       ]),
                       Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -474,6 +475,7 @@ class _PromptScreenState extends State<PromptScreen> {
   }
 
   Widget videoArea() {
+    // bool isPlaying = false;
     return SizedBox(
       // height: 400,
       width: 500,
@@ -483,9 +485,22 @@ class _PromptScreenState extends State<PromptScreen> {
           children: [
             Expanded(
               child: Center(
-                child: VideoPlayerWidget(
-                  filename: 'videos/${_argCategory!.toLowerCase()}/${currentPrompt.videoName!}.mp4',
-                )
+                child: GestureDetector(
+                  onTap: () {
+                    // setState(() {
+                    //   isPlaying = !isPlaying;
+                    // });
+                    // VideoPlayerWidget(
+                    //   filename: 'videos/${_argCategory!.toLowerCase()}/${currentPrompt.videoName!}.mp4',
+                    // );
+                  },
+                  child: VideoPlayerWidget(
+                      filename: 'videos/${_argCategory!.toLowerCase()}/${currentPrompt.videoName!}.mp4',
+                    )
+                  )
+                // child: VideoPlayerWidget(
+                //   filename: 'videos/${_argCategory!.toLowerCase()}/${currentPrompt.videoName!}.mp4',
+                // )
               ),
             )
           ]

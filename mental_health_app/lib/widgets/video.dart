@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mental_health_app/widgets/platform_aware_asset_image.dart';
 import 'package:video_player/video_player.dart';
 // import 'package:vimeo_video_player/vimeo_video_player.dart';
 
@@ -14,6 +15,7 @@ class VideoPlayerWidget extends StatefulWidget {
 
 class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
   late VideoPlayerController _videoPlayerController;
+  bool isPlaying = false;
   @override
    void initState() {
      super.initState();
@@ -27,8 +29,10 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
     _videoPlayerController = VideoPlayerController.asset('assets/${widget.filename}')
       ..initialize().then((_) {
         // _videoPlayerController.play();
+        _videoPlayerController.play().then((value) => {
+          
+        });
         _videoPlayerController.setLooping(true);
-        setState(() {});
       });
    }
 
@@ -40,8 +44,34 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
 
   @override
   Widget build(BuildContext context) {
+    
     return SingleChildScrollView(
-      child: Column(
+      child: !isPlaying ? GestureDetector(
+        onTap: () => {
+          setState(() {
+            isPlaying = !isPlaying;
+          })
+        },
+        child: Column(
+          children: [
+            Stack(
+              alignment: Alignment.center,
+              children: const [
+                PlatformAwareAssetImage(asset: 'images/dr_face.png',
+                                width:500, height:300, fit: BoxFit.contain,),
+                Icon(
+                  Icons.play_arrow,
+                  color: Colors.white,
+                  size: 100.0,
+                  semanticLabel: 'Play',
+                )
+                
+              ],
+            ),
+          ],
+        ),
+      ) : 
+        Column(
         children: <Widget>[
           AspectRatio(
             aspectRatio: _videoPlayerController.value.aspectRatio,
